@@ -1,0 +1,103 @@
+---
+type: blog
+title: 'Responsive HTML Tables'
+date: '2012-09-29'
+categories: development
+excerpt: "Data tables are notoriously pesky elements to wrestle down into a narrow viewport. Here's another solution that I'm throwing into the mix."
+slug: 'responsive-html-tables'
+---
+
+Data tables are notoriously pesky elements to wrestle down into a narrow viewport. They can have a large number of columns or rows. Cells may contain simple data or entire it’s all appropriate, or if anything, that such a table could possibly show up on your website. How do we proceed? Well, that really depends.
+
+There are plenty of solutions already in the wild. Some are good, some are not so good. Personally, I have an aversion t remove content from view or forgo the table element altogether. These options either exhibit bad practices in responsive design or skirt the issue entirely.
+
+What makes tables more difficult than other elements in a responsive site is that you need to maintain the relationship between the data and its respective column and row headers — visually and in code. This means that you end up sacrificing some of the flexibility that you have with other types of elements. In particularly tall tables, it’s pretty easy to lose track of the column headings.
+
+Depending on what type of site you have, you, the designer, might not be the person responsible for producing content. And if a data table finds its way into an article, it’s likely that you didn’t have much say over how many columns or rows it contains. Hell, you’re probably not even aware it exists. But whether or not it breaks, that’s going to fall upon you.
+
+Of all the proposed ideas for how to display a responsive data table, my favorite is [Chris Coyier’s example on CSS Tricks](http://css-tricks.com/responsive-data-tables/). He has chosen to vertically orient the data into “card stacks.” What makes this so appealing to me is that it allows for great column flexibility and does not require the producer to manually enter class names for a javascript function. It’s also much less harrowing if that producer possesses only a working knowledge of HTML.
+
+There was one aspect of Chris’s approach that I felt could be improved upon, however: using `:nth-of-type` selectors to create pseudo elements. Browser compatibility aside, having to replicate table headers into embedded CSS leaves a lot of room for human error. I’ve written a quick script which takes the headings inside the `<thead>` and recreates them as labels, replicating down for each table row.
+
+So for the table below, the web producer only needs properly formatted HTML with a `<thead>` and a `<tbody>`. Even though mine is hooked with a class name (for my own purposes), it isn’t required. For CSS and all other information, please refer back to the original [post](http://css-tricks.com/responsive-data-tables/) on CSS Tricks.
+
+<table class="vert-collapse">
+  <thead>
+    <tr>
+      <th>Ingredient</th>
+      <th>Minimal Soaking</th>
+      <th>PSI setting</th>
+      <th>Cooking time</th>
+      <th>Notes</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>Black Beans</th>
+      <td>4-8 hours</td>
+      <td>15 PSI</td>
+      <td>18-20 minutes</td>
+      <td>
+        Black beans are popular in many Latin American dishes. They pair well
+        with meat and other strong, assertive flavorings.
+      </td>
+    </tr>
+    <tr>
+      <th>Cannellini</th>
+      <td>4 hours</td>
+      <td>15 PSI</td>
+      <td>10-12 minutes</td>
+      <td>
+        These beans work very well with bean salads and soups. Can be served
+        with fresh rosemary and black pepper.
+      </td>
+    </tr>
+    <tr>
+      <th>Fava Beans</th>
+      <td>4 hours - overnight</td>
+      <td>10 PSI</td>
+      <td>6-8 minutes</td>
+      <td>
+        Discard skins after soaking. Use these in soups or paté. Blanch with
+        cauliflower. Be careful about the loose skins while pressure cooking.
+        Always use oil. Place rack on top of beans to keep them from floating
+        up.
+      </td>
+    </tr>
+    <tr>
+      <th>Garbanzo</th>
+      <td>8 hours - overnight</td>
+      <td>15 PSI</td>
+      <td>6-8 minutes</td>
+      <td>Use in hummus or salads. Can also be baked until crispy</td>
+    </tr>
+    <tr>
+      <th>Lentils</th>
+      <td>None</td>
+      <td>15 PSI</td>
+      <td>5-7 minutes</td>
+      <td>
+        Great for soups. Always rinse and pick to remove stones and debris.
+        French lentils tend to be more delicate.
+      </td>
+    </tr>
+    <tr>
+      <th>Kidney Beans</th>
+      <td>4 hours</td>
+      <td>15 PSI</td>
+      <td>10-12 minutes</td>
+      <td>
+        Should hold shape well during cooking. Use in chili and bean salads
+      </td>
+    </tr>
+    <tr>
+      <th>Pinto Beans</th>
+      <td>4 hours</td>
+      <td>15 PSI</td>
+      <td>10-12 minutes</td>
+      <td>Expect them to be mushy when cooked. Used in mexican cuisine.</td>
+    </tr>
+  </tbody>
+</table>
+
+Keep in mind that tables tend to vary. This might be a bit much for a small table, but inadequate for a complex table with colspans or rowspans.

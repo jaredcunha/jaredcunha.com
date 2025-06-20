@@ -1,0 +1,116 @@
+/*
+===========================================
+Colors
+===========================================
+*/
+
+$alabaster: #f1f1f1 !default;
+$oxford-blue: #011936 !default;
+$charcoal: #465362 !default;
+$crayola-red: #ed254e !default;
+$naples-yellow: #f9dc5c !default;
+
+/*
+===========================================
+Breakpoints
+===========================================
+*/
+
+$phone: 320px;
+$phone-lg: 480px;
+$nav: 720px;
+$tablet: 768px;
+$desktop: 1024px;
+$desktop-lg: 1300px;
+$desktop-xl: 1500px;
+
+/*
+===========================================
+Layout Stuffs
+===========================================
+*/
+$grid-columns: 12 !default;
+
+/*
+===========================================
+Base unit
+===========================================
+This grid is based on the 8pt grid which helps us
+ensure consistent horizontal and vertical rhythm.
+We are using pixels rather than relative units to ensure
+consistent spacing in the event that the root font size
+is not equal 10.
+More info: https://spec.fm/specifics/8-pt-grid
+*/
+
+// Base unit
+$base-unit: 8;
+
+// Map for spacing tokens in Rems
+$units: (
+	0: 0,
+	1px: calc(1 / 10),
+	0.25: calc(calc($base-unit * 0.25) / 10),
+	0.5: calc(calc($base-unit * 0.5) / 10),
+	1: calc(calc($base-unit * 1) / 10),
+	1.5: calc(calc($base-unit * 1.5) / 10),
+	2: calc(calc($base-unit * 2) / 10),
+	2.5: calc(calc($base-unit * 2.5) / 10),
+	3: calc(calc($base-unit * 3) / 10),
+	4: calc(calc($base-unit * 4) / 10),
+	5: calc(calc($base-unit * 5) / 10),
+	6: calc(calc($base-unit * 6) / 10),
+	7: calc(calc($base-unit * 7) / 10),
+	8: calc(calc($base-unit * 8) / 10),
+	9: calc(calc($base-unit * 9) / 10),
+	10: calc(calc($base-unit * 10) / 10),
+	15: calc(calc($base-unit * 15) / 10),
+	-1px: - (
+			calc(1 / 10),
+		),
+	-0.25: - (
+			calc(calc($base-unit * 0.25) / 10),
+		),
+	-0.5: - (
+			calc(calc($base-unit * 0.5) / 10),
+		),
+	-1: - (
+			calc(calc($base-unit * 1) / 10),
+		),
+	-1.5: - (
+			calc(calc($base-unit * 1.5) / 10),
+		),
+	-2: - (
+			calc(calc($base-unit * 2) / 10),
+		),
+	-2.5: - (
+			calc(calc($base-unit * 2.5) / 10),
+		),
+	-3: - (
+			calc(calc($base-unit * 3) / 10),
+		),
+	-4: - (
+			calc(calc($base-unit * 4) / 10),
+		),
+	-5: - (
+			calc(calc($base-unit * 5) / 10),
+		),
+	-6: - (
+			calc(calc($base-unit * 6) / 10),
+		),
+	-7: - (
+			calc(calc($base-unit * 7) / 10),
+		),
+	-8: - (
+			calc(calc($base-unit * 8) / 10),
+		),
+	-9: - (
+			calc(calc($base-unit * 9) / 10),
+		),
+	-10: - (
+			calc(calc($base-unit * 10) / 10),
+		),
+	-15: - (
+			calc(calc($base-unit * 15) / 10),
+		),
+);

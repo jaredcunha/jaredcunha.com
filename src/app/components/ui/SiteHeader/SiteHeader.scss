@@ -1,0 +1,125 @@
+@use '../../../styles/sass/sass.scss' as *;
+
+html:has(.nav-open) {
+	overflow: hidden;
+}
+
+body.nav-open {
+	overflow: hidden;
+	max-height: 100vh;
+}
+
+.nav {
+	--logo-color: #{$oxford-blue};
+	--logo-color--alt: #{$charcoal};
+	align-items: center;
+	display: flex;
+	justify-content: space-between;
+	padding: var(--general-padding);
+}
+
+.nav__home-link,
+.nav__home-link:visited {
+	color: var(--logo-color);
+	cursor: pointer;
+	display: block;
+	min-width: 3.2rem;
+	width: 4.5rem;
+
+	svg,
+	svg g {
+		cursor: pointer;
+		display: block;
+		width: 100%;
+	}
+}
+
+.nav__home-link:hover,
+.nav__home-link:focus {
+	color: var(--logo-color--alt);
+}
+
+.nav__logo {
+	cursor: pointer;
+}
+
+.nav__btn {
+	appearance: none;
+	background: transparent;
+	border: 0;
+	cursor: pointer;
+	height: units(5);
+	margin-right: -16px;
+	padding: units(1);
+	width: units(5);
+
+	@media (min-width: $nav) {
+		display: none;
+	}
+
+	svg {
+		display: block;
+		height: 1.5rem;
+		margin: 0 auto;
+		width: 1.5rem;
+	}
+}
+
+.nav__btn--close {
+	margin-left: auto;
+}
+
+.nav__flyout {
+	display: none;
+	@media (min-width: $nav) {
+		display: block;
+	}
+}
+
+.nav__flyout--is-open {
+	background: var(--background);
+	display: block;
+	height: 100vh;
+	left: 0;
+	position: fixed;
+	top: 0;
+	width: 100vw;
+	overflow-y: scroll;
+}
+
+.nav_flyout-actions {
+	display: flex;
+	padding: units(3) units(4);
+	@media (min-width: $nav) {
+		display: none;
+	}
+}
+
+.nav__list {
+	align-items: center;
+	display: flex;
+	list-style: none;
+	flex-direction: column;
+	padding: units(5) 0 0;
+
+	@media (min-width: $nav) {
+		flex-direction: row;
+		padding: 0;
+	}
+}
+
+.nav__link,
+.nav__link:visited {
+	font-size: var(--24px);
+	display: block;
+	padding: units(1) units(2);
+	text-decoration: none;
+
+	@media (min-width: $nav) {
+		font-size: var(--16px);
+	}
+
+	@media (min-width: $desktop) {
+		font-size: var(--20px);
+	}
+}

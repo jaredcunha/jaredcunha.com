@@ -1,0 +1,33 @@
+@use '../../../styles/sass/sass.scss' as *;
+
+.footer {
+	border-top: var(--frame-width) solid var(--frame-color);
+	padding: var(--general-padding);
+}
+
+.footer__wrapper {
+	display: flex;
+}
+
+.footer__col {
+	flex: 1 1 auto;
+	@media (min-width: $tablet) {
+		flex: none;
+		margin-right: units(8);
+	}
+}
+
+.footer__nav-list {
+	list-style: none;
+	padding: 0;
+
+	li {
+		margin-bottom: units(1);
+
+		@media (min-width: $tablet) {
+			display: inline-block;
+			margin-bottom: 0;
+			margin-right: units(2);
+		}
+	}
+}

@@ -1,0 +1,22 @@
+@use 'variables';
+@use 'sass:map';
+
+/// Units Function
+/// Returns the value of a spacing unit from the `$units` map in `rem`.
+///
+/// @param {String} $unit - The key representing the desired spacing unit.
+/// @return {Number} The value of the spacing unit in `rem`.
+/// @throws Error if `$unit` is not a valid key in the `$units` map.
+///
+/// @example
+///   units('md'); // Returns the value for 'md' unit in rem
+@function units($unit) {
+	@if not map.has-key(variables.$units, $unit) {
+		@error '`#{$unit}` is not a valid spacing unit token. '
+      + 'Valid spacing unit tokens: '
+      + '#{map.keys(variables.$units)}';
+	}
+
+	$val: map.get(variables.$units, $unit);
+	@return $val + rem;
+}

@@ -1,0 +1,207 @@
+---
+type: blog
+title: 'Getting the right image handling and writing workflow'
+date: '2023-02-16'
+categories: Development, Gatsby
+excerpt: 'Walking through multiple attempts to achieve sustainable image handling and writing workflow when the simplest option was in front of your face the whole time.'
+slug: 'getting-the-right-image-handling-and-writing-workflow'
+---
+
+I’ve had a number of false starts when trying to get my personal site off the ground. None of the configurations, tools, or technology stacks I’ve used over the years ever felt quite right. What became apparent during my latest endeavor was the importance of having a good workflow—lowering the burden of writing new stuff and, as I’m digging more into photography, working with images.
+
+**TLDR:** Just keep images inside the project. The simplest approach is often the best one.
+
+In the beginning, I was using Wordpress. That’s mainly because there weren’t many other other options at the time. It was 2005, mind you. There was also a huge learning curve to developing locally. I wasn’t much of a coder back then either. Then there was writing, using FCKeditor was never really my thing. And don’t get me started the plugins!
+
+In 2015, I migrated everything over to [Jekyll](https://jekyllrb.com/). No more [MAMP](https://mamp.info), no more PHP, no more developing a custom Wordpress theme. I loved the simplicity and performance of working on a static site generator. I still love it!
+
+I enjoy writing in Markdown, too. But I’d need to write raw HTML if I wanted something not supported in Markdown, which took me out of my mental space for writing content as I attempted to remember how to code up my components.
+
+Images were always a sore point for me. At some point, I wanted to tweak the build process in such a way that went beyond what Jekyll was able to do out of the box and looked to [Grunt](https://gruntjs.com/), and then finally, [Gulp](https://gulpjs.com/). I also started to use a lot more images in my posts. Manually compressing images for the web is tedious, so I found gulp plugin that handled compressing those images.
+
+That is where I ran into my first wall. Essentially, I had two folders of images. One for the unprocessed images and another for the processed images I used for any of my posts. The conundrum was which folder to put under version control. It seem liked the uncompressed folder should be under version control, and the folder with processed images will get added at build time. That made sense. The problem was that the build process became really slow when it came to processing those images.
+
+I punted on deciding what to do about that and migrated to [11ty](https://www.11ty.dev/). 11ty was much faster than Jekyll, and I was a huge fan of no longer needing to deal with ruby versions or a gemfile. But between having to continue to write HTML into my markdown files and dealing with a lagging build process, I lost interest yet again. I mean, I basically just migrated away from Jekyll and put the project back on a shelf.
+
+A couple of years later, I picked my site back up and migrated it yet again, this time to [Gatsby](https://www.gatsbyjs.com/). Why? Mainly because I wanted to have a personal project where I can futz with React since I was using it often at work. That’s partially why I committed more to this effort. The other reason is because of the awfulness of Twitter and its red-pilled CEO, Space Karen, has got me rethinking why it’s in my best to have my own little space on the web.
+
+With this renewed interest, I wanted to address the main reason why my every other effort fell flat: crappy workflow. Migrating to Gatsby forced my hand in ditching the Gulp scripts, which I realize I could have done at any time, but I didn’t. Once that was done, I was also able to run my local development in a single terminal pane instead of two.
+
+## Writing with MDX
+
+As I said, writing raw HTML components in a markdown file is tedious. With Gatsby, I minimized some of that pain by using [MDX](https://mdxjs.com/), which supports JSX components inside of markdown. Even though I’m still putting some code in a big block of content, using JSX components means way less HTML writing, and an improved writing experience. That’s one win!
+
+One thing I learned as I was using MDX is that much of the documentation and `graphql` examples in Gatsby use Remark. Maybe for some, that is obvious, but less so for those us learning 100 new things all at once.
+
+## Adventures in image hosting
+
+Now that Gulp was gone, I needed to think about what I was going to do with all of my images. From my experience processing the images at build time, and its slowness, I wanted to try something different.
+
+### AWS and a custom subdomain
+
+My first attempt at dealing with images was just to get them out of the project altogether and put them in an S3 bucket. It had two significant downsides: 1) separating images from the project, and 2) constant fear of doing something that will cost me $10,000. Regardless, I put those misgivings aside.
+
+Once I set up my S3 bucket, I configured [Serverless Image Handler](https://aws.amazon.com/solutions/implementations/serverless-image-handler/). This tool processes images on the AWS Cloud with the ability to crop, apply filters, resize, and more. What it also did was convert images to [WebP](https://developers.google.com/speed/webp#:~:text=WebP%20is%20a%20modern%20image,in%20size%20compared%20to%20PNGs.), reducing their file size significantly.
+
+I thought that was really cool, except with images on an S3 bucket, I kinda have this ugly URL on my hands. I nitpick some things, and that was one of them. I set up a subdomain of `images.jaredcunha.com` and mapped it to where Serverless Image Handler was sending things, and added an SSL certificate.
+
+How I did I do this? Literally just mashed at stuff until it worked.
+
+And with that running, I was able to have the incredibly fast build process and images I can optimize however I needed. In the `.mdx` files, I could use either markdown syntax or html `<img>` tags.
+
+But then I began reading about `gatsby-plugin-image` and realized how much I can do.
+
+### gatsby-plugin-image
+
+One of the cool things about [gatsby-plugin-image](https://www.gatsbyjs.com/plugins/gatsby-plugin-image/) is how it optimizes images for responsive design. It takes a single image and places them inside a `<picture>` element using `srcset`. It also lazy loads your images using their `dominantColor` as a placeholder, or other options if you prefer. It’s a nicely customizable plugin.
+
+What `gatsby-plugin-image` effectively does is create multiple versions of an image and stores them in your project at build time.
+
+The plugin contains two seemingly identical components with crucial differences:
+
+- `<StaticImage>` can only accept a relative path to image that is plugged into the `src` prop
+- `<GatsbyImage>` can accept either a remote file path or variable that is plugged into the `image` prop.
+
+So this where things seemed like might they be straightforward but quickly grew complicated with using components inside content written with MDX.
+
+#### Using gatsby-plugin-image with MDX
+
+If you wanted to use `<GatsbyImage>` in the middle of your markdown, it won’t work. It works in jsx, but not mdx. That's where I went down a rabbit hole and spent way too many hours reading tutorial after tutorial, and evading success at every turn.
+
+The tutorial that eventually got me on the right path was Paul Scanlon’s [MDX Embedded Images with the All-New Gatsby Image Plugin](https://www.gatsbyjs.com/blog/mdx-embedded-gatsby-image/), but not without some serious changes. I’m not going to do a full tutorial because it’s all moot by the time you’d get to the end of this post.
+
+One change I needed to make was to the `createTypes` in `gatsby-node.js` in the tutorial was hard to follow, so that took me a while to get it right since I needed to get it to match my setup.
+
+The tutorial used something like this:
+
+```jsx
+// mdxPage.jsx
+<MDXProvider>
+  <MDXRenderer
+    remoteImages={embeddedImagesRemote}
+    localImages={embeddedImagesLocal}
+  />
+</MDXProvider>
+```
+
+```md
+---
+title: Remote Images
+embeddedImagesRemote:
+  - https://res.cloudinary.com/paulie.dev/image1.jpg
+  - https://res.cloudinary.com/paulie.dev/image2.jpg
+---
+
+import { getImage, GatsbyImage } from 'gatsby-plugin-image';
+
+## Post Body
+
+Lorem ipsum dolor...
+
+## Remote Images
+
+<GatsbyImage alt="green doggo" image={getImage(props.remoteImages[0])} />
+<GatsbyImage alt="orange doggo" image={getImage(props.remoteImages[1])} />
+```
+
+Now, here's what worked for me. I didn't want to have to import components in the body of every post, as in Paul’s example, so I used also passed them through `<MDXProvider>`'s `components` prop.
+
+```jsx
+const PageTemplate = ({ data, children }) => {
+  const shortcodes = { Link, Image, PhotoGrid, PhotoGridItem }; // Provide common components here
+  ...
+  return (
+    ...
+     <MDXProvider components={shortcodes}>{children}</MDXProvider>
+    ...
+  );
+};
+```
+
+```md
+---
+title: 'Closing out 2022'
+embeddedImagesRemote:
+  - https://images.jaredcunha.com/image1.jpg
+  - https://images.jaredcunha.com/image2.jpg
+---
+
+## Post Body
+
+Lorem ipsum dolor...
+
+## Remote Images
+
+<Image
+  src={props.data.mdx.embeddedImagesRemote[0]}
+  alt=""
+/>
+<Image
+  src={props.data.mdx.embeddedImagesRemote[1]}
+  alt=""
+/>
+```
+
+Have a look at the [full pull request](https://github.com/jaredcunha/jaredcunha.github.io/pull/49/files) if you’re interested, but just keep in mind that I scrapped much of it.
+
+Why did I refactor my working code? AWS. They sent me a notice that there was suspicious activity on my S3 bucket and took out my lambda function. No function, no images. No images, no build. I suspect that it was all my tinkering with the serverless image handler that got their attention because I didn’t see anything in the logs that raised suspicion. But after a conversation with a co-worker convinced me that having an public S3 bucket is less than ideal, I looked at other ways to serve my images.
+
+### ImageKit
+
+ImageKit is a hosting service that has the same image manipulation as Serverless Image Handler. It’s `sharp` if you’re wondering. Images can be hosted directly on ImageKit, or you can set it up to pull from an S3 bucket. I did the latter.
+
+With ImageKit, there were two major downsides. The first was that I was not able to use my custom domain unless I wanted to pay $50/month. The second was that bandwidth seemed like it would get very limited very fast on the free tier.
+
+Because `gatsby-plugin-image` pulls the images into your project, I was using a ton of bandwidth between development and the branch previews generated from each push in Netlify.
+
+That's where it all connected and I realized the best option was in front of me the whole time. Just put the images in the project!
+
+### Using local images
+
+This is what happens when you start going down rabbit holes, you simply cannot see outside your current path. I got so hung up on trying to figure out how wrangle this thing to optimize external images that I no longer thought to consider using local images.
+
+`gatsby-plugin-image` provides all the optimization I needed, `WebP` conversion, crops, resizes, filters, etc. It also imports those external images into my project at build time anyway. I felt really dumb when I realized that all hours I put in previously were all for naught when all the images ended up in a directory in the website anyway.
+
+So with that, I was able to remove the `gatsby-node.js` file completely (for now, at least), which eliminates the additional work updating the `createTypes` with each new frontmatter key. Another workflow win!
+
+The JSX remains the same (edited for brevity):
+
+```jsx
+const PageTemplate = ({ data, children }) => {
+  const shortcodes = { Link, Image, PhotoGrid, PhotoGridItem }; // Provide common components here
+  ...
+  return (
+    ...
+     <MDXProvider components={shortcodes}>{children}</MDXProvider>
+    ...
+  );
+};
+```
+
+And now the markdown is something like this:
+
+```md
+---
+title: 'Closing out 2022'
+postImages:
+  - ../../images/image1.jpg
+  - ../../images/image2.jpg
+---
+
+## Post Body
+
+Lorem ipsum dolor...
+
+## Remote Images
+
+<Image
+  src={props.data.mdx.frontmatter.postImages[0]}
+  alt=""
+/>
+<Image
+  src={props.data.mdx.frontmatter.postImages[1]}
+  alt=""
+/>
+```
+
+Just get the images straight from the frontmatter and `gatsby-plugin-image` does the rest. I’ll admit that I would MUCH rather plug the image path into the props and avoid confusing myself over which index refers to which image. It is a small price to pay for what is now the best workflow I’ve had for writing new content ever.
