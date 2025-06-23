@@ -21,6 +21,7 @@
 
 	// Font sizes
 	--14px: 0.875rem;
+	--15px: 0.9375rem;
 	--16px: 1rem;
 	--18px: 1.125rem;
 	--20px: 1.25rem;
@@ -199,7 +200,7 @@ button,
 	}
 
 	figure {
-		font-size: var(--16px);
+		font-size: var(--14px);
 	}
 
 	> h1 {
@@ -225,6 +226,27 @@ button,
 		line-height: 1.35;
 		font-size: var(--24px);
 		margin-bottom: 0;
+	}
+}
+
+// Syntax highlighting
+[data-highlighted-line] {
+	display: inline-block;
+	background-color: rgba(255, 255, 255, 0.05);
+	width: 100%;
+}
+
+figure[data-rehype-pretty-code-figure] {
+	counter-reset: codeblock-line;
+
+	[data-line-numbers] [data-line] {
+		counter-increment: codeblock-line;
+
+		&::before {
+			color: $charcoal;
+			content: counter(codeblock-line);
+			padding-right: 1rem;
+		}
 	}
 }
 
