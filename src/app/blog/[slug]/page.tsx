@@ -18,6 +18,7 @@ const mdxOptions = {
 					keepBackground: true,
 					defaultLang: 'plaintext',
 					grid: false,
+					bypassInlineCode: false,
 				},
 			],
 		],

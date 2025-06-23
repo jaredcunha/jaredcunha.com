@@ -1,101 +1,111 @@
 @use '../../../styles/sass/sass.scss' as *;
 
 .post {
-	display: grid;
-	grid-template-columns:
-		[full-start] minmax(var(--gap), auto) [wide-start] minmax(auto, 240px)
-		[main-start] min(var(--content-width, 720px), calc(100% - var(--gap) * 2))
-		[main-end] minmax(auto, 240px)
-		[wide-end] minmax(var(--gap), auto) [full-end];
-	margin-bottom: units(5);
+  display: grid;
+  grid-template-columns:
+    [full-start] minmax(var(--gap), auto) [wide-start] minmax(auto, 240px)
+    [main-start] min(var(--content-width, 720px), calc(100% - var(--gap) * 2))
+    [main-end] minmax(auto, 240px)
+    [wide-end] minmax(var(--gap), auto) [full-end];
+  margin-bottom: units(5);
 
-	> p,
-	> ul,
-	> ol,
-	> blockquote,
-	> div,
-	> h1,
-	> h2,
-	> h3,
-	> h4,
-	> h5,
-	> h6,
-	> figure,
-	> table,
-	> hr,
-	> pre,
-	> code {
-		grid-column: 3;
-		max-width: none;
-	}
+  > p,
+  > ul,
+  > ol,
+  > blockquote,
+  > div,
+  > h1,
+  > h2,
+  > h3,
+  > h4,
+  > h5,
+  > h6,
+  > figure,
+  > table,
+  > hr,
+  > pre,
+  > code {
+    grid-column: 3;
+    max-width: none;
+  }
 
-	> hr {
-		border-color: #dfede3;
-		border-style: solid;
-		border-width: 1px;
-		width: 100%;
-	}
+  > p code {
+    border-radius: 4px;
+    font-size: var(--15px);
+    padding: 0.2em 0.4em;
+  }
 
-	> pre {
-		overflow: auto;
-		word-wrap: break-word;
-	}
+  > hr {
+    border-color: #dfede3;
+    border-style: solid;
+    border-width: 1px;
+    width: 100%;
+  }
 
-	> figure {
-		margin-bottom: units(3);
+  > pre {
+    overflow: auto;
+    word-wrap: break-word;
+  }
 
-		img {
-			height: auto;
-			width: 100%;
-		}
-		figcaption {
-			margin-top: units(2);
-		}
-	}
+  > figure {
+    margin-bottom: units(3);
 
-	> .photo-grid__caption,
-	> figure > figcaption {
-		font-size: var(--14px);
-		margin-top: 0;
-		padding-bottom: 1em;
-		border-bottom: 1px solid rgba($charcoal, 0.15);
-		color: $charcoal;
-		text-align: left;
-		@media (min-width: $tablet) {
-			font-size: var(--16px);
-		}
-	}
+    img {
+      height: auto;
+      width: 100%;
+    }
+    figcaption {
+      margin-top: units(2);
+    }
+  }
 
-	> .fullbleed {
-		grid-column: full-start/full-end;
-	}
+  > .photo-grid__caption,
+  > figure > figcaption {
+    font-size: var(--14px);
+    margin-top: 0;
+    padding-bottom: 1em;
+    border-bottom: 1px solid rgba($charcoal, 0.15);
+    color: var(--foreground--muted);
+    text-align: left;
+    @media (prefers-color-scheme: dark) {
+      border-bottom-color: rgba($alabaster, 0.25);
+    }
+    @media (min-width: $tablet) {
+      font-size: var(--16px);
+    }
+  }
 
-	> .wide {
-		grid-column: wide-start/wide-end;
-	}
+  > .fullbleed {
+    grid-column: full-start/full-end;
+  }
 
-	> p div,
-	li div:has(code[class*='language-']) {
-		display: inline;
-	}
+  > .wide {
+    grid-column: wide-start/wide-end;
+  }
 
-	.post__date {
-		color: $charcoal;
-		font-size: var(--16px);
-		margin-top: 0;
-	}
+  > p div,
+  li div:has(code[class*='language-']) {
+    display: inline;
+  }
 
-	figure[data-rehype-pretty-code-figure] {
-		text-align: left;
+  .post__date {
+    color: var(--foreground--muted);
+    font-size: var(--16px);
+    margin-top: 0;
+  }
 
-		pre {
-			border-radius: 8px;
-			overflow-x: auto;
-			padding: 2rem 0;
-		}
+  figure[data-rehype-pretty-code-figure] {
+    text-align: left;
 
-		pre [data-line] {
-			padding: 0 2rem;
-		}
-	}
+    pre {
+      border-radius: 8px;
+      overflow-x: auto;
+      padding: 2rem 0;
+    }
+
+    pre [data-line] {
+      text-wrap: break-word;
+      padding: 0 2rem;
+    }
+  }
 }

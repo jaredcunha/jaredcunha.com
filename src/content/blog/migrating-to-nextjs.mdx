@@ -1,0 +1,266 @@
+---
+type: blog
+title: Migrating to NextJS
+date: '2025-06-22'
+excerpt: 'How I migrated my website from Gatsby to NextJS, and other changes I made along the way.'
+slug: 'migrating-to-nextjs'
+---
+
+Over the past couple of years, I’ve found myself hopping through several different frameworks for my blog, only to run into _something_ that zapped my motivation to keep it going. With Jekyll, it was Ruby. Eleventy was actually great, but I wanted to tinker a little more with using a stack that was closer to my daily work. My Gatsby site felt over-engineered for what I wanted to do… its dependency requirements seemed excessive and image handling was overwrought. [NextJS](https://nextjs.org/) just does so much of what I wanted out of the box, so it seemed like an easy choice.
+
+Another factor is that I actually do want to write more, and it can be difficult to find the time to do it after I’ve wrapped up my day and need to focus on taking care of the house or making dinner. So any unnecessary overhead, perceived or actual, is going to end up becoming a blocker for me. That’s just how it is.
+
+My website isn’t overly complex, but I did want to ensure that I had some nice layout options and the ability to create both blog posts and photo essays.
+
+## The primary stack
+
+Aside from migrating to NextJS, I didn’t make too many significant changes to my stack.
+
+- All posts are still written in [MDX](https://mdxjs.com/). This was important to me because I don’t feel like futzing with more platforms, particularly if I have to migrate things again down the road. I want to host all my own stuff in my own repository.
+- I moved syntax highlighting from Prism to [Shiki](https://shiki.style/) via [Rehype Pretty Code](https://rehype-pretty.pages.dev/).
+- My previous CSS setup was way over-engineered. I significantly reduced the number of Sass features and color palette maps that I’d never use in favor of more native CSS. I’m still using Sass, but much more sparingly.
+- Added TypeScript, which I wasn’t previously using
+
+I think what I’m most excited about is no longer needing to use frontmatter to serve optimized images. In my old site, I had to create an array of images, and then use the array index to serve that image in my MDX component [example](https://raw.githubusercontent.com/jaredcunha/jaredcunha.github.io/refs/heads/main/src/content/photos/ireland-2023.mdx). It was very easy to lose track of what images were what.
+
+```jsx {9-13, 19, 25, 31} showLineNumbers caption="This became more tedious with each photo I added."
+---
+type: 'photos'
+title: 'Ireland 2023'
+date: '2023-02-03'
+excerpt: 'Photos from my trip to Ireland'
+slug: 'ireland-2023'
+coverImage: '../../images/ireland-2023/homes.jpg'
+coverImageAltText: ''
+postImages:
+  - ../../images/ireland-2023/dublin-street0.jpg
+  - ../../images/ireland-2023/dublin-street1.jpg
+  - ../../images/ireland-2023/dublin-street2.jpg
+    ...
+---
+
+<PhotoGrid>
+  <PhotoGridItem cols={12}>
+    <Image
+      src={props.data.mdx.frontmatter.postImages[0]}
+      alt=""
+    />
+  </PhotoGridItem>
+  <PhotoGridItem cols={6}>
+    <Image
+      src={props.data.mdx.frontmatter.postImages[1]}
+      alt=""
+    />
+  </PhotoGridItem>
+  <PhotoGridItem cols={6}>
+    <Image
+      src={props.data.mdx.frontmatter.postImages[2]}
+      alt=""
+    />
+  </PhotoGridItem>
+</PhotoGrid>
+```
+
+Now, I no longer need the `postImages` array and I can simply write the image path directly into the `src` like a normal person.
+
+```jsx {14, 20, 26} showLineNumbers caption="Much better! Now I can see specifically what photo I have placed."
+---
+type: 'photos'
+title: 'Ireland 2023'
+date: '2023-02-03'
+excerpt: 'Photos from my trip to Ireland'
+slug: 'ireland-2023'
+coverImage: '../../images/ireland-2023/homes.jpg'
+coverImageAltText: ''
+---
+
+<PhotoGrid>
+  <PhotoGridItem cols={12}>
+    <Image
+      src="/images/ireland-2023/dublin-street0.jpg"
+      alt=""
+    />
+  </PhotoGridItem>
+  <PhotoGridItem cols={6}>
+    <Image
+      src="/images/ireland-2023/dublin-street1.jpg"
+      alt=""
+    />
+  </PhotoGridItem>
+  <PhotoGridItem cols={6}>
+    <Image
+      src="/images/ireland-2023/dublin-street2.jpg"
+      alt=""
+    />
+  </PhotoGridItem>
+</PhotoGrid>
+```
+
+I have so many photos from the past year and a half or so that I want to catalog here on my site. This is going to reduce a significant burden.
+
+## Design
+
+I didn’t make significant changes to the design, but moving more from Sass into CSS variables made it possible to support dark mode with just a few lines.
+
+<PhotoGrid caption="Home page in both light and dark mode.">
+  <PhotoGridItem cols={6}>
+    <Image
+      src="/images/next-light.png"
+      alt="Homepage of jaredcunha.com in light mode"
+    />
+  </PhotoGridItem>
+  <PhotoGridItem cols={6}>
+    <Image
+      src="/images/next-dark.png"
+      alt="Homepage of jaredcunha.com in dark mode"
+    />
+  </PhotoGridItem>
+</PhotoGrid>
+
+Some other changes include updates to typography—I’m using Google Fonts ([Raleway](https://fonts.google.com/specimen/Raleway) and [Noto Serif](https://fonts.google.com/noto/specimen/Noto+Serif?query=Noto+serif)) instead of hosting the fonts directly.
+
+For the color palette, I’ve moved away from earthy tones towards bolder blues and reds for impact. While I liked the palette, I don’t think that it ended up being a reflection of myself.
+
+I plan to iterate on the design a bit more in the coming days and weeks as I begin more of the fine-tuning work. And I think that I’ll actually get around to that this time because working with NextJS is such a better experience!
+
+## App router vs pages router
+
+One thing I waffled back and forth on a bit was whether or not I should use NextJS’s App Router or the Pages Router. The Pages Router isn’t as complex, which normally would be the driving factor for me. But, I wanted to have more flexibility should I need it down the road, or if I want to play with some of its more modern features.
+
+## Accessibility
+
+Because this site works like a single page application, handling navigation requires a bit more consideration, particularly deliberate focus management. Clicking an internal link doesn’t fully load a new page. It only loads the parts that change—which is typically just the middle section.
+
+Take using the main navigation. Visually, there really isn’t anything to notice or negative impact on the user experience. For screen readers, though, focus remains on the navigation link since we aren’t loading an entire new page. So, there’s no feedback that navigation occurred.
+
+To address this, I created an `AccessibleLink` component that, when clicked, adds a `tabindex="-1"` to the `<h1>` of the next page, and then sets focus to that heading. Then, conveniently, it removes that attribute on `blur()` since it’s no longer necessary.
+
+```tsx
+// Link.tsx
+'use client';
+
+import NextLink from 'next/link';
+import { usePathname } from 'next/navigation';
+import { useEffect, useRef } from 'react';
+
+interface AccessibleLinkProps {
+  href: string;
+  children: React.ReactNode;
+  className?: string;
+  'aria-label'?: string;
+  [key: string]: unknown;
+}
+
+export function AccessibleLink({
+  href,
+  children,
+  className,
+  'aria-label': ariaLabel,
+  ...props
+}: AccessibleLinkProps) {
+  const pathname = usePathname();
+  const previousPathnameRef = useRef(pathname);
+
+  useEffect(() => {
+    // If pathname changed, focus on h1
+    if (previousPathnameRef.current !== pathname) {
+      setTimeout(() => {
+        const h1 = document.querySelector('h1');
+        if (h1) {
+          h1.setAttribute('tabindex', '-1');
+          h1.focus();
+          // Remove tabindex after focus to prevent future tab stops
+          h1.addEventListener(
+            'blur',
+            () => {
+              h1.removeAttribute('tabindex');
+            },
+            { once: true }
+          );
+        }
+      }, 100);
+    }
+    previousPathnameRef.current = pathname;
+  }, [pathname]);
+
+  return (
+    <NextLink
+      href={href}
+      className={className}
+      aria-label={ariaLabel}
+      {...props}
+    >
+      {children}
+    </NextLink>
+  );
+}
+```
+
+On smaller screen sizes, I am using a hamburger menu that, when opened, takes over the screen. So the focus indicator doesn’t leave the menu and disappear while using keyboard navigation, I am using [focus-trap-react](https://www.npmjs.com/package/focus-trap-react) and using the [inert attribute](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Global_attributes/inert) on all other content to prevent screen readers from accessing it.
+
+## GitHub Copilot
+
+While this project is primarily a way for me to jump into NextJS, I am also trying to learn how to work with GitHub Copilot, and AI and LLMs in general. I’m not currently able to use these tools on my main project, so putting them to use on a personal project is a good substitute.
+
+My experience was mostly positive. It took me a few rounds—sometimes many—to get workable code, but in the end, using Copilot in VSCode likely saved me hours of work had I done everything on my own. I think the times that were frustrating I could attribute to going through the learning curve. Copilot has a bit of a learning curve, but nothing insurmountable.
+
+What I found most helpful was coming up with the pre-work in Claude to learn exactly how to prompt my way through the migration. This helped get all the important considerations laid out up front and work through smaller, individual tasks. Being new to Copilot, I experienced some trial and error to get to what _small_ means. Here’s what I experienced along the way.
+
+### What didn’t work
+
+Migrating both the blog and photo essays simultaneously never produced anything that really worked. I was using the Ask feature, which might have had something to do with it. I nuked my code several times, but suggestions kept getting worse and worse until it was generating straight trash.
+
+Breaking the work down by starting in either the blog or the photos section didn’t produce good results either. The way I got around it was by migrating specific post pages, followed by the index pages. The code was still broken, but it was broken and fixable, which was more than what other attempts were getting me. So the process kinda went something like this:
+
+1. Migrate the photo post page, then migrate the blog post. I had to include instructions about using MDX and the components that I had already built, such as `PhotoGrid`.
+2. Migrate the index pages, starting only with the photo index. Then separately migrate the blog index.
+3. This generated a ton of extraneous, duplicate code, so I prompted my way through cleaning it up.
+4. Then I generated more reusable bits to create lists of posts on the index page, this time a specific number.
+
+Once I got the post pages migrated, the rest of that process went pretty smoothly.
+
+Another task that became irksome was getting the syntax highlighting up and running. I followed the examples on the Rehype Pretty Code site, but no luck. Ran into the same issue with the Ask feature in Copilot. That’s when I tried using Agent mode, which not only worked, but was much simpler than what I was previously attempting.
+
+### What went well
+
+Overall, using Copilot’s Agent mode was much better than the Ask feature. I used Copilot to generate the `AccessibleLink` component I mentioned earlier. Copilot wrote the component, replaced all my `next/link` `Link` instances, and then ran the application to test. The only thing I did on my own was remove the focus indicator styling because it was distracting.
+
+Another area where Copilot was helpful was adding suggestions for `rem` calculations in my CSS variables that are named to reflect pixel sizes. I would type the name of the variable and Copilot would provide the value as a suggestion that I can accept by pressing the tab key.
+
+```scss
+// Font sizes
+--14px: 0.875rem;
+--15px: 0.9375rem;
+--16px: 1rem;
+--18px: 1.125rem;
+--20px: 1.25rem;
+--24px: 1.5rem;
+--28px: 1.75rem;
+--32px: 2rem;
+--36px: 2.25rem;
+--48px: 3rem;
+--64px: 4rem;
+--80px: 5rem;
+```
+
+I used Claude to refactor my `.mdx` files to rewrite the `src` props with the corresponding image in the array index. This would have been tedious as hell to do manually and I’m not sure that would have been an easy find and replace.
+
+Finally, I also used Copilot to set up the metadata for my pages. I think this still requires some refinement, but I’ll get to it.
+
+All in all, Copilot was pretty useful towards getting things where they are now. I had some very specific things that I wanted to do and wrote prompts accordingly. Most of those things were the more boring parts of this project. I’m going to continue using it as a tool and learning more about where it works well and, more importantly, where it doesn’t.
+
+## More to go
+
+Like every other iteration of my personal site, it seems I never get more than 80% of the way done. Some pages get neglected indefinitely, others get tweaked endlessly at everything else’s expense. That all being said, I’m much happier with this setup than I’ve been with every other setup I’ve had in the past.
+
+There’s plenty of work left to do. Some things I’m thinking about down the road:
+
+- Need to add tests
+- Set up GitHub actions
+- Search
+- Light/Dark toggle
+- Large photo viewer for photo posts
+- Category filtering
+- Navigation to previous/next posts
+
+Baby steps though.
