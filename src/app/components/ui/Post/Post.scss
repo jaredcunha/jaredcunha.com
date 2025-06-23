@@ -65,8 +65,11 @@
     margin-top: 0;
     padding-bottom: 1em;
     border-bottom: 1px solid rgba($charcoal, 0.15);
-    color: $charcoal;
+    color: var(--foreground--muted);
     text-align: left;
+    @media (prefers-color-scheme: dark) {
+      border-bottom-color: rgba($alabaster, 0.25);
+    }
     @media (min-width: $tablet) {
       font-size: var(--16px);
     }
@@ -86,7 +89,7 @@
   }
 
   .post__date {
-    color: $charcoal;
+    color: var(--foreground--muted);
     font-size: var(--16px);
     margin-top: 0;
   }
