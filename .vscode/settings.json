@@ -1,5 +1,5 @@
 {
-	"typescript.tsdk": "node_modules/typescript/lib",
-	"cSpell.words": ["Mirna", "WPML", "Yoast"],
-	"editor.insertSpaces": true
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "cSpell.words": ["Mirna", "WPML", "Yoast"],
+  "editor.insertSpaces": true
 }

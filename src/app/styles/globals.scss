@@ -200,6 +200,13 @@ button,
     max-width: 66ch;
   }
 
+  .intro {
+    font-family: var(--font-noto-serif);
+    font-size: var(--24px);
+    font-style: italic;
+    margin-bottom: 0;
+  }
+
   figure {
     font-size: var(--14px);
   }
