@@ -1,6 +1,6 @@
-import Image from 'next/image';
 import { PhotoGrid, PhotoGridItem } from './ui/PhotoGrid/PhotoGrid';
 import Intro from './Intro';
+import BlurImage from './ui/BlurImage/BlurImage';
 
 export const mdxComponents = {
   PhotoGrid,
@@ -18,28 +18,5 @@ export const mdxComponents = {
     }
     return <Intro {...props} />;
   },
-  Image: ({
-    src,
-    alt,
-    caption,
-  }: {
-    src: string;
-    alt: string;
-    caption?: string;
-  }) => (
-    <figure>
-      <Image
-        src={src}
-        alt={alt}
-        sizes="100vw"
-        width={500}
-        height={500}
-        className="mdx-image"
-        loading="lazy"
-        placeholder="blur"
-        blurDataURL={src}
-      />
-      {caption && <figcaption>{caption}</figcaption>}
-    </figure>
-  ),
+  Image: BlurImage,
 };
