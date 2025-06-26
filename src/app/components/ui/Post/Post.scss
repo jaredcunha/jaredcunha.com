@@ -29,7 +29,9 @@
     max-width: none;
   }
 
-  > p code {
+  > p code,
+  > ul li code,
+  > ol li code {
     border-radius: 4px;
     font-size: var(--15px);
     padding: 0.2em 0.4em;
