@@ -200,6 +200,18 @@ button,
     max-width: 66ch;
   }
 
+  blockquote {
+    border-left: 4px solid $naples-yellow;
+    color: var(--foreground--muted);
+    font-family: var(--font-noto-serif);
+    font-style: italic;
+    padding-left: units(2);
+    margin: 2em 0;
+    p:last-child {
+      margin-bottom: 0;
+    }
+  }
+
   .intro {
     font-family: var(--font-noto-serif);
     font-size: var(--24px);
@@ -246,6 +258,13 @@ button,
 
 figure[data-rehype-pretty-code-figure] {
   counter-reset: codeblock-line;
+
+  [data-language='prompt'] {
+    white-space: unset;
+    [data-line] {
+      display: block;
+    }
+  }
 
   [data-line-numbers] [data-line] {
     counter-increment: codeblock-line;
