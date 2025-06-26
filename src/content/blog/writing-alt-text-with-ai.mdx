@@ -12,7 +12,7 @@ categories: ['Accessibility', 'AI']
   right prompting.
 </Intro>
 
-Writing `alt` text for images to make them accessible to screen readers can often feel like a chore, especially when dealing with a large number of visuals to describe. Unlike other writing tasks, alt text demands a unique, description for each image with attention to content and context. This process can feel repetitive or time-consuming, as if it is something additional to the task at hand. Unfortunately, it’s all too easy to put off because it’s not part of the sighted experience. Yet, it plays an essential role in making digital content accessible.
+Writing `alt` text for images to make them accessible to screen readers can often feel like a chore, especially when dealing with a large number of visuals to describe. Unlike other writing tasks, alt text demands a unique description for each image with attention to content and context. This process can feel repetitive or time-consuming, as if it is something additional to the task at hand. Unfortunately, it’s all too easy to put off because it’s not part of the sighted experience. Yet, it plays an essential role in making digital content accessible.
 
 Full disclosure: I am guilty of writing horrible alternative text like this for the image below, either out of expediency or pure laziness.
 
@@ -33,7 +33,7 @@ Full disclosure: I am guilty of writing horrible alternative text like this for 
   caption="Main hall of Union Station in Washington, D.C."
 />
 
-Commit this image to memory because we’re going to use it for the rest of this post. We’re going try several iterations of our prompt and see what we get back. Each prompt and subsequent response is copied and pasted verbatim. For my LLM, I am using Claude Sonnet 4.
+Commit this image to memory because we’re going to use it for the rest of this post. We’re going to try several iterations of our prompt and see what we get back. Each prompt and subsequent response is copied and pasted verbatim. For my LLM, I am using Claude Sonnet 4.
 
 First, let's start with a terrible prompt.
 
@@ -55,7 +55,7 @@ The response:
 
 > Union Station Washington D.C. main hall interior showing a grand barrel-vaulted ceiling with hundreds of octagonal golden coffers in geometric patterns, classical arched architecture with columns, polished checkered marble floor reflecting overhead lighting, and people walking through the spacious terminal area with modern digital displays visible along the walls.
 
-Indicating that the text will be used for `alt` text immediately improves the result. It might seem a little verbose. Maybe that’s what you. But if not, we can make the text more concise with this updated prompt:
+Indicating that the text will be used for `alt` text immediately improves the result. It might seem a little verbose. Maybe that’s what you want. But if not, we can make the text more concise with this updated prompt:
 
 ```prompt
 Write alt text for this. Be as concise as possible.
@@ -65,7 +65,7 @@ And that gives us:
 
 > Grand interior of Union Station Washington D.C. with ornate coffered ceiling, classical arches, marble floors, and travelers in the main hall.
 
-So, if we state that we need `alt` text, and that it also needs to be concise produces remarkable results. But does this text best serve our users? Does this text convey the same information as the visual? While the response is descriptive, it’s generic. Images don’t exist in a vacuum. They are part of larger context, and it’t important to communicate how it all fits together.
+Stating that we need alt text and that it also needs to be concise produces remarkable results. But does this text best serve our users? Does this text convey the same information as the visual? While the response is descriptive, it’s generic. Images don’t exist in a vacuum. They are part of a larger context, and it’s important to communicate how it all fits together.
 
 If the image is displayed as part of an article about the station’s renovation, we can write our prompt to emphasize those details while ensuring that the description is still concise. In this case, we want to cap the text at two sentences.
 
@@ -81,7 +81,7 @@ For the most part, I think that’s pretty good. I might edit this slightly, mai
 
 > Union Station's main hall after renovation showcasing the restored coffered ceiling with hundreds of golden rosettes and refinished marble floors, showcasing the station’s preserved 1907 Beaux-Arts architecture.
 
-Or let’s try another context. Say this picture was taken during the pandemic and appeared in an article about declining ridership through Union Station, we might want to focus on how empty the station appears.
+Or let’s try another context. Let’s say this picture was taken during the pandemic and appeared in an article about declining ridership through Union Station, we might want to focus on how empty the station appears.
 
 ```prompt
 Write alt text for this image. This image appears in an article describing Union Station's declining ridership, emphasize the lack of people.
@@ -91,11 +91,11 @@ The result:
 
 > Union Station’s grand main hall with ornate coffered ceiling and marble floors shows sparse foot traffic, with only a few travelers scattered across the vast space. The nearly empty terminal reflects the station’s declining ridership despite its restored architectural grandeur.
 
-That’s a good text! Images tell a story after all, and this description strongly conveys all the details that I, as a Washingtonian, would notice: the architectural beauty contrasted by its emptiness. And that exactly how the visual would be used in a such depressing context (thankfully, Union Station appears to be amidst a resurgence).
+That’s a good description! Images tell a story after all, and this description strongly conveys all the details that I, as a Washingtonian, would notice: the architectural beauty contrasted with its emptiness. And that’s exactly how the visual would be used in such a depressing context (thankfully, Union Station appears to be amidst a resurgence).
 
 ## Let’s wrap things up
 
-I have been exploring ways to use LLMs to improve accessibility for web design and development, and I think that one really strong use case is for writing alternative text. It’s far more descriptive than what I would have written without it. As for level of effort, I’m spending much less time writing a prompt and tweaking the response.
+I have been exploring ways to use LLMs to improve accessibility for web design and development, and I think that one really strong use case is for writing alternative text. It’s far more descriptive than what I would have written without it. As for the level of effort, I’m spending much less time writing a prompt and tweaking the response.
 
 As far as prompting goes, I’ve found the greatest success when I include:
 
@@ -108,4 +108,4 @@ Since these prompts might be similar in length to the response, and usually stil
 
 A huge time-saver is if you’re working with a large set of images. You can write the prompt only once and then say you want the same applied to each image you upload.
 
-If you’re still skeptical, try comparing `alt` text that you’ve written yourself against what an LLM provides and see which approach yields better results. In the end, these are tools. If you don’t like the tool, there’s no reason to use.
+If you’re still skeptical, try comparing `alt` text that you’ve written yourself against what an LLM provides and see which approach yields better results. In the end, these are only tools.
