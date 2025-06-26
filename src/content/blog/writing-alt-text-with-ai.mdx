@@ -93,6 +93,22 @@ The result:
 
 That’s a good description! Images tell a story after all, and this description strongly conveys all the details that I, as a Washingtonian, would notice: the architectural beauty contrasted with its emptiness. And that’s exactly how the visual would be used in such a depressing context (thankfully, Union Station appears to be amidst a resurgence).
 
+## Are these AI-generated descriptions actually better?
+
+It really depends on what you are trying to communicate and how your imagery fits into the narrative. Let’s take the examples we’ve written and put them into context as part of an article about Union Station’s ridership decline during the pandemic. I’ll write this as if it where it were being read with VoiceOver, with image descriptions in bold text.
+
+First, let’s try one of our manually-written examples.
+
+> Union Station's ridership plummeted during COVID-19, with Amtrak and Metro station ridership down 95% and 97% from 2019. The dramatic passenger loss left most storefronts closed and transformed the bustling hub into a nearly empty space.<br /><br />**Main hall of Union Station in Washington, D.C., image** <br /><br />While Amtrak ridership has recovered to near pre-pandemic levels, commuter and Metro trains serving the station are at 30 to 60 percent occupancy compared to pre-pandemic levels. This persistent decline has left vacant storefronts and fundamentally changed the station's atmosphere.
+
+Now, we’ll use the same article but with our `alt` text written by Claude.
+
+> Union Station's ridership plummeted during COVID-19, with Amtrak and Metro station ridership down 95% and 97% from 2019. The dramatic passenger loss left most storefronts closed and transformed the bustling hub into a nearly empty space.<br /><br />**Union Station’s grand main hall with ornate coffered ceiling and marble floors shows sparse foot traffic, with only a few travelers scattered across the vast space. The nearly empty terminal reflects the station’s declining ridership despite its restored architectural grandeur., image** <br /><br />While Amtrak ridership has recovered to near pre-pandemic levels, commuter and Metro trains serving the station are at 30 to 60 percent occupancy compared to pre-pandemic levels. This persistent decline has left vacant storefronts and fundamentally changed the station's atmosphere.
+
+Which option do you think is better? Neither of them are wrong, but they are different. In the first example, I purposefully left out a detail that the station is empty, because that might be something we overlook when writing alt text manually. The second example is much more verbose. We can split the difference and amend the first example to say "Empty main hall of Union Station in Washington, D.C.," and that would work. But what if the article was a love letter to Union Station, written out of deep concern that something cherished could be lost? In the second example, we get a much better sense of why the image was chosen.
+
+Our `alt` text should be conveying the same story we are telling through visual means.
+
 ## Let’s wrap things up
 
 I have been exploring ways to use LLMs to improve accessibility for web design and development, and I think that one really strong use case is for writing alternative text. It’s far more descriptive than what I would have written without it. As for the level of effort, I’m spending much less time writing a prompt and tweaking the response.
@@ -108,4 +124,4 @@ Since these prompts might be similar in length to the response, and usually stil
 
 A huge time-saver is if you’re working with a large set of images. You can write the prompt only once and then say you want the same applied to each image you upload.
 
-If you’re still skeptical, try comparing `alt` text that you’ve written yourself against what an LLM provides and see which approach yields better results. In the end, these are only tools.
+If you’re still skeptical, try comparing `alt` text that you’ve written yourself against what an LLM provides and see which approach yields better results. In the end, these are only tools. We can even remove LLMs from this article entirely and make it a discussion on what is effective `alt` text. We could very well write the same text without using LLMs, but would we actually put in the effort to do it?
