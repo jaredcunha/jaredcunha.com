@@ -1,0 +1,111 @@
+---
+type: blog
+title: Writing alt text with AI
+date: '2025-06-25'
+excerpt: 'LLMs can lower the burden of writing useful alt text for images, with the right prompting.'
+slug: 'writing-alt-text-with-ai'
+categories: ['Accessibility', 'AI']
+---
+
+<Intro>
+  LLMs can lower the burden of writing useful alt text for images, with the
+  right prompting.
+</Intro>
+
+Writing `alt` text for images to make them accessible to screen readers can often feel like a chore, especially when dealing with a large number of visuals to describe. Unlike other writing tasks, alt text demands a unique description for each image with attention to content and context. This process can feel repetitive or time-consuming, as if it is something additional to the task at hand. Unfortunately, it’s all too easy to put off because it’s not part of the sighted experience. Yet, it plays an essential role in making digital content accessible.
+
+Full disclosure: I am guilty of writing horrible alternative text like this for the image below, either out of expediency or pure laziness.
+
+```html
+// This is bad, by the way. Don't do it.
+<img src="/images/union-station.jpg" alt="train station" />
+
+// Okay, what if we did a little more effort?
+<img
+  src="/images/union-station.jpg"
+  alt="Main hall of Union Station in Washington, D.C."
+/>
+```
+
+<Image
+  src="/images/union-station.jpg"
+  alt="The grand interior hall of Union Station in Washington, D.C., with soaring barrel-vaulted ceilings decorated with golden coffers and ornate plasterwork, featuring classical architecture with arched openings and marble floors."
+  caption="Main hall of Union Station in Washington, D.C."
+/>
+
+Commit this image to memory because we’re going to use it for the rest of this post. We’re going to try several iterations of our prompt and see what we get back. Each prompt and subsequent response is copied and pasted verbatim. For my LLM, I am using Claude Sonnet 4.
+
+First, let's start with a terrible prompt.
+
+```prompt
+describe this image
+```
+
+The response:
+
+> This image shows the magnificent main hall of Union Station in Washington, D.C. The photograph captures the building's stunning Beaux-Arts architecture, featuring a soaring barrel-vaulted ceiling adorned with an intricate coffered pattern. The ceiling is decorated with hundreds of octagonal coffers, each containing a golden rosette that creates a mesmerizing geometric pattern stretching across the vast space. <br /><br />The hall is characterized by its grand scale and classical proportions, with massive arched openings and columns supporting the structure. The floor is paved with polished marble or stone tiles in a checkerboard pattern that reflects the warm lighting from above. People can be seen moving through the space, appearing quite small in comparison to the monumental architecture, which emphasizes the building's impressive scale.<br /><br />The color palette is predominantly warm and neutral, with cream and beige tones dominating the stonework and ceiling, accented by the golden details in the coffers. Modern elements like digital displays and contemporary signage blend with the historic architecture, reflecting the station's continued use as a major transportation hub.<br /><br />This is one of America's most beautiful train stations, completed in 1907 and designed by architect Daniel Burnham. The space successfully balances its historical grandeur with its practical function as a busy transit center serving the nation's capital.
+
+Hoo boy! That’s not `alt` text at all, that’s almost an essay. It’s educational, yeah, but beyond overkill. What if we try to whittle this down a little bit by specifying that we need `alt` text?
+
+```prompt
+Write alt text for this image
+```
+
+The response:
+
+> Union Station Washington D.C. main hall interior showing a grand barrel-vaulted ceiling with hundreds of octagonal golden coffers in geometric patterns, classical arched architecture with columns, polished checkered marble floor reflecting overhead lighting, and people walking through the spacious terminal area with modern digital displays visible along the walls.
+
+Indicating that the text will be used for `alt` text immediately improves the result. It might seem a little verbose. Maybe that’s what you want. But if not, we can make the text more concise with this updated prompt:
+
+```prompt
+Write alt text for this. Be as concise as possible.
+```
+
+And that gives us:
+
+> Grand interior of Union Station Washington D.C. with ornate coffered ceiling, classical arches, marble floors, and travelers in the main hall.
+
+Stating that we need alt text and that it also needs to be concise produces remarkable results. But does this text best serve our users? Does this text convey the same information as the visual? While the response is descriptive, it’s generic. Images don’t exist in a vacuum. They are part of a larger context, and it’s important to communicate how it all fits together.
+
+If the image is displayed as part of an article about the station’s renovation, we can write our prompt to emphasize those details while ensuring that the description is still concise. In this case, we want to cap the text at two sentences.
+
+```prompt
+Write alt text for this image. This image appears in an article describing Union Station's renovation, so emphasize that work. Keep the description to two sentences.
+```
+
+The result:
+
+> Union Station's main hall after renovation showcasing the restored coffered ceiling with hundreds of golden rosettes and refinished marble floors. The renovation preserved the station’s 1907 Beaux-Arts architecture while modernizing the historic transportation hub.
+
+For the most part, I think that’s pretty good. I might edit this slightly, mainly because the last sentence starts getting a little beyond what the image is depicting. So I might tidy it up with:
+
+> Union Station's main hall after renovation showcasing the restored coffered ceiling with hundreds of golden rosettes and refinished marble floors, showcasing the station’s preserved 1907 Beaux-Arts architecture.
+
+Or let’s try another context. Let’s say this picture was taken during the pandemic and appeared in an article about declining ridership through Union Station, we might want to focus on how empty the station appears.
+
+```prompt
+Write alt text for this image. This image appears in an article describing Union Station's declining ridership, emphasize the lack of people.
+```
+
+The result:
+
+> Union Station’s grand main hall with ornate coffered ceiling and marble floors shows sparse foot traffic, with only a few travelers scattered across the vast space. The nearly empty terminal reflects the station’s declining ridership despite its restored architectural grandeur.
+
+That’s a good description! Images tell a story after all, and this description strongly conveys all the details that I, as a Washingtonian, would notice: the architectural beauty contrasted with its emptiness. And that’s exactly how the visual would be used in such a depressing context (thankfully, Union Station appears to be amidst a resurgence).
+
+## Let’s wrap things up
+
+I have been exploring ways to use LLMs to improve accessibility for web design and development, and I think that one really strong use case is for writing alternative text. It’s far more descriptive than what I would have written without it. As for the level of effort, I’m spending much less time writing a prompt and tweaking the response.
+
+As far as prompting goes, I’ve found the greatest success when I include:
+
+- A statement that you need `alt` text
+- Context where the image appears
+- Something to emphasize
+- How long the text should be
+
+Since these prompts might be similar in length to the response, and usually still require some tweaking, it’s reasonable to ask why even bring an LLM into this? Because it’s not about keystrokes. Writing a prompt requires much less mental effort than manually writing alternative text from scratch, which could also take you out of your flow.
+
+A huge time-saver is if you’re working with a large set of images. You can write the prompt only once and then say you want the same applied to each image you upload.
+
+If you’re still skeptical, try comparing `alt` text that you’ve written yourself against what an LLM provides and see which approach yields better results. In the end, these are only tools.
