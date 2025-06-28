@@ -94,6 +94,12 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <head>
+        <link
+          rel="alternate"
+          type="application/rss+xml"
+          title="Jared Cunha RSS Feed"
+          href="/rss.xml"
+        />
         <Script
           src="https://scripts.withcabin.com/hello.js"
           strategy="afterInteractive"
