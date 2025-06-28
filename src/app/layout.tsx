@@ -98,7 +98,7 @@ export default async function RootLayout({
           rel="alternate"
           type="application/rss+xml"
           title="Jared Cunha RSS Feed"
-          href="/api/rss.xml"
+          href="/rss.xml"
         />
         <Script
           src="https://scripts.withcabin.com/hello.js"

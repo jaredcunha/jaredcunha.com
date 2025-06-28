@@ -51,7 +51,7 @@ export async function GET() {
     const feed = new RSS({
       title: 'Jared Cunha',
       description: 'Blog posts and photo essays by Jared Cunha',
-      feed_url: `${baseUrl}/api/rss.xml`,
+      feed_url: `${baseUrl}/rss.xml`,
       site_url: baseUrl,
       image_url: `${baseUrl}/images/_ui/logo.png`,
       managingEditor: 'Jared Cunha',
