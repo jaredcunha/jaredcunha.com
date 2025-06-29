@@ -19,8 +19,6 @@ export function PostNavigation({ previous, next, type }: PostNavigationProps) {
     return null;
   }
 
-  const typeLabel = type === 'blog' ? 'post' : 'photo essay';
-
   return (
     <nav className="post-navigation" aria-label="Previous and next posts">
       <div className="post-navigation__links">
