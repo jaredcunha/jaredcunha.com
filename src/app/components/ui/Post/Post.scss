@@ -24,7 +24,8 @@
   > table,
   > hr,
   > pre,
-  > code {
+  > code,
+  .post-navigation {
     grid-column: 3;
     max-width: none;
   }
@@ -49,18 +50,6 @@
     word-wrap: break-word;
   }
 
-  > figure {
-    margin-bottom: units(3);
-
-    img {
-      height: auto;
-      width: 100%;
-    }
-    figcaption {
-      margin-top: units(2);
-    }
-  }
-
   > .photo-grid__caption,
   > figure > figcaption {
     font-size: var(--14px);
@@ -75,6 +64,20 @@
     @media (min-width: $tablet) {
       font-size: var(--16px);
     }
+  }
+
+  > figure {
+    img {
+      height: auto;
+      width: 100%;
+    }
+    figcaption {
+      margin-top: units(1);
+    }
+  }
+
+  > .photo-grid__caption + .photo-grid {
+    margin-top: units(4);
   }
 
   > .fullbleed {

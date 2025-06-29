@@ -3,67 +3,86 @@ import path from 'path';
 import { BaseFrontmatter } from '@/app/lib/defs';
 
 function parseSimpleYaml(yamlStr: string): Record<string, string> {
-	const lines = yamlStr.split('\n');
-	const obj: Record<string, string> = {};
-	for (const line of lines) {
-		const [key, ...rest] = line.split(':');
-		if (key && rest.length) {
-			let value = rest.join(':').trim();
-			// Remove surrounding single or double quotes
-			if (
-				(value.startsWith('"') && value.endsWith('"')) ||
-				(value.startsWith("'") && value.endsWith("'"))
-			) {
-				value = value.slice(1, -1);
-			}
-			obj[key.trim()] = value;
-		}
-	}
-	return obj;
+  const lines = yamlStr.split('\n');
+  const obj: Record<string, string> = {};
+  for (const line of lines) {
+    const [key, ...rest] = line.split(':');
+    if (key && rest.length) {
+      let value = rest.join(':').trim();
+      // Remove surrounding single or double quotes
+      if (
+        (value.startsWith('"') && value.endsWith('"')) ||
+        (value.startsWith("'") && value.endsWith("'"))
+      ) {
+        value = value.slice(1, -1);
+      }
+      obj[key.trim()] = value;
+    }
+  }
+  return obj;
 }
 
 export function getMdxSlugs(contentType: 'blog' | 'photos'): string[] {
-	const dir = path.join(process.cwd(), 'src/content', contentType);
-	return fs
-		.readdirSync(dir)
-		.filter((file) => file.endsWith('.mdx'))
-		.map((file) => file.replace(/\.mdx$/, ''));
+  const dir = path.join(process.cwd(), 'src/content', contentType);
+  return fs
+    .readdirSync(dir)
+    .filter((file) => file.endsWith('.mdx'))
+    .map((file) => file.replace(/\.mdx$/, ''));
 }
 
 export function getMdxBySlug(contentType: 'blog' | 'photos', slug: string) {
-	const filePath = path.join(
-		process.cwd(),
-		'src/content',
-		contentType,
-		`${slug}.mdx`
-	);
-	const source = fs.readFileSync(filePath, 'utf8');
+  const filePath = path.join(
+    process.cwd(),
+    'src/content',
+    contentType,
+    `${slug}.mdx`
+  );
+  const source = fs.readFileSync(filePath, 'utf8');
 
-	// Extract frontmatter
-	const match = /^---\n([\s\S]+?)\n---\n?([\s\S]*)$/m.exec(source);
-	let frontmatter = {};
-	let content = source;
-	if (match) {
-		frontmatter = parseSimpleYaml(match[1]);
-		content = match[2];
-	}
-	return { frontmatter, content };
+  // Extract frontmatter
+  const match = /^---\n([\s\S]+?)\n---\n?([\s\S]*)$/m.exec(source);
+  let frontmatter = {};
+  let content = source;
+  if (match) {
+    frontmatter = parseSimpleYaml(match[1]);
+    content = match[2];
+  }
+  return { frontmatter, content };
 }
 
 export function getPostsByType<T extends BaseFrontmatter>(
-	type: 'blog' | 'photos',
-	mapFrontmatter: (frontmatter: Record<string, string>, slug: string) => T,
-	count?: number
+  type: 'blog' | 'photos',
+  mapFrontmatter: (frontmatter: Record<string, string>, slug: string) => T,
+  count?: number
 ): T[] {
-	const slugs = getMdxSlugs(type);
-	const posts: T[] = slugs.map((slug) => {
-		const { frontmatter } = getMdxBySlug(type, slug);
-		return mapFrontmatter(frontmatter, slug);
-	});
+  const slugs = getMdxSlugs(type);
+  const posts: T[] = slugs.map((slug) => {
+    const { frontmatter } = getMdxBySlug(type, slug);
+    return mapFrontmatter(frontmatter, slug);
+  });
 
-	// Sort by date descending
-	posts.sort((a, b) => (a.date < b.date ? 1 : -1));
+  // Sort by date descending
+  posts.sort((a, b) => (a.date < b.date ? 1 : -1));
 
-	// Return limited number of posts if count is specified
-	return count ? posts.slice(0, count) : posts;
+  // Return limited number of posts if count is specified
+  return count ? posts.slice(0, count) : posts;
+}
+
+export function getAdjacentPosts<T extends BaseFrontmatter>(
+  type: 'blog' | 'photos',
+  currentSlug: string,
+  mapFrontmatter: (frontmatter: Record<string, string>, slug: string) => T
+): { previous: T | null; next: T | null } {
+  const allPosts = getPostsByType(type, mapFrontmatter);
+  const currentIndex = allPosts.findIndex((post) => post.slug === currentSlug);
+
+  if (currentIndex === -1) {
+    return { previous: null, next: null };
+  }
+
+  return {
+    next: currentIndex > 0 ? allPosts[currentIndex - 1] : null,
+    previous:
+      currentIndex < allPosts.length - 1 ? allPosts[currentIndex + 1] : null,
+  };
 }

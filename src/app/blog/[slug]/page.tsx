@@ -1,8 +1,9 @@
-import { getMdxSlugs, getMdxBySlug } from '@/app/utils/mdx';
+import { getMdxSlugs, getMdxBySlug, getAdjacentPosts } from '@/app/utils/mdx';
 import { generatePostMetadata } from '@/app/utils/metadata';
 import { MDXRemote } from 'next-mdx-remote/rsc';
 import { mdxComponents } from '@/app/components/mdx-components';
 import { Post } from '@/app/components/ui/Post/Post';
+import { PostNavigation } from '@/app/components/ui/PostNavigation/PostNavigation';
 import rehypePrettyCode from 'rehype-pretty-code';
 import Date from '@/app/components/Date';
 import type { Metadata } from 'next';
@@ -66,6 +67,19 @@ export default async function BlogPostPage({ params }: BlogPageProps) {
 		content: string;
 	};
 
+	// Get adjacent posts for navigation
+	const { previous, next } = getAdjacentPosts(
+		'blog',
+		awaitedParams.slug,
+		(frontmatter, slug) => ({
+			type: 'blog' as const,
+			title: frontmatter.title,
+			date: frontmatter.date,
+			slug: frontmatter.slug || slug,
+			excerpt: frontmatter.excerpt || '',
+		})
+	);
+
 	return (
 		<main>
 			<Post>
@@ -78,6 +92,12 @@ export default async function BlogPostPage({ params }: BlogPageProps) {
 					source={content}
 					components={mdxComponents}
 					options={mdxOptions}
+				/>
+
+				<PostNavigation
+					previous={previous}
+					next={next}
+					type="blog"
 				/>
 			</Post>
 		</main>
