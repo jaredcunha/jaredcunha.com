@@ -24,21 +24,68 @@ function parseSimpleYaml(yamlStr: string): Record<string, string> {
 
 export function getMdxSlugs(contentType: 'blog' | 'photos'): string[] {
   const dir = path.join(process.cwd(), 'src/content', contentType);
-  return fs
-    .readdirSync(dir)
-    .filter((file) => file.endsWith('.mdx'))
-    .map((file) => file.replace(/\.mdx$/, ''));
+  const slugs: string[] = [];
+
+  // Check if directory exists
+  if (!fs.existsSync(dir)) {
+    return slugs;
+  }
+
+  // Get all items in the content directory
+  const items = fs.readdirSync(dir);
+
+  for (const item of items) {
+    const itemPath = path.join(dir, item);
+    const stat = fs.statSync(itemPath);
+
+    if (stat.isFile() && item.endsWith('.mdx')) {
+      // Direct MDX file in the content directory (legacy)
+      slugs.push(item.replace(/\.mdx$/, ''));
+    } else if (stat.isDirectory() && /^\d{4}$/.test(item)) {
+      // Year directory (e.g., 2024, 2025)
+      const yearDir = itemPath;
+      const yearFiles = fs.readdirSync(yearDir);
+
+      for (const yearFile of yearFiles) {
+        if (yearFile.endsWith('.mdx')) {
+          slugs.push(yearFile.replace(/\.mdx$/, ''));
+        }
+      }
+    }
+  }
+
+  return slugs;
 }
 
 export function getMdxBySlug(contentType: 'blog' | 'photos', slug: string) {
-  const filePath = path.join(
-    process.cwd(),
-    'src/content',
-    contentType,
-    `${slug}.mdx`
-  );
-  const source = fs.readFileSync(filePath, 'utf8');
+  const baseDir = path.join(process.cwd(), 'src/content', contentType);
 
+  // First try to find the file in the root directory (legacy)
+  const legacyFilePath = path.join(baseDir, `${slug}.mdx`);
+  if (fs.existsSync(legacyFilePath)) {
+    const source = fs.readFileSync(legacyFilePath, 'utf8');
+    return parseMdxContent(source);
+  }
+
+  // Then search in year directories
+  const items = fs.readdirSync(baseDir);
+  for (const item of items) {
+    const itemPath = path.join(baseDir, item);
+    const stat = fs.statSync(itemPath);
+
+    if (stat.isDirectory() && /^\d{4}$/.test(item)) {
+      const yearFilePath = path.join(itemPath, `${slug}.mdx`);
+      if (fs.existsSync(yearFilePath)) {
+        const source = fs.readFileSync(yearFilePath, 'utf8');
+        return parseMdxContent(source);
+      }
+    }
+  }
+
+  throw new Error(`MDX file not found for slug: ${slug}`);
+}
+
+function parseMdxContent(source: string) {
   // Extract frontmatter
   const match = /^---\n([\s\S]+?)\n---\n?([\s\S]*)$/m.exec(source);
   let frontmatter = {};
