@@ -17,7 +17,7 @@
   --content-width: 800px;
   --frame-width: #{units(1)};
   --gap: 2rem;
-  --photo-gap: 1rem;
+  --photo-gap: 0.5rem;
   --general-padding: #{units(2)};
 
   // Font sizes
@@ -38,7 +38,6 @@
     --frame-width: #{units(1.5)};
     --gap: 5rem;
     --general-padding: #{units(3)};
-    --photo-gap: 2rem;
   }
   @media (min-width: $desktop) {
     --general-padding: #{units(4)};
