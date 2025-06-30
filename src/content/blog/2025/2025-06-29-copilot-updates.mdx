@@ -44,6 +44,8 @@ I had my answers, but only with medium certainty. So I used Claude to learn more
 - My site isn’t really an app and doesn’t have any useful API, so we can just make the feed URL `/rss.xml`, which I was going to do anyway.
 - Including full posts is dealer’s choice, but it's more common for personal sites to just include the excerpt. I’m going with that for now. If there’s a need down the road, I can create a feed with the post content and without, maybe even feeds for just photo essays or just blog posts. I’m not letting that take up headspace right now, because I am not an important person on the internet.
 
+**Time spent on task:** 5 -10 minutes
+
 ## Adjacent post navigation
 
 I felt like maybe it might be worth having links to previous and next posts. Seems to be a common thing on other blogs. I gave Copilot an extremely generic prompt:
@@ -64,6 +66,8 @@ I made a design change that Copilot never would have done on its own, which was 
 
 It might sound like this was a lot of rework, but it really wasn’t. I got this feature done and out the door while waiting for my wife to take a shower.
 
+**Time spent on task:** ~25 minutes
+
 ## MDX housekeeping
 
 All of my MDX files are either in `/content/blog` or `/content/photos`. If I manage to follow through with posting more, those directories could become unmanageable real quick. So I wanted to at least, for now, organize my posts by year, yet keep my current URLs following the same pattern. For some reason, I’m nitpicky and I like clean URLs. Maybe I’ll regret this in the future if I start struggling with unique slugs, but this feels right for now. Here is the prompt I used:
@@ -75,3 +79,5 @@ For my mdx files moving forward, I want to add a folder for year, but I do not w
 Copilot handled this task really well. We created the folder and moved one post into it, and left the others alone. Then started the app and saw that everything remained as it should.
 
 I appreciated that Copilot kept handling for both systems in place… defaulting to the legacy setup, and then falling back to the annually organized directories. I may organize the rest of my posts into folders and clean up the rest of the code at some point, but it’s nice that I don’t have to do that now.
+
+**Time spent on task:** 3 minutes
