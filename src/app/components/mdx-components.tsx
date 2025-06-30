@@ -1,8 +1,10 @@
 import Image from 'next/image';
 import { PhotoGrid, PhotoGridItem } from './ui/PhotoGrid/PhotoGrid';
 import Intro from './Intro';
+import { AccessibleLink } from './ui/Link/Link';
 
 export const mdxComponents = {
+  Link: AccessibleLink,
   PhotoGrid,
   PhotoGridItem,
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
