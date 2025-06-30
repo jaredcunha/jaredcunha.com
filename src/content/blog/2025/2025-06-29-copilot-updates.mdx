@@ -1,0 +1,77 @@
+---
+type: blog
+title: 'Building features with Copilot: RSS, adjacent posts, and MDX housekeeping'
+date: '2025-06-29'
+excerpt: 'In effort to write more as I learn, I talk about features I’ve added to my site with Copilot, including RSS feeds, adjacent post navigation, and some organization for my blog content.'
+slug: '2025-06-29-copilot-updates'
+categories: ['AI', 'Web development']
+---
+
+<Intro>
+  This year, I’m trying to write more, particularly about my experience as I’m
+  learning something new. Here, I will talk about some features I built with
+  Copilot and Claude Sonnet 4 over the weekend: RSS feeds, adjacent post
+  navigation, and some organization for my blog content.
+</Intro>
+
+Outside the nine to five-ish hours that I spend on my day, I have very little time to dedicate towards maintaining personal site. That’s been the case ever since I bought the domain to my name in 2005. I never managed to fully complete a single site that I’ve built to for myself. And though we nothing is ever finished—keep calm and iterate on, so to speak—there was always about 40% of the site was clearly in an unfinished state.
+
+To me, it’s frustrating. I want my site to be in a place where I can just focus on writing, instead of having to choose between that or getting it to a finished-looking state. That’s what makes me choose neither, because I have other things that require my attention: taking care of our 100-year-old house, making dinner, playing with the dog, laundry… life.
+
+I can see how using an LLM could help over this hurdle that I’ve never been able to jump. My site, after all, isn’t this complex or innovative thing. And in fact, I prefer that it that way. And unlike, say, blockchain, AI is something that I feel as developers, or anyone, we need to learn and speak to, or others will do that for us.
+
+In my limited experience thus far, I do find agentic coding to be quite impressive. Though, it is imperfect more often then not. Copilot certainly has usability issues, and combined with some subpar code, it’s really important to keep an eye on your diffs for its mistakes, and yours. And I do also concerns about the amount of resources these tools consume. All of this should be for another post, and will be soon. Let’s get back on topic.
+
+## RSS feeds
+
+Full disclosure: I don’t use RSS. I never used RSS. Do I feel bad about it? Yeah, kinda. But also, why? I don’t live my life to impress my fellow nerds. I live my life to procure various cheeses and cold cuts. I know others live differently, and RSS is important to them. RSS to this site? Who knows! But if they want it, I guess [it’s available now](/rss.xml), so that’s cool… for RSS fans, at least.
+
+This is the prompt I used:
+
+```prompt
+Create an RSS feed that combines my photo posts and blog posts into a single feed using NextJS best practices. I don't want to change anything about the website's user experience… I still want blog posts and photo posts presented the way they currently are.
+```
+
+And then Copilot kinda just did its thing. So that was cool. But I didn’t know if what it gave was any good or if there was anything I should change. Specifically, I had questions about:
+
+- Is the feed useful for a personal website or blog? What else it might need?
+- Was the original URL of `/api/rss.xml` appropriate?
+- Should I include or leave it with the excerpt?
+
+I had my answers, but only with medium certainty. So I used Claude to learn more and its responses helped me confirm some of what I wanted to do, and gave me food for thought (sadly, not cheese) for posts in the future.
+
+- The feed was good for a person site. I could use better-written excerpts and titles. Claude suggested that it might be worth adding author to the individual posts, so I did that. But I’m thinking it might be overkill.
+- My site isn’t really an app and doesn’t have any useful API, so we can just make the feed url `/rss.xml`, which I was going to do anyway.
+- Including full posts is dealers choice, but it's more common for personal sites to just include the excerpt. I’m going with that for now. If there’s a need down the road, I can create feed with the post content and without, maybe even feeds for just photo essays or just blog posts. I’m not letting that take up headspace right now, because I am not an important person on the internet.
+
+## Adjacent post navigation
+
+I felt like maybe it might be worth having links to previous and next posts. Seems to be a common thing on other blogs. I gave Copilot an extremely generic prompt:
+
+```prompt
+Using the AccessibleLink component, create links to previous and next posts on the blog post pages
+```
+
+I wasn’t sure if it'd select the AccessibleLink that I’m using (that Copilot created at my request) for all internal links, but felt it’d be worth specifying. But note that I said "blog post pages" and didn’t include anything about photo posts.
+
+For this task, Copilot went a little rogue-ish. It made the component for photo posts even though I didn’t ask for it. I was going to add it, but in this case, I was pretty glad that Copilot took it upon itself to <del>kill</del> <ins>feed</ins> two birds with one <del>stone</del> <ins>cheese</ins>.
+
+One thing that Copilot got completely wrong was mixing up previous and next posts. It did the inverse, where the "previous post" was actually the next post and the "next post" was the previous post. It was an easy fix, but come on!
+
+I probably should have asked it not write any CSS. I threw out most of it. I appreciated that the class names used my preferred [BEM syntax](https://getbem.com/naming/), but it hallucinated some CSS variables and wrote the media queries using desktop-first instead of mobile-first, the way they all are on this site, as it is one true way. Also, I use spacing units for margins and padding, and variables for font sizes, and it ignore all of those existing patterns as well.
+
+I made a design change that Copilot never would have done on its, which was to replace the → arrows with SVG chevrons, which when I did, I found a component that another Copilot task create that I rejected but somehow committed. Actually, that's been something that frustrates me with Copilot… it seems to keep adding files automatically even after I delete them. I have to remove the added files from the chat.
+
+It might sound like this was a lot of rework, but it really wasn’t. I got this feature done and out the door while waiting for my wife to take a shower.
+
+## MDX housekeeping
+
+All of MDX files are either in `/content/blog` or `/content/photos`. If I manage to follow through with posting more, those directors could become unmanageable real quick. So I wanted to at least, for now, organize my posts by year, yet keep my current URLs following the same pattern. For some reason, I nitpicky and I like clean URLs. Maybe I’ll regret this in the future if I start struggling with unique slugs, but this feels right for now. Here is the prompt I used:
+
+```prompt
+For my mdx files moving forward, I want to add a folder for year, but I do not want change the urls. For example, a blog post would be in content/blog/2025/foo.mdx and the url will still be /blog/foo
+```
+
+Copilot handled this task really well. We created the folder and moved one post into it, and left the others alone. Then started the app and saw that everything remained as it should.
+
+I appreciated that Copilot kept handling for both systems in place… defaulting with the legacy setup, and then falling back to the annually-organized directories. I may organize the rest of my posts into folders and clean up the rest of the code at some point, but it’s nce that I don’t have to do that now.
