@@ -10,12 +10,15 @@ ogImage: '/images/all-screens.png'
 
 <Intro>
   Now that a majority of Direct File’s codebase has been released to the public,
-  you can run some of it locally. We will take a deep dive into Direct File’s
-  All Screens page, a small project that became an essential debugger,
-  collaboration tool, and source of truth.
+  you can explore the product, read its technical documentation, and even run
+  some of it locally (instructions are at the bottom). Here, we will take a deep
+  dive into Direct File’s All Screens page, a small project that evolved into an
+  essential debugger, collaboration tool, and the content source of truth.
 </Intro>
 
-The All Screens page is perhaps my favorite little feature in Direct File, and it wasn’t one the public ever got a chance to see. [Alex Mark wrote about it](https://alexthemark.substack.com/p/direct-file-is-open-source) a bit, amongst his other favorite parts of the codebase. It’s a great post, you should read it.
+The All Screens page is perhaps my favorite little feature in Direct File, and it wasn’t one that anyone outside of the project ever got a chance to see. But with Trump administration’s pending but likely decision to shut it down, the All Screens page might be the lasting remnant of what Direct File ever was. It is perhaps a better representation of Direct File than Direct File itself because of it presents the entire tax flow—in all its plain language glory—in a single view.
+
+Thankfully, All Screens is publicly available to run in its entirety and that will never go away thanks to its 1,300+ forks. [Alex Mark wrote about it](https://alexthemark.substack.com/p/direct-file-is-open-source) a bit, amongst his other favorite parts of the open source codebase. It’s a great post, you should read it.
 
 <Image
   src="/images/all-screens.png"
@@ -23,13 +26,19 @@ The All Screens page is perhaps my favorite little feature in Direct File, and i
   className="wide"
 />
 
-Now that Direct File is (mostly) in the public realm, I really want to talk about the All Screens page, how it helped us collaborate, and the ways in which it improved our ability to work efficiently. Direct File is built upon a pattern that asks taxpayers one thing at a time, and uses the information it collects to only ask what is relevant to the person’s situation. Because it’s taxes, it’s massively complex—to the tune of several hundred possible screens. Direct File isn’t unique in either its interaction design or its complexity. If you are working on a similar type of application, maybe there are some useful ideas that you can take to your team.
+Now that Direct File’s codebase is mostly open source, I really want to talk about the All Screens page because the casual observer, it’s not immediately obvious that it exists or what it does. Perhaps we can update the documentation on that soon. In the meantime, I’m excited to share our experience of how it helped us collaborate across multiple teams and the ways in which it improved our efficiency.
+
+Direct File is built upon a pattern that asks taxpayers one thing at a time, and uses the information it collects to only ask what is relevant to the person’s situation. Because it’s taxes, it’s massively complex—to the tune of several hundred possible screens. Direct File isn’t unique in either its interaction design or its complexity. So if you are working on a similar type of application, or complex application of any type, maybe there are some useful ideas that you can take back to your team.
 
 ## A solution for a brewing problem
 
-Building an application of this size and scope is a difficult undertaking, not just for those actively building the product, but also for the people whose jobs depend on understanding the product because they serve critical functions related to it. That goes for lawyers who need to determine whether or not information is accurate, or customer service staff who need to help taxpayers resolve their problems. **When the product becomes too complex to convey what’s actually in it, the risks can run from significant delays to outright failure to launch.**
+Building an application of Direct File’s size and scope is no easy task, not just for the product team, but also for the people whose jobs are impacted by the product’s existence. They must have more than a surface-level understanding, because they serve critical functions within the organization that provide that product as a service.
 
-The team hadn’t initially considered all the ways we’d expand the tool—maybe Alex did, he’s smart—but the first pass solved the problem of needing to step through many pages using specific tax situations in order to see something by creating a bird’s-eye view of Direct File’s flow. Effectively, it was a for loop, with little visual treatment. But it got the job done!
+That goes for lawyers who need to determine whether or not information is accurate, or customer service staff who need to help taxpayers resolve their problems. **When the product becomes too complex to convey what’s actually in it, or how it functions, the risks can run from significant delays to failure that can cause material harm.**
+
+The team hadn’t initially considered all the ways we’d expand All Screens—maybe Alex did, he’s smart—but the first pass solved a huge, pressing problem. That problem being that we needed to click through tons pages, answer many questions to represent specific tax situations in order to see something deep within the app. And perhaps do this multiple times a day. By creating a bird’s-eye view of Direct File’s tax flow, that problem was largely eliminated. Effectively, it was a just `for` loop given a little visual treatment. But it got the job done!
+
+Also, it’s an example of how one person’s creative thinking enables the creative thinking of everyone around them.
 
 <Image
   src="/images/all-screens-headings.png"
@@ -38,11 +47,11 @@ The team hadn’t initially considered all the ways we’d expand the tool—may
   alt="Screen titled 'income-sources-intro' with green 'PUBLISHABLE' badge and plus icon. Main content shows heading 'Let's start getting information about the income you had in 2024' followed by a similar heading with template variables visible. Two explanatory paragraphs state that Direct File can only report income for the taxpayer and spouse, with links to 'use another tool' for reporting child income on federal tax returns."
 />
 
-With All Screens up and running in both local and development environments, developers no longer needed to fill out a ton of information in order to test for bugs deep within the flow, and designers, stakeholders, and other staff had a way to review all of the content. For those of us working on accessibility, we were able to run Axe on every screen at once. All Screens was an immediate, essential value add that only got better over time.
+With All Screens up and running in both local and development environments, developers no longer needed to fill out a ton of information in order to test for bugs deep within the flow, and designers, stakeholders, and other staff had a way to review all of the content. It helped with accessibility too. We were able to run Axe on every screen at once instead of each screen individually (and yes, we also performed manual tests and research with users!). All Screens was an immediate, essential value-add that only got better over time.
 
 ## First round of improvements
 
-The All Screens page was working really well for the team, but a few months after its creation in November 2023, some aspects started to become tedious. It was a huge page at this point that required a lot of scrolling, both horizontally and vertically. Searching certain UI arrangements became akin to trying to find a needle in a haystack.
+The All Screens page was working really well for the team, but a few months after its creation in November 2023, it was evident that we needed find ways to make it serve us better. It was a huge page at this point and using it required a lot of scrolling, both horizontally and vertically. If there was a ticket about funky spacing between two components, searching for pages with specific that UI arrangement was akin to trying to find a needle in a haystack.
 
 I had written myself this handy little CSS snippet to filter out any screens that wouldn’t have what I was looking for. So if I wanted to review only screens that had an alert with a level 3 heading, I would replace `.foo` with `.usa-alert h3`.
 
@@ -54,7 +63,7 @@ I had written myself this handy little CSS snippet to filter out any screens tha
 }
 ```
 
-I kept that snippet on a scratch pad, and would plug it into the browser’s Web Inspector when I needed it. At that time, it was often. Shortly after the filing deadline in 2024, there was a brief lull and I spent a few hours to see if we could make All Screens feel like a real tool. The idea was a selfish one and it grew out of wanting to avoid having to keep pasting that stupid CSS snippet, but I also knew that it was something where we could add more features as necessary and the team would really like it.
+I kept that snippet on a scratch pad, and would plug it into the browser’s Web Inspector when I needed it. At that time, the need was often. Shortly after the filing deadline in 2024, there was a brief lull in velocity, so I spent a few hours to see if I could make All Screens feel like a real tool. The idea was initially a selfish one and it grew out of me wanting to avoid having to keep pasting that stupid CSS snippet in the browser, but I also knew that it was something where we could add more features as necessary, and the team would also see that and be totally on board.
 
 <Image
   src="/images/all-screens-early.png"
@@ -62,24 +71,24 @@ I kept that snippet on a scratch pad, and would plug it into the browser’s Web
   alt="Interface with left sidebar containing 'Info' panel showing 'Screens' and 'CSV' tabs, language selection (English/Spanish), display options, and CSS filter tools. Main content area displays 'You and your family' section with four panels: 'About you' form requiring SSN and Identity Protection PIN; yellow warning about birth date verification; panel stating 'Direct File doesn't yet support filing for taxpayers who were under 16 years old' with 'Exit this tax return' button; and partially visible contact information panel. 'Jump to section' dropdown in top right corner."
 />
 
-The refreshed design had a number of design tweaks, including typography and spacing improvements, but the most important updates were:
+The refreshed design include a number of minor design tweaks, including typography and spacing improvements, but the most important updates were:
 
 - New header that didn’t reuse the app header, giving us more tool-specific options
 - Jump menu to navigate to a specific section instead of needing to scroll
 - Left-hand menu where we could add whatever controls we needed
   - Language switcher
-  - Ability to toggle vertical scroll within screens. It became pretty tedious within each screen to review content that extended beyond 800 pixels
+  - Ability to toggle vertical scroll within screens. It became pretty tedious within each screen to review content that extended beyond 800 pixels, so having a way to show the entire height of every screen at a glance was helpful
   - My stupid CSS selector, now in filter form!
 
 After these additions, we had our first real tool to help us make sense of the Direct File flow, paired with the ability to find specific things.
 
 ## New filing season, new challenges, new features
 
-Once the work was underway for tax year 2024, we started moving quickly. With All Screens now an integral part of our workflow, more folks added features and filters and ways to manipulate the view. In a way, All Screens was fully an internal product where we were also the owners, a portion of the users, and the builders. So when we experienced pain points or saw an opportunity, we carved out some time to go to work. It was still mostly done in fits and spurts when time permitted, but we did give it proper attention.
+Once the work was underway for tax year 2024, we had to move quickly. With All Screens now an integral part of our workflow, more folks added features and filters and ways to manipulate the view. In a way, All Screens was a fully-fledged internal product where we were also the owners, a portion of the users, and the builders. So when we experienced pain points or saw an opportunity, we carved out some time. It was still mostly done in fits and spurts when time permitted, but we did give it proper attention to make it good.
 
 ### Displaying conditions
 
-Perhaps the most common bit of feedback we received was that the team couldn’t see any of the conditional logic. So we added visualizations for conditions under which certain screens appear. In my opinion, this was probably the coolest feature that we added this time around. It was also an important communicative step toward ensuring that we had tax accuracy.
+One of the more recurring bits of feedback was that the team couldn’t see any of the conditional logic, making it difficult to communicate to interested parties how taxpayers may encounter certain screens. So we added visualizations for conditions under which certain screens appear. In my opinion, this was probably the coolest feature that we added in 2024. It was also an important communicative step toward ensuring that we maintained tax accuracy.
 
 <Image
   src="/images/all-screens-scrolling.gif"
@@ -88,19 +97,19 @@ Perhaps the most common bit of feedback we received was that the team couldn’t
   alt="Tax software 'Spouse' section showing three panels with questions about living arrangements in 2024. Left panel asks 'Did you and your spouse live together all year in 2024?' with radio button options and '(Required)' notation. Center panel asks 'How long did you and your spouse live together in 2024?' with similar explanatory text about temporary absences. Right panel asks 'Did you and your spouse live apart for the last 6 months (July through December) of 2024?' The image is animated depicting various nested conditions under which the sections would appear"
 />
 
-The conditions relate to facts about the taxpayer, and they can either be true or false. Some of the fact names might be difficult to make out from their name alone, so we also added some tooltips so folks can read their description.
+The conditions relate to _facts_ about the taxpayer, and they can either be true or false. For example, when `/isFilingStatusMFJ`, the files’s status is Married Filing Jointly and `isFalse:/isFilingStatusMFJ` could mean the filer is Single, Head of Household, Married Filing Separately, or Qualified Surviving Spouse. Some of the fact names might be difficult to make out from their name alone, so we also added some tooltips in case folks needed a better description.
 
 <Image
   src="/images/all-screens-fact-description.png"
-  caption="Tooltip displaying fact description"
+  caption="Tooltip displaying fact description. The text is pulled from the Fact Dictionary, so it wasn’t something extra written just for All Screens."
   alt="Tax software 'Spouse' section displaying technical filter paths and variables including '/maritalStatusAllowsFilingMarried', '/filters//isUsCitizenFullYear', and '/filters//citizenAtEndOfTaxYear'. A dark tooltip popup explains 'Was the filer a resident for the whole tax year and not a citizen? Includes spouses who are non-residents but who have elected to be treated as a resident for tax purposes per IRC § 6013(g), Election to Treat Nonresident Individual as Resident of the United States'. Green 'PUBLISHABLE' and purple '14 T' status badges visible in upper right corner."
 />
 
-If for whatever reason displaying the conditions became too noisy, we also added a toggle to hide them. Give the people what they want!
+If for whatever reason displaying the conditions became too noisy, we also added a toggle to hide them. Gotta give the people what they want, right?
 
 ### Managing translations and content workflows
 
-Running Direct File the second year brought up a new complication that we didn’t have the first time around: updating most, but not all, of the content, getting it translated, getting approvals, and staying on top of what content is where in the workflow. All of the content is written in YAML files, one for English and one for Spanish. Each of those is roughly 26,000 lines. I know. I know.
+Running Direct File the second year brought in a new complication that we didn’t have the first time around: updating most, but not all, of the content (in the first year, ALL of it was new.), getting it translated, getting approvals, and staying on top of what content is where in the workflow. All of the content is written in YAML files, one for English and one for Spanish. Each of those is roughly 26,000 lines. I know. I know.
 
 Managing all of that is a bit of a dance, and a delicate one that required a lot of focus on small details, though the work itself was minimally complex. What it lacked in complexity, though, it made up in volume and necessity. The mechanics of doing the work weren’t necessarily in service of All Screens, but we needed to have a way to provide a glance at where things were so no content fell through the cracks. Additionally, we added labels to each of the screens underneath the route names.
 
@@ -112,25 +121,23 @@ Managing all of that is a bit of a dance, and a delicate one that required a lot
 
 ### Bringing in dataviews and post-submission pages
 
-Another gripe that many of us had about the All Screens page was that it only depicted the _screens_ in the tax flow, meaning only the pages where a user would enter information or have content to read. There were still screens in the flow that a user would encounter that were not represented, particularly the screens that we called "dataviews." These dataview pages would be where the taxpayer would review what they entered before they proceed to the next section.
-
-In All Screens, the dataviews are broken up, but are presented as a single screen for taxpayers. This difference is acceptable because what is more important is showing the content as it is written in the app.
+Another frustration with All Screens was that it only depicted the _screens_ in the tax flow, meaning only the pages where a user would have to enter information or read static content. There were still screens in the flow that a user would encounter that were not represented, particularly the screens that we called “dataviews.” These dataview pages would be where the taxpayer would review what they entered before they proceed to the next section.
 
 <Image
   src="/images/all-screens-non-flow.png"
-  caption="Dataviews can be viewed by clicking the checkbox to show them"
+  caption="In All Screens, the dataviews are broken up, but are presented as a single screen for taxpayers. This difference is acceptable because what is more important is showing the content as it is written in the app."
   alt="Interface with left sidebar showing 'Info' panel containing tabs for 'screens', 'csv', and 'postSubmission'. Language options (English selected, Spanish available), Display settings with checkboxes for 'Remove scrollbars', 'Show conditional screen logic' (checked), 'Show modals', 'Show dataviews' (checked), and 'Hide alerts'. Filter section includes CSS selector field. Main content displays 'You and your family' section with 'About you dataview' containing three panels: 'Your basic information' with Name and Date of birth fields and Edit link; 'Your contact information' showing Mailing address, Phone number, Email address with 'ID.me' profile edit links; and 'Your occupation' panel with Occupation field. 'Jump to section' dropdown in top right."
 />
 
-There were also the post-submission pages, which a taxpayer would encounter after submitting their tax return. Without integrating these screens into Direct File, it would have created significant additional work for anyone who needed to see them.
+There were also the post-submission pages that a taxpayer would encounter after submitting their return. Without integrating these screens into Direct File, it would have created significant additional work for anyone who needed to see them.
 
 ### But how do we print?
 
-I’ll tell you what didn’t work: Print CSS. We tried it and failed and tried again and failed. What was that failure? Something like requiring us to print 500 individual pages or so. Yeah, no. Also, what was needed was a PDF.
+I’ll tell you what didn’t work: Print CSS. We tried it and failed and tried again and failed again. That approach resulted in needing to print 500 individual pages or so. Yeah, no. Also, what was needed was a PDF. A single-page PDF!
 
-But that also left the designers in a rough spot because in order to send a PDF, they had to pull up the All Screens page, take screenshots of each individual screen, and place them into a canvas so it could be distributed as a single document. You can imagine how tedious and time-consuming (read: costly) that must be. It’s also not the type of work that makes one excited about their job, and not something anyone wants to do when there are a million other priorities.
+But that also left the designers in a rough spot because in order to send someone a PDF, they had to pull up the All Screens page, take screenshots of each individual screen, and then place them into a canvas so it could be distributed as a single document. You can imagine how tedious and time-consuming (read: costly) that must be. It’s also not the type of work that makes one excited about their job, and not something anyone wants to do when there are a million other priorities.
 
-All Screens is a huge page that crashed most of the HTML to PDF extensions out there, but I managed to find one in [Just-One-Page-PDF](https://chromewebstore.google.com/detail/just-one-page-pdf-an-awes/fgbhbfdgdlojklkbhdoilkdlomoilbpl). However, we still needed to figure out how to generate a PDF that was small enough to send across IRS systems—or at least not run the risk of that.
+All Screens is a huge page. Did I mention that? Yeah, well it crashed most of the HTML to PDF extensions out there, but I managed to find one in [Just-One-Page-PDF](https://chromewebstore.google.com/detail/just-one-page-pdf-an-awes/fgbhbfdgdlojklkbhdoilkdlomoilbpl). However, we still needed to figure out how to generate a PDF that was small enough to send across IRS systems—or at least not run the risk of exceeding file size limitations.
 
 <Image
   src="/images/all-screens-pdf.png"
@@ -138,7 +145,7 @@ All Screens is a huge page that crashed most of the HTML to PDF extensions out t
   className="wide"
 />
 
-This is a feature that’s somewhat buried in All Screens. If you press the "p" key, you’ll notice everything just kind of shrinks. This is all done through the magic of CSS and using `rem` units for everything. That is also why the radio buttons are oddly thick, because they are set in `px` and come to us from the U.S. Web Design System. We can let that pass, though. What’s important is that our canvas is now a manageable size that can be neatly exported and distributed to the parties who need it.
+This is a feature that’s somewhat buried in All Screens. If you press the "p" key, you’ll notice everything just kind of shrinks. This is all done through the magic of CSS and using `rem` units for everything. That is also why the radio buttons are oddly thick, because they are set in `px` and come to us from the U.S. Web Design System. We can let that pass, though. What’s important is that our canvas is now a manageable size that can be neatly exported to PDF and distributed to the parties who need it.
 
 ## You can run All Screens locally
 
