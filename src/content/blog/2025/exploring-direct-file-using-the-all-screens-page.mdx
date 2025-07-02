@@ -33,9 +33,9 @@ The team hadn’t initially considered all the ways we’d expand the tool—may
 
 <Image
   src="/images/all-screens-headings.png"
-  alt="all screens"
+  caption="Some screens would display text differently based on the tax situation, such as single filers vs married filing jointly. All Screens displays all variations."
   className="narrow"
-  caption="Screen titled 'income-sources-intro' with green 'PUBLISHABLE' badge and plus icon. Main content shows heading 'Let's start getting information about the income you had in 2024' followed by a similar heading with template variables visible. Two explanatory paragraphs state that Direct File can only report income for the taxpayer and spouse, with links to 'use another tool' for reporting child income on federal tax returns."
+  alt="Screen titled 'income-sources-intro' with green 'PUBLISHABLE' badge and plus icon. Main content shows heading 'Let's start getting information about the income you had in 2024' followed by a similar heading with template variables visible. Two explanatory paragraphs state that Direct File can only report income for the taxpayer and spouse, with links to 'use another tool' for reporting child income on federal tax returns."
 />
 
 With All Screens up and running in both local and development environments, developers no longer needed to fill out a ton of information in order to test for bugs deep within the flow, and designers, stakeholders, and other staff had a way to review all of the content. For those of us working on accessibility, we were able to run Axe on every screen at once. All Screens was an immediate, essential value add that only got better over time.
@@ -58,8 +58,8 @@ I kept that snippet on a scratch pad, and would plug it into the browser’s Web
 
 <Image
   src="/images/all-screens-early.png"
-  alt="all screens"
-  caption="Interface with left sidebar containing 'Info' panel showing 'Screens' and 'CSV' tabs, language selection (English/Spanish), display options, and CSS filter tools. Main content area displays 'You and your family' section with four panels: 'About you' form requiring SSN and Identity Protection PIN; yellow warning about birth date verification; panel stating 'Direct File doesn't yet support filing for taxpayers who were under 16 years old' with 'Exit this tax return' button; and partially visible contact information panel. 'Jump to section' dropdown in top right corner."
+  caption="Direct File’s April 2024 iteration with left-side menu and CSS filter"
+  alt="Interface with left sidebar containing 'Info' panel showing 'Screens' and 'CSV' tabs, language selection (English/Spanish), display options, and CSS filter tools. Main content area displays 'You and your family' section with four panels: 'About you' form requiring SSN and Identity Protection PIN; yellow warning about birth date verification; panel stating 'Direct File doesn't yet support filing for taxpayers who were under 16 years old' with 'Exit this tax return' button; and partially visible contact information panel. 'Jump to section' dropdown in top right corner."
 />
 
 The refreshed design had a number of design tweaks, including typography and spacing improvements, but the most important updates were:
@@ -83,17 +83,17 @@ Perhaps the most common bit of feedback we received was that the team couldn’t
 
 <Image
   src="/images/all-screens-scrolling.gif"
-  alt="all screens"
+  caption="Visualizations of screen conditions used sticky positioning so that it was easier to depict screens that are only displayed if multiple conditions are met"
   className="wide"
-  caption="Tax software 'Spouse' section showing three panels with questions about living arrangements in 2024. Left panel asks 'Did you and your spouse live together all year in 2024?' with radio button options and '(Required)' notation. Center panel asks 'How long did you and your spouse live together in 2024?' with similar explanatory text about temporary absences. Right panel asks 'Did you and your spouse live apart for the last 6 months (July through December) of 2024?' The image is animated depicting various nested conditions under which the sections would appear"
+  alt="Tax software 'Spouse' section showing three panels with questions about living arrangements in 2024. Left panel asks 'Did you and your spouse live together all year in 2024?' with radio button options and '(Required)' notation. Center panel asks 'How long did you and your spouse live together in 2024?' with similar explanatory text about temporary absences. Right panel asks 'Did you and your spouse live apart for the last 6 months (July through December) of 2024?' The image is animated depicting various nested conditions under which the sections would appear"
 />
 
 The conditions relate to facts about the taxpayer, and they can either be true or false. Some of the fact names might be difficult to make out from their name alone, so we also added some tooltips so folks can read their description.
 
 <Image
   src="/images/all-screens-fact-description.png"
-  alt="all screens"
-  caption="Tax software 'Spouse' section displaying technical filter paths and variables including '/maritalStatusAllowsFilingMarried', '/filters//isUsCitizenFullYear', and '/filters//citizenAtEndOfTaxYear'. A dark tooltip popup explains 'Was the filer a resident for the whole tax year and not a citizen? Includes spouses who are non-residents but who have elected to be treated as a resident for tax purposes per IRC § 6013(g), Election to Treat Nonresident Individual as Resident of the United States'. Green 'PUBLISHABLE' and purple '14 T' status badges visible in upper right corner."
+  caption="Tooltip displaying fact description"
+  alt="Tax software 'Spouse' section displaying technical filter paths and variables including '/maritalStatusAllowsFilingMarried', '/filters//isUsCitizenFullYear', and '/filters//citizenAtEndOfTaxYear'. A dark tooltip popup explains 'Was the filer a resident for the whole tax year and not a citizen? Includes spouses who are non-residents but who have elected to be treated as a resident for tax purposes per IRC § 6013(g), Election to Treat Nonresident Individual as Resident of the United States'. Green 'PUBLISHABLE' and purple '14 T' status badges visible in upper right corner."
 />
 
 If for whatever reason displaying the conditions became too noisy, we also added a toggle to hide them. Give the people what they want!
@@ -106,8 +106,8 @@ Managing all of that is a bit of a dance, and a delicate one that required a lot
 
 <Image
   src="/images/all-screens-workflows.png"
-  alt="all screens"
-  caption="Interface with left sidebar containing filter options: 'By tax test' dropdown showing '- Select -', 'By content batch' field with 'ptc-2' entered, 'By screen status' dropdown, and 'By workflow step' dropdown set to 'Complete' (highlighted in blue). Main content shows 'Spouse' section with two panels asking 'Did you and your spouse live together all year in 2024?' and 'How long did you and your spouse live together in 2024?' Both panels have green 'PUBLISHABLE' and purple '5 TESTS' status badges with plus icons for expansion."
+  caption="Filters enabled for content batch and work steps"
+  alt="Interface with left sidebar containing filter options: 'By tax test' dropdown showing '- Select -', 'By content batch' field with 'ptc-2' entered, 'By screen status' dropdown, and 'By workflow step' dropdown set to 'Complete' (highlighted in blue). Main content shows 'Spouse' section with two panels asking 'Did you and your spouse live together all year in 2024?' and 'How long did you and your spouse live together in 2024?' Both panels have green 'PUBLISHABLE' and purple '5 TESTS' status badges with plus icons for expansion."
 />
 
 ### Bringing in dataviews and post-submission pages
@@ -118,8 +118,8 @@ In All Screens, the dataviews are broken up, but are presented as a single scree
 
 <Image
   src="/images/all-screens-non-flow.png"
-  alt="all screens"
-  caption="Interface with left sidebar showing 'Info' panel containing tabs for 'screens', 'csv', and 'postSubmission'. Language options (English selected, Spanish available), Display settings with checkboxes for 'Remove scrollbars', 'Show conditional screen logic' (checked), 'Show modals', 'Show dataviews' (checked), and 'Hide alerts'. Filter section includes CSS selector field. Main content displays 'You and your family' section with 'About you dataview' containing three panels: 'Your basic information' with Name and Date of birth fields and Edit link; 'Your contact information' showing Mailing address, Phone number, Email address with 'ID.me' profile edit links; and 'Your occupation' panel with Occupation field. 'Jump to section' dropdown in top right."
+  caption="Dataviews can be viewed by clicking the checkbox to show them"
+  alt="Interface with left sidebar showing 'Info' panel containing tabs for 'screens', 'csv', and 'postSubmission'. Language options (English selected, Spanish available), Display settings with checkboxes for 'Remove scrollbars', 'Show conditional screen logic' (checked), 'Show modals', 'Show dataviews' (checked), and 'Hide alerts'. Filter section includes CSS selector field. Main content displays 'You and your family' section with 'About you dataview' containing three panels: 'Your basic information' with Name and Date of birth fields and Edit link; 'Your contact information' showing Mailing address, Phone number, Email address with 'ID.me' profile edit links; and 'Your occupation' panel with Occupation field. 'Jump to section' dropdown in top right."
 />
 
 There were also the post-submission pages, which a taxpayer would encounter after submitting their tax return. Without integrating these screens into Direct File, it would have created significant additional work for anyone who needed to see them.
