@@ -133,11 +133,11 @@ There were also the post-submission pages that a taxpayer would encounter after 
 
 ### But how do we print?
 
-I’ll tell you what didn’t work: Print CSS. We tried it and failed and tried again and failed again. That approach resulted in needing to print 500 individual pages or so. Yeah, no. Also, what was needed was a PDF. A single-page PDF!
+I’ll tell you what didn’t work: Print CSS. We tried it and failed and tried again and failed again. That approach resulted in needing to print 500 individual pages or so. Yeah, no. Also, what was needed was a PDF. A single-page PDF! Why? Because that is what we needed to provide the IRS for its annual Paperwork Reduction Act submission.
 
-But that also left the designers in a rough spot because in order to send someone a PDF, they had to pull up the All Screens page, take screenshots of each individual screen, and then place them into a canvas so it could be distributed as a single document. You can imagine how tedious and time-consuming (read: costly) that must be. It’s also not the type of work that makes one excited about their job, and not something anyone wants to do when there are a million other priorities.
+That left the designers in a rough spot because in order to create the PDF, they would have to pull up the All Screens page, take screenshots of each individual screen, and then place them into a canvas so it could be distributed as a single document. You can imagine how tedious and time-consuming (read: costly) that must be. It’s also not the type of work that makes one excited about their job, and not something anyone wants to do when there are a million other priorities.
 
-All Screens is a huge page. Did I mention that? Yeah, well it crashed most of the HTML to PDF extensions out there, but I managed to find one in [Just-One-Page-PDF](https://chromewebstore.google.com/detail/just-one-page-pdf-an-awes/fgbhbfdgdlojklkbhdoilkdlomoilbpl). However, we still needed to figure out how to generate a PDF that was small enough to send across IRS systems—or at least not run the risk of exceeding file size limitations.
+All Screens is a huge page. Did I mention that? It crashed most of the HTML to PDF extensions out there, but I managed to find one in [Just-One-Page-PDF](https://chromewebstore.google.com/detail/just-one-page-pdf-an-awes/fgbhbfdgdlojklkbhdoilkdlomoilbpl). However, we still needed to figure out how to generate a PDF that was small enough to send across different systems without running the risk of exceeding file size limitations.
 
 <Image
   src="/images/all-screens-pdf.png"
