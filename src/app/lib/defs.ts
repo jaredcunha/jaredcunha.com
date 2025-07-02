@@ -1,24 +1,25 @@
 export interface BaseFrontmatter {
-	type: 'blog' | 'photos';
-	title: string;
-	date: string;
-	excerpt: string;
-	slug: string;
-	coverImage?: string;
-	coverImageAltText?: string;
+  type: 'blog' | 'photos';
+  title: string;
+  date: string;
+  excerpt: string;
+  slug: string;
+  coverImage?: string;
+  coverImageAltText?: string;
+  ogImage?: string;
 }
 
 export interface BlogPost extends BaseFrontmatter {
-	type: 'blog';
+  type: 'blog';
 }
 
 export interface PhotoPost extends BaseFrontmatter {
-	type: 'photos';
+  type: 'photos';
 }
 
 export type Post = BlogPost | PhotoPost;
 
 export interface MDXContent {
-	frontmatter: Post;
-	content: string;
+  frontmatter: Post;
+  content: string;
 }

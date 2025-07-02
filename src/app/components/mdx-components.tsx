@@ -24,12 +24,14 @@ export const mdxComponents = {
     src,
     alt,
     caption,
+    className,
   }: {
     src: string;
     alt: string;
     caption?: string;
+    className?: string;
   }) => (
-    <figure>
+    <figure className={className}>
       <Image
         src={src}
         alt={alt}
