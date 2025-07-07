@@ -155,9 +155,9 @@ button,
 // Site wrapper
 .site-wrap {
   margin: 0 auto;
-  padding: 0 units(3);
+  padding: 0 var(--general-padding);
   @media (min-width: $tablet) {
-    padding: 0 units(5);
+    padding: 0 units(4);
   }
 }
 
@@ -253,6 +253,30 @@ button,
   }
 }
 
+// Content block
+.content-block {
+  border-top: var(--frame-width) solid var(--frame-color);
+  padding: var(--general-padding);
+}
+
+.content-block__heading {
+  font-size: var(--32px);
+}
+
+.content-block__more {
+  font-size: var(--20px);
+  margin-top: units(2);
+  text-align: right;
+
+  a {
+    text-decoration: none;
+  }
+  a:hover,
+  a:focus {
+    text-decoration: underline;
+  }
+}
+
 // Syntax highlighting
 [data-highlighted-line] {
   display: inline-block;
@@ -279,6 +303,11 @@ figure[data-rehype-pretty-code-figure] {
       padding-right: 1rem;
     }
   }
+}
+
+// Utility classes
+.site-padding-bottom {
+  padding-bottom: var(--general-padding);
 }
 
 // Dark mode switcher
