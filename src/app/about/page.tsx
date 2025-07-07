@@ -56,8 +56,24 @@ export default function About() {
           <h2 id="career-thus-far" className="content-block__heading">
             A couple things I’ve done
           </h2>
-          <h3>2018-Now: Coforma</h3>
+          <p>
+            Nothing here would have been possible to without the talent and
+            dedication of so many of my incredible teammates. I’m forever
+            grateful to have had the opportunity to be associated with any of
+            these projects, so you if you come across this page and we worked
+            together on any of this, thank you.
+          </p>
+          <h3>2019-Now: Coforma</h3>
           <ul>
+            <li>
+              <p>
+                Led the creation of{' '}
+                <a href="https://coforma.io/resources/playbooks/accessibility-playbook">
+                  Coforma’s Accessibility Playbook
+                </a>
+                .
+              </p>
+            </li>
             <li>
               <p>
                 Founding member of{' '}
@@ -98,6 +114,14 @@ export default function About() {
                 . It was one of the most requested features from Veterans, and
                 now tens of millions of millions of letters have been downloaded
                 since its launch.
+              </p>
+            </li>
+            <li>
+              <p>
+                Built the engineering department from a team of two to over 50.
+                I think I’ll need to reflect on this more in the future, but I’m
+                proud of the work we did to create a culture of collaboration
+                and support, where engineers can thrive and do their best work.
               </p>
             </li>
           </ul>
@@ -164,7 +188,7 @@ export default function About() {
             </li>
             <li>
               <p>
-                I often participated in hiring designers, which involved
+                I regularly participated in hiring designers, which involved
                 reviewing resumes and phone interviews. It is impossible to
                 overstate how critical this is to success of the organization,
                 and by extension, the outcomes we deliver to the public.
