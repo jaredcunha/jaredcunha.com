@@ -151,14 +151,12 @@ This is a feature that’s somewhat buried in All Screens. If you press the "p" 
 
 If you want to explore Direct File through the All Screens yourself, first you’ll need to clone the [Direct File repo](https://github.com/IRS-Public/direct-file). I ran into pesky Node.js issue on my personal laptop, so I included what worked for me using Volta to pin node. I didn’t need to take this step on my work laptop.
 
+Just a quick note on the NodeJS stuff: you’ll probably want to make sure that you’re using Node version `20.19.3` and NPM version `10.8`. The app wouldn’t run when I was using more recent version. I use Volta, so I changed my defaults with `volta install node@20.19.3` and `volta install npm@10.8` rather than updating the `package.json` by using `node pin`.
+
 ```bash
 # Clone the repo and go into the client directory
 $ git clone git@github.com:IRS-Public/direct-file.git
 $ cd direct-file/direct-file/df-client
-
-# this might be just me, but I ran into errors installing modules
-# and building the front-end until I ran this line. YMMV
-$ volta pin node
 
 # Install the dependencies and start the app
 $ npm install
