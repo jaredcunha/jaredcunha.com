@@ -30,6 +30,7 @@
   --28px: 1.75rem;
   --32px: 2rem;
   --36px: 2.25rem;
+  --42px: 2.625rem;
   --48px: 3rem;
   --64px: 4rem;
   --80px: 5rem;
@@ -155,19 +156,13 @@ button,
 // Site wrapper
 .site-wrap {
   margin: 0 auto;
-  padding: 0 var(--general-padding);
-  @media (min-width: $tablet) {
-    padding: 0 units(4);
-  }
-}
-
-.site-wrap--contain {
   max-width: 1600px;
+  padding: 0 var(--general-padding);
 }
 
 // Generic page titles
 .page-title {
-  font-size: var(--36px);
+  font-size: var(--42px);
   margin: units(3) 0;
 
   @media (min-width: $tablet) {
@@ -189,7 +184,7 @@ button,
   > blockquote,
   > div,
   > h1,
-  > h2,
+  > h2:not(.content-block__heading),
   > h3,
   > h4,
   > h5,
@@ -199,9 +194,12 @@ button,
   > hr,
   > pre,
   > code {
-    font-size: var(--18px);
+    font-size: var(--16px);
     margin: 1em 0;
     max-width: 66ch;
+    @media (min-width: $tablet) {
+      font-size: var(--18px);
+    }
   }
 
   blockquote {
@@ -218,9 +216,12 @@ button,
 
   .intro {
     font-family: var(--font-noto-serif);
-    font-size: var(--24px);
+    font-size: var(--20px);
     font-style: italic;
     margin-bottom: 0;
+    @media (min-width: $tablet) {
+      font-size: var(--24px);
+    }
   }
 
   figure {
@@ -240,16 +241,22 @@ button,
     }
   }
 
-  > h2 {
+  > h2:not(.content-block__heading) {
     line-height: 1.35;
-    font-size: var(--32px);
+    font-size: var(--24px);
     margin-bottom: 0;
+    @media (min-width: $tablet) {
+      font-size: var(--32px);
+    }
   }
 
   > h3 {
     line-height: 1.35;
-    font-size: var(--24px);
+    font-size: var(--20px);
     margin-bottom: 0;
+    @media (min-width: $tablet) {
+      font-size: var(--24px);
+    }
   }
 }
 
@@ -259,8 +266,30 @@ button,
   padding: var(--general-padding);
 }
 
+.content-block--xy-only {
+  border: none;
+  padding: 0 var(--general-padding);
+}
+
+.content-block__wrap {
+  margin: 0 auto;
+  max-width: 1600px;
+  padding: 0;
+  @media (min-width: $tablet) {
+    padding: 0 var(--general-padding);
+  }
+}
+
 .content-block__heading {
-  font-size: var(--32px);
+  border-bottom: 4px solid var(--foreground--muted);
+  display: inline-block;
+  font-size: var(--24px);
+  font-weight: 900;
+  margin-bottom: 0;
+  @media (min-width: $desktop) {
+    font-size: var(--32px);
+    margin-bottom: units(1);
+  }
 }
 
 .content-block__more {

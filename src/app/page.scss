@@ -81,26 +81,3 @@
   height: auto;
   width: 100%;
 }
-
-.content-block {
-  border-top: var(--frame-width) solid var(--frame-color);
-  padding: var(--general-padding);
-}
-
-.content-block__heading {
-  font-size: var(--32px);
-}
-
-.content-block__more {
-  font-size: var(--20px);
-  margin-top: units(2);
-  text-align: right;
-
-  a {
-    text-decoration: none;
-  }
-  a:hover,
-  a:focus {
-    text-decoration: underline;
-  }
-}

@@ -66,14 +66,26 @@ Variants
 .posts-list--grid-wide {
   display: grid;
   grid-template-columns: 1fr;
-  column-gap: units(5);
-
+  column-gap: units(3);
   @media (min-width: $tablet) {
-    grid-template-columns: 1fr 1fr 1fr 1fr;
+    column-gap: units(3);
+  }
+  @media (min-width: $desktop-lg) {
+    column-gap: units(5);
   }
 }
 
 .posts-list--grid {
+  @media (min-width: $desktop) {
+    grid-template-columns: 1fr 1fr;
+  }
+  @media (min-width: $desktop-lg) {
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+  }
+}
+
+.posts-list--grid-med,
+.posts-list--grid-wide {
   @media (min-width: $tablet) {
     grid-template-columns: 1fr 1fr 1fr 1fr;
   }
