@@ -37,8 +37,8 @@ export default function Home() {
   return (
     <>
       <main>
-        <div className="hero">
-          <div>
+        <div className="hero content-block--xy-only">
+          <div className="content-block__wrap">
             <h1 className="hero__heading">
               <span className="hero__heading__tagline">
                 Hello, I’m Jared Cunha
@@ -66,22 +66,32 @@ export default function Home() {
         </div>
 
         <section className="content-block">
-          <h2 className="content-block__heading">Blog Posts</h2>
-          <PostsList headingLevel={3} posts={recentBlogPosts} variant="grid" />
-          <p className="content-block__more">
-            <AccessibleLink href="/blog">More blog posts →</AccessibleLink>
-          </p>
+          <div className="content-block__wrap">
+            <h2 className="content-block__heading">Blog Posts</h2>
+            <PostsList
+              headingLevel={3}
+              posts={recentBlogPosts}
+              variant="grid"
+            />
+            <p className="content-block__more">
+              <AccessibleLink href="/blog">More blog posts →</AccessibleLink>
+            </p>
+          </div>
         </section>
         <section className="content-block">
-          <h2 className="content-block__heading">Photo Essays</h2>
-          <PostsList
-            headingLevel={3}
-            posts={recentPhotoPosts}
-            variant="grid-wide"
-          />
-          <p className="content-block__more">
-            <AccessibleLink href="/photos">More photo essays →</AccessibleLink>
-          </p>
+          <div className="content-block__wrap">
+            <h2 className="content-block__heading">Photo Essays</h2>
+            <PostsList
+              headingLevel={3}
+              posts={recentPhotoPosts}
+              variant="grid-wide"
+            />
+            <p className="content-block__more">
+              <AccessibleLink href="/photos">
+                More photo essays →
+              </AccessibleLink>
+            </p>
+          </div>
         </section>
       </main>
     </>

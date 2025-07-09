@@ -9,10 +9,8 @@
 }
 
 .post-navigation__links {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1rem;
   @media (min-width: $tablet) {
+    display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 2rem;
   }
@@ -27,12 +25,15 @@
 }
 
 .post-navigation__next {
-  justify-self: end;
-  text-align: right;
-
+  @media (min-width: $tablet) {
+    justify-self: end;
+    text-align: right;
+  }
   .post-navigation__direction {
-    margin-left: auto;
-    margin-right: -0.5em;
+    @media (min-width: $tablet) {
+      margin-left: auto;
+      margin-right: -0.5em;
+    }
   }
 }
 
