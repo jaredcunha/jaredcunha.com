@@ -61,6 +61,7 @@ export default function Home() {
               className="hero__img"
               width={400}
               height={400}
+              unoptimized
             />
           </div>
         </div>
