@@ -75,10 +75,12 @@ export function getContentImageUrlWithGifSupport(
   const isGif = src.toLowerCase().includes('.gif');
 
   if (isGif) {
-    // For GIFs, don't use auto format to preserve animation
+    // For GIFs, use smaller max width to avoid Cloudinary's 50MP limit across all frames
+    // and don't use auto format to preserve animation
+    const gifMaxWidth = Math.min(maxWidth, 1200); // Cap GIF width at 1200px for safety
     return getOptimizedImageUrl(src, {
-      width: maxWidth,
-      quality,
+      width: gifMaxWidth,
+      quality: Math.min(quality, 95), // Reduce quality for GIFs to manage file size
       format: 'gif', // Keep as GIF to preserve animation
       crop: 'scale',
     });
