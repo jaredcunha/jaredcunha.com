@@ -64,38 +64,6 @@ export function getBlurDataUrl(src: string): string {
 }
 
 /**
- * Get image URL optimized for content display while preserving aspect ratio
- */
-export function getContentImageUrl(
-  src: string,
-  maxWidth: number = 1200,
-  quality: number = 90
-): string {
-  return getOptimizedImageUrl(src, {
-    width: maxWidth,
-    quality,
-    format: 'auto',
-    crop: 'scale', // Preserve aspect ratio
-  });
-}
-
-/**
- * Get a responsive image URL with specific dimensions
- */
-export function getResponsiveImageUrl(
-  src: string,
-  width: number,
-  quality: number = 90
-): string {
-  return getOptimizedImageUrl(src, {
-    width,
-    quality,
-    format: 'auto',
-    crop: 'scale', // Preserve aspect ratio
-  });
-}
-
-/**
  * Get image URL optimized for content display with special GIF handling
  */
 export function getContentImageUrlWithGifSupport(

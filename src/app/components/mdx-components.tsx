@@ -40,7 +40,7 @@ export const mdxComponents = {
     height?: number;
   }) => {
     // Use high quality content image URL that preserves aspect ratio and GIF animation
-    const optimizedSrc = getContentImageUrlWithGifSupport(src, 1200, 92);
+    const optimizedSrc = getContentImageUrlWithGifSupport(src, 2000, 92);
     const blurDataURL = getBlurDataUrl(src);
 
     return (
@@ -48,7 +48,7 @@ export const mdxComponents = {
         <Image
           src={optimizedSrc}
           alt={alt}
-          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 1200px"
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 1600px"
           width={width || 1200}
           height={height || 800}
           className="mdx-image"
