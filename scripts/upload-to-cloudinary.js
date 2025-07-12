@@ -50,7 +50,6 @@ async function uploadImages() {
     try {
       // Check against our local cache of existing images
       if (existingImages.has(publicId)) {
-        console.log(`⚠ Skipped (already exists): ${publicId}`);
         skipped++;
         continue;
       }

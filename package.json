@@ -10,7 +10,7 @@
     "start": "next start",
     "lint": "next lint",
     "upload:images": "node scripts/upload-to-cloudinary.js",
-    "watch:images": "chokidar 'public/images/**/*' -c 'npm run upload:images' --initial"
+    "watch:images": "chokidar 'public/images/**/*' -c 'npm run upload:images' --initial --silent"
   },
   "dependencies": {
     "@mdx-js/loader": "^3.1.0",
