@@ -1,5 +1,6 @@
 import Image from 'next/image';
 import { PhotoGrid, PhotoGridItem } from '../components/ui/PhotoGrid/PhotoGrid';
+import { getOptimizedImageUrl } from '../utils/image-cdn';
 
 export default function About() {
   return (
@@ -37,7 +38,7 @@ export default function About() {
             <PhotoGrid>
               <PhotoGridItem cols={6}>
                 <Image
-                  src="/images/jared-obama.jpg"
+                  src={getOptimizedImageUrl('/images/jared-obama.jpg')}
                   alt="Me shaking hands with President Obama on the Navy Steps of the Eisenhower Executive Office Building, outside the West Wing of the White House."
                   width={600}
                   height={400}
@@ -45,7 +46,7 @@ export default function About() {
               </PhotoGridItem>
               <PhotoGridItem cols={6}>
                 <Image
-                  src="/images/me-beard.jpg"
+                  src={getOptimizedImageUrl('/images/me-beard.jpg')}
                   alt="Portrait of me with a beard, wearing a black shirt and glasses, smiling at the camera."
                   width={600}
                   height={400}
