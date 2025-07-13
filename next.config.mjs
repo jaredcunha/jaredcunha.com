@@ -3,7 +3,7 @@ import withMDX from '@next/mdx';
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
-    // Longer cache since Cloudinary handles optimization
+    // Longer cache since Cloudinary handles most optimization
     minimumCacheTTL: 31536000, // 1 year (365 days)
     // Add Cloudinary domain for external images
     remotePatterns: [
@@ -14,9 +14,8 @@ const nextConfig = {
         pathname: '/**',
       },
     ],
-    // Optional: Disable Next.js image optimization since Cloudinary handles it
-    // This reduces Vercel's compute usage and cache storage
-    unoptimized: false, // Keep as false to let Next.js handle responsive images
+    // Keep Next.js optimization for fallback/non-Cloudinary images
+    unoptimized: false,
   },
   async headers() {
     return [

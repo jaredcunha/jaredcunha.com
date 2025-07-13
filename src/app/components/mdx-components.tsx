@@ -1,11 +1,7 @@
-import Image from 'next/image';
 import { PhotoGrid, PhotoGridItem } from './ui/PhotoGrid/PhotoGrid';
 import Intro from './Intro';
 import { AccessibleLink } from './ui/Link/Link';
-import {
-  getContentImageUrlWithGifSupport,
-  getBlurDataUrl,
-} from '@/app/utils/image-cdn';
+import { Image } from './ui/Image/Image';
 
 export const mdxComponents = {
   Link: AccessibleLink,
@@ -39,22 +35,17 @@ export const mdxComponents = {
     width?: number;
     height?: number;
   }) => {
-    // Use high quality content image URL that preserves aspect ratio and GIF animation
-    const optimizedSrc = getContentImageUrlWithGifSupport(src, 2000, 92);
-    const blurDataURL = getBlurDataUrl(src);
-
     return (
       <figure className={className}>
         <Image
-          src={optimizedSrc}
+          src={src}
           alt={alt}
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 1600px"
           width={width || 1200}
-          height={height || 800}
+          {...(height && { height })}
           className="mdx-image"
           loading="lazy"
-          placeholder="blur"
-          blurDataURL={blurDataURL}
+          quality={40}
           style={{
             width: '100%',
             height: 'auto', // Preserve aspect ratio

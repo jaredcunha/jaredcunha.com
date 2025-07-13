@@ -1,8 +1,9 @@
-import Image from 'next/image';
+'use client';
+
 import { AccessibleLink } from '../Link/Link';
 import { BlogPost, PhotoPost } from '@/app/lib/defs';
 import Date from '../../Date';
-import { getOptimizedImageUrl } from '@/app/utils/image-cdn';
+import { Image } from '../Image/Image';
 import './PostsList.scss';
 
 interface PostsListProps {
@@ -35,14 +36,12 @@ export function PostsList({
                 aria-hidden="true"
               >
                 <Image
-                  src={getOptimizedImageUrl(post.coverImage, {
-                    width: 900,
-                    height: 600,
-                  })}
+                  src={post.coverImage}
                   alt={post.coverImageAltText || ''}
-                  width={900}
+                  width={800}
                   height={600}
                   className="cover-image"
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                 />
               </AccessibleLink>
             )}
