@@ -14,6 +14,7 @@ interface ImageProps {
   priority?: boolean;
   sizes?: string;
   style?: React.CSSProperties;
+  useBlurPlaceholder?: boolean; // Optional prop to enable blur placeholder
 }
 
 export function Image({
@@ -26,6 +27,7 @@ export function Image({
   priority = false,
   sizes,
   style,
+  useBlurPlaceholder = false, // Default to false
 }: ImageProps) {
   const [blurDataURL, setBlurDataURL] = useState<string | undefined>(undefined);
 
@@ -65,6 +67,12 @@ export function Image({
 
   // Generate proper blur data URL for better placeholder support
   useEffect(() => {
+    // Only generate blur data URL if useBlurPlaceholder is true
+    console.log('useBlurPlaceholder:', useBlurPlaceholder);
+    if (!useBlurPlaceholder || src.toLowerCase().includes('.png')) {
+      return;
+    }
+
     const generateBlurDataURL = async () => {
       try {
         // Generate a small, low-quality version of the image for blur placeholder
@@ -104,7 +112,7 @@ export function Image({
     };
 
     generateBlurDataURL();
-  }, [publicId]);
+  }, [publicId, useBlurPlaceholder]);
 
   return (
     <CldImage
@@ -116,8 +124,8 @@ export function Image({
       quality={optimizedQuality}
       loading={loading}
       priority={priority}
-      placeholder={blurDataURL ? "blur" : undefined}
-      blurDataURL={blurDataURL}
+      placeholder={useBlurPlaceholder && blurDataURL ? 'blur' : undefined}
+      blurDataURL={useBlurPlaceholder ? blurDataURL : undefined}
       sizes={sizes}
       style={style}
       dpr="auto"
