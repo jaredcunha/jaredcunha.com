@@ -1,6 +1,7 @@
 'use client';
 
-import { CldImage } from 'next-cloudinary';
+import { CldImage, getCldImageUrl } from 'next-cloudinary';
+import { useEffect, useState } from 'react';
 
 interface ImageProps {
   src: string;
@@ -13,6 +14,7 @@ interface ImageProps {
   priority?: boolean;
   sizes?: string;
   style?: React.CSSProperties;
+  useBlurPlaceholder?: boolean; // Optional prop to enable blur placeholder
 }
 
 export function Image({
@@ -25,7 +27,10 @@ export function Image({
   priority = false,
   sizes,
   style,
+  useBlurPlaceholder = false, // Default to false
 }: ImageProps) {
+  const [blurDataURL, setBlurDataURL] = useState<string | undefined>(undefined);
+
   // Convert local image path to Cloudinary public_id
   const getPublicId = (src: string): string => {
     // If src is already a public_id or external URL, return as-is
@@ -60,11 +65,54 @@ export function Image({
   const optimizedQuality = quality || getQuality(src, 90);
   const unoptimized = src.toLowerCase().includes('.gif') ? true : false;
 
-  // Generate blur data URL using Cloudinary
-  const cloudName = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME;
-  const blurDataURL = cloudName
-    ? `https://res.cloudinary.com/${cloudName}/image/upload/w_10,q_10,f_jpg/${publicId}`
-    : undefined;
+  // Generate proper blur data URL for better placeholder support
+  useEffect(() => {
+    // Only generate blur data URL if useBlurPlaceholder is true
+    console.log('useBlurPlaceholder:', useBlurPlaceholder);
+    if (!useBlurPlaceholder || src.toLowerCase().includes('.png')) {
+      return;
+    }
+
+    const generateBlurDataURL = async () => {
+      try {
+        // Generate a small, low-quality version of the image for blur placeholder
+        const blurImageUrl = getCldImageUrl({
+          src: publicId,
+          width: 10,
+          height: 10,
+          quality: 10,
+          format: 'jpg',
+        });
+
+        const response = await fetch(blurImageUrl);
+        const arrayBuffer = await response.arrayBuffer();
+
+        // Convert arrayBuffer to base64 in browser environment
+        const bytes = new Uint8Array(arrayBuffer);
+        let binary = '';
+        for (let i = 0; i < bytes.byteLength; i++) {
+          binary += String.fromCharCode(bytes[i]);
+        }
+        const base64 = btoa(binary);
+        const dataUrl = `data:${
+          response.type || 'image/jpeg'
+        };base64,${base64}`;
+
+        setBlurDataURL(dataUrl);
+      } catch (error) {
+        console.warn('Failed to generate blur data URL:', error);
+        // Fallback to simple Cloudinary URL
+        const cloudName = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME;
+        if (cloudName) {
+          setBlurDataURL(
+            `https://res.cloudinary.com/${cloudName}/image/upload/w_10,q_10,f_jpg/${publicId}`
+          );
+        }
+      }
+    };
+
+    generateBlurDataURL();
+  }, [publicId, useBlurPlaceholder]);
 
   return (
     <CldImage
@@ -76,8 +124,8 @@ export function Image({
       quality={optimizedQuality}
       loading={loading}
       priority={priority}
-      placeholder="blur"
-      blurDataURL={blurDataURL}
+      placeholder={useBlurPlaceholder && blurDataURL ? 'blur' : undefined}
+      blurDataURL={useBlurPlaceholder ? blurDataURL : undefined}
       sizes={sizes}
       style={style}
       dpr="auto"

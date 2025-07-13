@@ -54,6 +54,7 @@ export const mdxComponents = {
             width: '100%',
             height: 'auto', // Preserve aspect ratio
           }}
+          useBlurPlaceholder={true} // Enable blur placeholder by default
         />
         {caption && <figcaption>{caption}</figcaption>}
       </figure>

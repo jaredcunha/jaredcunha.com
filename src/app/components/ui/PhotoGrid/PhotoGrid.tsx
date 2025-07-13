@@ -60,7 +60,13 @@ export function PhotoGridItem({ cols, src, alt }: PhotoGridItemProps) {
 
   return (
     <div className={`photo-grid__item photo-grid__item--cols-${cols}`}>
-      <Image src={src} alt={alt ?? ''} width={width} sizes={sizes} />
+      <Image
+        useBlurPlaceholder={true}
+        src={src}
+        alt={alt ?? ''}
+        width={width}
+        sizes={sizes}
+      />
     </div>
   );
 }
