@@ -27,6 +27,7 @@ export const mdxComponents = {
     className,
     width,
     height,
+    sizes,
   }: {
     src: string;
     alt: string;
@@ -34,13 +35,16 @@ export const mdxComponents = {
     className?: string;
     width?: number;
     height?: number;
+    sizes?: string;
   }) => {
+    const sizesProp =
+      sizes || '(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 1600px';
     return (
       <figure className={className}>
         <Image
           src={src}
           alt={alt}
-          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 1600px"
+          sizes={sizesProp}
           width={width || 1200}
           {...(height && { height })}
           className="mdx-image"
