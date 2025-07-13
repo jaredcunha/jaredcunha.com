@@ -1,9 +1,8 @@
-import Image from 'next/image';
 import { getPostsByType } from './utils/mdx';
 import { BlogPost, PhotoPost } from './lib/defs';
 import { AccessibleLink } from './components/ui/Link/Link';
 import { PostsList } from './components/ui/PostsList/PostsList';
-import { getOptimizedImageUrl } from './utils/image-cdn';
+import { Image } from './components/ui/Image/Image';
 import './page.scss';
 
 export default function Home() {
@@ -57,11 +56,13 @@ export default function Home() {
           </div>
           <div className="hero__feature">
             <Image
-              src={getOptimizedImageUrl('/images/_ui/me.png')}
+              src="/images/_ui/me.png"
               alt=""
               className="hero__img"
               width={400}
               height={400}
+              loading="eager"
+              priority={true}
             />
           </div>
         </div>
