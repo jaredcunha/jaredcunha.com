@@ -1,5 +1,4 @@
 import { PhotoGrid, PhotoGridItem } from '../components/ui/PhotoGrid/PhotoGrid';
-import { Image } from '../components/ui/Image/Image';
 
 export default function About() {
   return (
