@@ -93,10 +93,13 @@ Variants
 
 .posts-list--grid-med {
   @media (min-width: $tablet) {
-    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-columns: 1fr 1fr;
     .posts-list__item {
       margin-bottom: units(3);
     }
+  }
+  @media (min-width: $desktop) {
+    grid-template-columns: 1fr 1fr 1fr;
   }
 }
 
