@@ -27,23 +27,40 @@ export function PhotoGridItem({ cols, src, alt }: PhotoGridItemProps) {
   const getSizes = (cols: number): string => {
     switch (cols) {
       case 12:
-        return '100vw';
+        return '90vw';
       case 8:
-        return '(max-width: 768px) 100vw, 60vw';
+        return '(min-width: 768px) 60vw, 90vw';
       case 6:
-        return '(max-width: 768px) 100vw, 40vw';
+        return '(min-width: 768px) 45vw, 90vw';
       case 4:
-        return '(max-width: 1200px) 100vw, 33vw';
+        return '(min-width: 768px) 33vw, 25vw';
       default:
-        return '100vw';
+        return '90vw';
+    }
+  };
+
+  // Calculate appropriate width based on largest expected size for mobile-first approach
+  const getWidth = (cols: number): number => {
+    switch (cols) {
+      case 12:
+        return 800; // Reduced from 1200 for better mobile performance
+      case 8:
+        return 600; // Reduced from 800
+      case 6:
+        return 400; // Reduced from 600
+      case 4:
+        return 300; // Reduced from 400
+      default:
+        return 800;
     }
   };
 
   const sizes = getSizes(cols);
+  const width = getWidth(cols);
 
   return (
     <div className={`photo-grid__item photo-grid__item--cols-${cols}`}>
-      <Image src={src} alt={alt ?? ''} width={1200} sizes={sizes} />
+      <Image src={src} alt={alt ?? ''} width={width} sizes={sizes} />
     </div>
   );
 }

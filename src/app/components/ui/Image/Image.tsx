@@ -58,6 +58,7 @@ export function Image({
 
   const publicId = getPublicId(src);
   const optimizedQuality = quality || getQuality(src, 90);
+  const unoptimized = src.toLowerCase().includes('.gif') ? true : false;
 
   // Generate blur data URL using Cloudinary
   const cloudName = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME;
@@ -79,6 +80,9 @@ export function Image({
       blurDataURL={blurDataURL}
       sizes={sizes}
       style={style}
+      dpr="auto"
+      format="auto"
+      unoptimized={unoptimized} // Use unoptimized for GIFs
     />
   );
 }
