@@ -79,6 +79,8 @@ export function Image({
       blurDataURL={blurDataURL}
       sizes={sizes}
       style={style}
+      dpr="auto"
+      format="auto"
     />
   );
 }
