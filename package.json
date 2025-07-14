@@ -10,7 +10,7 @@
     "start": "next start",
     "lint": "next lint",
     "upload:images": "node scripts/upload-to-cloudinary.js",
-    "watch:images": "chokidar 'public/images/**/*' -c 'npm run upload:images' --initial --silent"
+    "watch:images": "chokidar 'public/images/**/*.{jpg,jpeg,png,gif,webp}' --ignore '**/*.temp' --ignore '**/*.backup' -c 'NODE_ENV=development npm run upload:images' --silent"
   },
   "dependencies": {
     "@mdx-js/loader": "^3.1.0",
@@ -31,6 +31,7 @@
     "remark-mdx-frontmatter": "^5.2.0",
     "remark-parse": "^11.0.0",
     "rss": "^1.2.2",
+    "sharp": "^0.34.3",
     "shiki": "^3.6.0",
     "unified": "^11.0.5"
   },

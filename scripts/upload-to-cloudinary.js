@@ -2,9 +2,17 @@ import { v2 as cloudinary } from 'cloudinary';
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import sharp from 'sharp';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+
+// Configuration
+const MAX_WIDTH = 2400;
+const TEST_MODE = process.argv.includes('--test'); // Add --test flag to run in test mode
+const FORCE_UPLOAD = process.argv.includes('--force'); // Add --force flag to overwrite existing images
+const DEV_MODE =
+  process.env.NODE_ENV === 'development' || process.argv.includes('--dev'); // Skip optimization in dev
 
 // Load environment variables
 import dotenv from 'dotenv';
@@ -16,6 +24,95 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
+async function optimizeImage(inputPath, outputPath) {
+  const ext = path.extname(inputPath).toLowerCase();
+
+  // Skip GIFs as requested
+  if (ext === '.gif') {
+    console.log(`Skipping GIF optimization: ${path.basename(inputPath)}`);
+    return false;
+  }
+
+  // Only process JPG and PNG files
+  if (!['.jpg', '.jpeg', '.png'].includes(ext)) {
+    return false;
+  }
+
+  try {
+    const image = sharp(inputPath);
+    const metadata = await image.metadata();
+
+    console.log(
+      `Processing: ${path.basename(inputPath)} (${metadata.width}x${
+        metadata.height
+      })`
+    );
+
+    // Only resize if width is greater than MAX_WIDTH
+    if (metadata.width <= MAX_WIDTH) {
+      console.log(`  → No resize needed (already ${metadata.width}px wide)`);
+      return false; // Don't process images that don't need resizing
+    }
+
+    console.log(`  → Resizing from ${metadata.width}px to ${MAX_WIDTH}px wide`);
+
+    // Get original file size for comparison
+    const originalSize = fs.statSync(inputPath).size;
+
+    // Simple resize-only approach - don't re-compress, just resize
+    await image
+      .resize(MAX_WIDTH, null, {
+        withoutEnlargement: true,
+        fit: 'inside',
+      })
+      .toFile(outputPath);
+
+    const optimizedSize = fs.statSync(outputPath).size;
+
+    // Only keep optimized version if it's smaller or reasonably close in size
+    if (optimizedSize > originalSize * 1.2) {
+      // Allow 20% size increase for resize
+      console.log(
+        `  → Optimized version too large (${formatBytes(
+          originalSize
+        )} → ${formatBytes(optimizedSize)}), keeping original`
+      );
+      fs.unlinkSync(outputPath); // Delete the larger file
+      return false;
+    }
+
+    const change =
+      optimizedSize > originalSize
+        ? `+${(((optimizedSize - originalSize) / originalSize) * 100).toFixed(
+            1
+          )}%`
+        : `-${(((originalSize - optimizedSize) / originalSize) * 100).toFixed(
+            1
+          )}%`;
+
+    console.log(
+      `  → Size change: ${change} (${formatBytes(originalSize)} → ${formatBytes(
+        optimizedSize
+      )})`
+    );
+    return true;
+  } catch (error) {
+    console.error(
+      `  ✗ Error optimizing ${path.basename(inputPath)}:`,
+      error.message
+    );
+    return false;
+  }
+}
+
+function formatBytes(bytes) {
+  if (bytes === 0) return '0 Bytes';
+  const k = 1024;
+  const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+  const i = Math.floor(Math.log(bytes) / Math.log(k));
+  return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+}
+
 async function uploadImages() {
   const imagesDir = path.join(__dirname, '../public/images');
 
@@ -24,15 +121,27 @@ async function uploadImages() {
     return;
   }
 
-  console.log('Starting image upload to Cloudinary...');
+  console.log('🖼️  Starting image optimization and upload to Cloudinary...');
   console.log('Images directory:', imagesDir);
+  console.log('Max width:', MAX_WIDTH + 'px');
+  console.log('Test mode:', TEST_MODE ? 'ON (no uploads)' : 'OFF');
+  console.log('Dev mode:', DEV_MODE ? 'ON (skip optimization)' : 'OFF');
+  console.log(
+    'Force upload:',
+    FORCE_UPLOAD ? 'ON (overwrite existing)' : 'OFF'
+  );
+  console.log('');
 
-  // Get all existing images from Cloudinary in one API call
-  console.log('Fetching existing images from Cloudinary...');
-  const existingImages = await getAllExistingImages();
-  console.log(`Found ${existingImages.size} existing images in Cloudinary`);
+  // Get all existing images from Cloudinary in one API call (skip in test mode)
+  let existingImages = new Set();
+  if (!TEST_MODE) {
+    console.log('Fetching existing images from Cloudinary...');
+    existingImages = await getAllExistingImages();
+    console.log(`Found ${existingImages.size} existing images in Cloudinary`);
+  }
 
   const files = getAllFiles(imagesDir);
+  let optimized = 0;
   let uploaded = 0;
   let skipped = 0;
   let errors = 0;
@@ -40,7 +149,7 @@ async function uploadImages() {
   for (const filePath of files) {
     const relativePath = path.relative(imagesDir, filePath);
 
-    if (!/\.(jpg|jpeg|png|webp|gif)$/i.test(relativePath)) {
+    if (!/\.(jpg|jpeg|png|gif)$/i.test(relativePath)) {
       continue;
     }
 
@@ -48,8 +157,33 @@ async function uploadImages() {
     const publicId = relativePath.replace(/\.[^/.]+$/, '').replace(/\\/g, '/');
 
     try {
-      // Check against our local cache of existing images
-      if (existingImages.has(publicId)) {
+      // Step 1: Optimize the image (skip in dev mode to avoid infinite loop)
+      const tempPath = filePath + '.temp';
+      let wasOptimized = false;
+
+      if (!DEV_MODE) {
+        wasOptimized = await optimizeImage(filePath, tempPath);
+
+        if (wasOptimized) {
+          // Replace original with optimized version
+          fs.renameSync(tempPath, filePath);
+          optimized++;
+          console.log(`✓ Optimized: ${relativePath}`);
+        } else {
+          console.log(`→ Skipped optimization: ${relativePath}`);
+        }
+      } else {
+        console.log(`→ Skipped optimization (dev mode): ${relativePath}`);
+      }
+
+      // Step 2: Upload to Cloudinary (skip in test mode)
+      if (TEST_MODE) {
+        console.log(`[TEST MODE] Would upload: ${relativePath} -> ${publicId}`);
+        continue;
+      }
+
+      // Check if image already exists (unless force upload is enabled)
+      if (!FORCE_UPLOAD && existingImages.has(publicId)) {
         skipped++;
         continue;
       }
@@ -58,22 +192,37 @@ async function uploadImages() {
       console.log(`Uploading: ${relativePath} -> ${publicId}`);
       await cloudinary.uploader.upload(filePath, {
         public_id: publicId,
-        overwrite: false,
+        overwrite: FORCE_UPLOAD, // Only overwrite if force flag is set
         resource_type: 'image',
       });
 
       console.log(`✓ Uploaded: ${publicId}`);
       uploaded++;
     } catch (error) {
-      console.error(`✗ Error uploading ${relativePath}:`, error.message);
+      console.error(`✗ Error processing ${relativePath}:`, error.message);
+      // Clean up temp file if it exists
+      const tempPath = filePath + '.temp';
+      if (fs.existsSync(tempPath)) {
+        fs.unlinkSync(tempPath);
+      }
       errors++;
     }
   }
 
-  console.log('\n📊 Upload Summary:');
-  console.log(`✓ Uploaded: ${uploaded}`);
-  console.log(`⚠ Skipped: ${skipped}`);
+  console.log('\n📊 Processing Summary:');
+  console.log(`🎨 Optimized: ${optimized}`);
+  if (!TEST_MODE) {
+    console.log(`✓ Uploaded: ${uploaded}`);
+    console.log(`⚠ Skipped: ${skipped}`);
+  }
   console.log(`✗ Errors: ${errors}`);
+
+  if (TEST_MODE) {
+    console.log(
+      '\n💡 This was a test run. To actually upload, run without --test flag'
+    );
+    console.log('💡 To overwrite existing images, add --force flag');
+  }
 }
 
 async function getAllExistingImages() {
