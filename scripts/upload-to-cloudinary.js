@@ -11,8 +11,6 @@ const __dirname = path.dirname(__filename);
 const MAX_WIDTH = 2400;
 const TEST_MODE = process.argv.includes('--test'); // Add --test flag to run in test mode
 const FORCE_UPLOAD = process.argv.includes('--force'); // Add --force flag to overwrite existing images
-const DEV_MODE =
-  process.env.NODE_ENV === 'development' || process.argv.includes('--dev'); // Skip optimization in dev
 
 // Load environment variables
 import dotenv from 'dotenv';
@@ -125,7 +123,6 @@ async function uploadImages() {
   console.log('Images directory:', imagesDir);
   console.log('Max width:', MAX_WIDTH + 'px');
   console.log('Test mode:', TEST_MODE ? 'ON (no uploads)' : 'OFF');
-  console.log('Dev mode:', DEV_MODE ? 'ON (skip optimization)' : 'OFF');
   console.log(
     'Force upload:',
     FORCE_UPLOAD ? 'ON (overwrite existing)' : 'OFF'
@@ -157,23 +154,25 @@ async function uploadImages() {
     const publicId = relativePath.replace(/\.[^/.]+$/, '').replace(/\\/g, '/');
 
     try {
-      // Step 1: Optimize the image (skip in dev mode to avoid infinite loop)
+      // Step 1: Optimize the image (always optimize to ensure quality)
       const tempPath = filePath + '.temp';
       let wasOptimized = false;
 
-      if (!DEV_MODE) {
-        wasOptimized = await optimizeImage(filePath, tempPath);
+      // Skip optimization if file is already a .temp or .backup file to prevent infinite loops
+      if (filePath.includes('.temp') || filePath.includes('.backup')) {
+        console.log(`→ Skipped temp/backup file: ${relativePath}`);
+        continue;
+      }
 
-        if (wasOptimized) {
-          // Replace original with optimized version
-          fs.renameSync(tempPath, filePath);
-          optimized++;
-          console.log(`✓ Optimized: ${relativePath}`);
-        } else {
-          console.log(`→ Skipped optimization: ${relativePath}`);
-        }
+      wasOptimized = await optimizeImage(filePath, tempPath);
+
+      if (wasOptimized) {
+        // Replace original with optimized version
+        fs.renameSync(tempPath, filePath);
+        optimized++;
+        console.log(`✓ Optimized: ${relativePath}`);
       } else {
-        console.log(`→ Skipped optimization (dev mode): ${relativePath}`);
+        console.log(`→ Skipped optimization: ${relativePath}`);
       }
 
       // Step 2: Upload to Cloudinary (skip in test mode)
