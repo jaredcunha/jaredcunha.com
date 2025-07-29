@@ -1,0 +1,153 @@
+---
+type: blog
+title: 'Next/Image to Cloudinary: Migration Walkthrough Using GitHub Copilot'
+excerpt: I migrated from next/image to Cloudinary while maintaining a manageable workflow, using Copilot to bounce around ideas and speed up the refactor.
+slug: 'migrating-from-next-image-to-cloudinary-with-copilot'
+categories: ['AI', 'Web development']
+date: 2025-07-15
+---
+
+<Intro>
+  I migrated from next/image to Cloudinary while maintaining a manageable
+  workflow, using Copilot to bounce around ideas and speed up the refactor.
+</Intro>
+
+The two main priorities for this site are serving images and maintaining a workflow that doesn’t involve jumping through too many hoops, or really any hoops for that matter. I always knew that images would likely represent the biggest challenge and would ultimately impact my workflow. It was something I anticipated needing to deal with, but didn’t expect it so soon.
+
+The first tool I reached for was next/image. Implementing it was seamless, the optimizations were great, and I loved how easy it was to configure compared to Gatsby. However, after two and half weeks, I had already hit 75% of my cache reads limit on Vercel. This site is getting more traffic than my old one, mainly because I’m more actively sharing content this time. But still, I don’t have many photo essays and the ones I do have aren’t getting the traffic that my blog posts are doing.
+
+Admittedly, I don’t have much experience with image transformations. With the Gatsby site, I was doing the transformation as part of the build process. So, I guess I was little surprised with how quickly this site was building, but I suppose that might have been a sign that I overlooked something important.
+
+Here’s my basic approach to this site: do the minimal amount of work until it’s obvious that I need to make a change. It’s a personal site, I’m allowed! For images… I was uploading the files I was exporting directly out of Lightroom, no resizing or anything. These are photos that are over 6000 pixels wide. Probably doesn’t take much to see the issue.
+
+My first tactic was to update the `minimumCacheTTL` in my NextJS config file. I would make change, wait a few days, and see if it made any difference. After a couple rounds, I didn’t notice any significant changes in cache reads. That’s when I turned to Copilot to help come up with some options.
+
+<Prompt>
+  Don’t make any changes yet. What can I do to reduce the image optimization
+  cache reads happening on Vercel? Give me pros and cons of each approach.
+</Prompt>
+
+If you ask Copilot for something, it tends to just go off and start making changes. I kinda want a heads up on its intentions, so I’ve found that I get better results when I specify that I don’t want any changes just yet, that I want options, and that I want pros cons. This lets me get more granular for when it’s time to generate the code.
+
+In this case, the options
+
+1. Pre-optimize Images at Build Time
+2. Use Static Imports Instead of Dynamic Paths
+3. Increase minimumCacheTTL (You've already done this)
+4. Use External Image CDN (Cloudinary, ImageKit, etc.)
+5. Use unoptimized={true} with Pre-optimized Images
+
+From there, I was leaning towards moving my images to an external image CDN. I thought it be worth double checking what that entails to see if there were any considerations for a migration strategy I might have overlooked.
+
+<Prompt>
+  Walk me through what we'd need to do for using an external image cdn
+</Prompt>
+
+For the migration, I appreciated getting an estimated timeline. When work was complete, these numbers were way off. I got everything done in significantly less time, but still took up most of a Saturday and some more time Sunday morning.
+
+- **Setup & upload:** 2-4 hours
+- **Component updates:** 1-2 hours
+- **Content migration:** 2-6 hours (depending on volume)
+- **Testing & optimization:** 2-4 hours
+
+Copilot created a node script to handle the image uploads, which turned out to be very useful to have on hand for later use. It’s first pass though was hugely inefficient because it was running API calls on each image, every time. The more images, the worse it gets.
+
+## Adding some refinement
+
+<Prompt>
+  How can we make this even faster? I can see this check taking much longer
+  every time I add more images
+</Prompt>
+
+This prompted Copilot to update the script to use the List API to do a batch check. That was much faster, but I still needed to go in and clean up some `console.log` statements because things were getting noisy.
+
+When I ran the site on localhost, the images were both extremely low quality, and most of the images were distorted by incorrect aspect ratios. Fixing this wasn’t difficult, but it was frustrating that it was something I needed to correct. Seeing if Copliot was capable of making these corrections, I had to point out specific images in specific posts that needed correction or were just plain missing.
+
+<Prompt>
+  okay - I noticed that gifs are missing, such as the one on this page:
+  /blog/exploring-direct-file-using-the-all-screens-page
+</Prompt>
+
+It was several rounds of this until all the kinks were ironed out. On top of that up, it created several functions that later become unnecessary that I manually removed.
+
+With the basic functionality finally in play, the next step was to clean things up. I migrated Copilot’s initial image component to use `CldImage` specifically for NextJS + Cloudinary setups, and then fed all of my images through a single `Image` component, which is just something of a wrapper, followed by another migration to make using these components in MDX a little easier so that I don’t have write as many props. That migration, CoPilot made real easy.
+
+<Prompt>
+I would like to refactor the way I'm writing PhotoGridItem in my posts.
+
+Currently, it is written like:
+
+```
+<PhotoGridItem cols={12}>
+    <Image
+      src="/images/rome-2023/bus-1.jpg"
+      alt="Busy street taken from a city tour bus with historic buildings in the background."
+    />
+  </PhotoGridItem>
+```
+
+I would like to refactor the way I'm writing PhotoGridItem in my posts.
+
+I would like for these to be written as
+
+```
+<PhotoGridItem cols={12} src="/images/rome-2023/bus-1.jpg" alt="Busy street taken from a city tour bus with historic buildings in the background." />
+```
+
+</Prompt>
+
+Those changes are very tedious to do manually, and probably have been one fo the more helpful aspects of agentic coding. The way Copilot handles this is by writing a node script, which I run once and then delete.
+
+## Checking on the results.
+
+After some time with the new settings, I wanted to check how things were going after the changes I made.
+
+On Vercel, the results were immediate. But that should be expected because we’re not using them anymore.
+
+<Image
+  src="/images/cache-reads.png"
+  alt="A bar chart showing 'Image Cache Reads' over time from June 25 to July 23, displaying 258,845 out of 300,000 total reads. The chart shows moderate activity (5k-30k reads per day) from June 25 through July 12, then drops dramatically to near zero starting around July 13 and remaining flat through July 23."
+  caption="On July 13, the day I migrated to cloudinary, there is a significant drop-off in cache reads."
+/>
+
+On Cloudinary, I wasn’t able to see to see results until the next day. But when I saw the results, it was pretty shocking. Just with a few hours of testing on localhost, I used nearly 25% of my monthly credits.
+
+<Image
+  src="/images/cloudinary.png"
+  alt="A line chart showing 'Bandwidth & Requests' from July 12-22, 2025. Summary statistics show 8.95K total requests and 2.72 GB total bandwidth, with all traffic being images (no video). The chart displays a sharp spike on July 13 reaching approximately 6K requests and 1.9 GB bandwidth, then drops dramatically to near-zero levels for the remainder of the period through July 22."
+  caption="On July 13, we have a huge number of requests followed by a significant drop-off"
+/>
+
+When I first looked at this chart, it was July 14th. Clearly, using full-res images wasn’t going to work. I needed to pre-optimize them or end up running into significant costs. Here’s what I went with:
+
+<Prompt>
+I already have local copies of unoptimized images. I would like to preprocess the images. Here's what I would like to do:
+
+1. Maximum width of 2400px
+2. I would like to replace the originals (i already saved a copy of the originals just in case)
+3. I would also like to push the new optimized images to overwrite what I have in cloudinary, but wondering if we can do a local test first before we upload
+
+</Prompt>
+
+What was cool about this was that Copilot updated my upload script to include different usage commands. Adding the ability to test locally first and then force upload. What wasn’t cool was that the optimized file sizes were three times larger. Using Copilot again, I was able to address the problem through several rounds of trial and error (on Copilot’s part). But again, it was another unnecessary annoyance.
+
+By that point, Copilot had created numerous scripts that only made sense to run once and never again. It made no sense to keep these so I deleted them. When generating these files, it’d be great if they included a comment to flag them as single use.
+
+The images are now optimized. Referencing the chart, there a huge drop-off after July 13th. What remains to be seen is what this is going to look like once the caches expire in about a month. So that part will remain a bit of an unknown.
+
+Images from Cloudinary were still loading a bit more slowly, which was causing some visible layout shifts. To fix that, I then set up blurred image placeholders that I’ve been meaning to do.
+
+## Workflow
+
+Now, workflow. The most important part. I still have a bad taste in my mouth from when slicing up photoshop files—when Photoshop was the tool of choice for web design—or exporting dozens of images, individually. Even with modern tooling, I don’t a single extra step.
+
+What I settled on was running the image pre-optimizations and uploading to Cloudinary on `npm run dev`, so it’s not part of the build process at all. No additional work on my part, and no risk of running into build time limits as I add more photo essays. There’s a watch on my images folder, so while I’m running the dev script, new images are optimized and uploaded as soon as I drop them in the images folder. Why did I choose this approach? When I’m writing, it’s always in dev mode because I like to see how things are looking in the browser as I go. It’s also important for laying out my grids for photo essays.
+
+## Next steps
+
+I don’t think that I’m fully out of the woods yet. We’ll know in about a month or so. In the meantime, here’s what I think is likely on the horizon:
+
+- Continue committing my images to version control? Seems less necessary now, but before I do that, I need think about social media share images.
+- See if my approach with Cloudinary truly holds. If that doesn’t work, I might just need to not use the responsive images.
+
+All in all, it ended up being a good weekend and I was glad to focus on figuring this out. It gave me a lot think about for a future post about using LLMs, how their imperfections might be fine for development work, but gave me a lot more concern about some their broader applications, particularly where it needs more accuracy the first time. In this post, for brevity, I underrepresented the amount of back-and-forth it took to do all this.

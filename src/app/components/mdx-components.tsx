@@ -2,11 +2,13 @@ import { PhotoGrid, PhotoGridItem } from './ui/PhotoGrid/PhotoGrid';
 import Intro from './Intro';
 import { AccessibleLink } from './ui/Link/Link';
 import { Image } from './ui/Image/Image';
+import { Prompt } from './ui/Prompt/Prompt';
 
 export const mdxComponents = {
   Link: AccessibleLink,
   PhotoGrid,
   PhotoGridItem,
+  Prompt,
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   Intro: (props: any) => {
     // If children is a single <p>, unwrap its children

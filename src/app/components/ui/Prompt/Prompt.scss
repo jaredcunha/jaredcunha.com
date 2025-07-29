@@ -1,0 +1,38 @@
+.prompt {
+  display: flex;
+  gap: 0.75em;
+  margin: 1em 0;
+  align-items: flex-start;
+
+  &__avatar {
+    flex-shrink: 0;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background-color: #f3f4f6;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #e5e7eb;
+  }
+
+  &__initial {
+    font-size: 14px;
+    font-weight: 600;
+    color: #374151;
+  }
+
+  &__content {
+    flex: 1;
+    line-height: 1.6;
+
+    // Support for inline code in MDX
+    code {
+      background-color: #f3f4f6;
+      padding: 2px 4px;
+      border-radius: 3px;
+      font-size: 0.9em;
+      border: 1px solid #e5e7eb;
+    }
+  }
+}
