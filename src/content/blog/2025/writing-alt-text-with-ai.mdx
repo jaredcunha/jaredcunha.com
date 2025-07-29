@@ -37,9 +37,7 @@ Commit this image to memory because we’re going to use it for the rest of this
 
 First, let's start with a terrible prompt.
 
-```prompt
-describe this image
-```
+<Prompt>describe this image</Prompt>
 
 The response:
 
@@ -47,9 +45,7 @@ The response:
 
 Hoo boy! That’s not `alt` text at all, that’s almost an essay. It’s educational, yeah, but beyond overkill. What if we try to whittle this down a little bit by specifying that we need `alt` text?
 
-```prompt
-Write alt text for this image
-```
+<Prompt>Write alt text for this image</Prompt>
 
 The response:
 
@@ -57,9 +53,7 @@ The response:
 
 Indicating that the text will be used for `alt` text immediately improves the result. It might seem a little verbose. Maybe that’s what you want. But if not, we can make the text more concise with this updated prompt:
 
-```prompt
-Write alt text for this. Be as concise as possible.
-```
+<Prompt>Write alt text for this. Be as concise as possible.</Prompt>
 
 And that gives us:
 
@@ -69,9 +63,11 @@ Stating that we need alt text and that it also needs to be concise produces rema
 
 If the image is displayed as part of an article about the station’s renovation, we can write our prompt to emphasize those details while ensuring that the description is still concise. In this case, we want to cap the text at two sentences.
 
-```prompt
-Write alt text for this image. This image appears in an article describing Union Station's renovation, so emphasize that work. Keep the description to two sentences.
-```
+<Prompt>
+  Write alt text for this image. This image appears in an article describing
+  Union Station's renovation, so emphasize that work. Keep the description to
+  two sentences.
+</Prompt>
 
 The result:
 
@@ -83,9 +79,10 @@ For the most part, I think that’s pretty good. I might edit this slightly, mai
 
 Or let’s try another context. Let’s say this picture was taken during the pandemic and appeared in an article about declining ridership through Union Station, we might want to focus on how empty the station appears.
 
-```prompt
-Write alt text for this image. This image appears in an article describing Union Station's declining ridership, emphasize the lack of people.
-```
+<Prompt>
+  Write alt text for this image. This image appears in an article describing
+  Union Station's declining ridership, emphasize the lack of people.
+</Prompt>
 
 The result:
 

@@ -1,7 +1,12 @@
+@use '../../../styles/sass/sass.scss' as *;
+
 .prompt {
+  background-color: var(--background--offset);
+  border-radius: 8px;
   display: flex;
   gap: 0.75em;
   margin: 1em 0;
+  padding: units(1) units(2) units(1) units(1);
   align-items: flex-start;
 
   &__avatar {
@@ -9,30 +14,36 @@
     width: 32px;
     height: 32px;
     border-radius: 50%;
-    background-color: #f3f4f6;
+    background-color: var(--foreground--muted);
     display: flex;
     align-items: center;
     justify-content: center;
-    border: 1px solid #e5e7eb;
   }
 
   &__initial {
-    font-size: 14px;
-    font-weight: 600;
-    color: #374151;
+    font-size: var(--14px);
+    font-weight: 900;
+    color: var(--background);
   }
 
   &__content {
     flex: 1;
     line-height: 1.6;
+    width: 0;
+
+    *:last-child {
+      margin-bottom: 0;
+    }
+
+    figure[data-rehype-pretty-code-figure] {
+      margin-bottom: 1em;
+    }
 
     // Support for inline code in MDX
     code {
-      background-color: #f3f4f6;
       padding: 2px 4px;
       border-radius: 3px;
       font-size: 0.9em;
-      border: 1px solid #e5e7eb;
     }
   }
 }
