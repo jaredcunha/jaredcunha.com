@@ -28,9 +28,12 @@ Full disclosure: I don’t use RSS. I never used RSS. Do I feel bad about it? Ye
 
 This is the prompt I used:
 
-```prompt
-Create an RSS feed that combines my photo posts and blog posts into a single feed using NextJS best practices. I don't want to change anything about the website's user experience… I still want blog posts and photo posts presented the way they currently are.
-```
+<Prompt>
+  Create an RSS feed that combines my photo posts and blog posts into a single
+  feed using NextJS best practices. I don't want to change anything about the
+  website's user experience… I still want blog posts and photo posts presented
+  the way they currently are.
+</Prompt>
 
 And then Copilot kinda just did its thing. So that was cool. But I didn’t know if what it gave was any good or if there was anything I should change. Specifically, I had questions about:
 
@@ -50,9 +53,10 @@ I had my answers, but only with medium certainty. So I used Claude to learn more
 
 I felt like maybe it might be worth having links to previous and next posts. Seems to be a common thing on other blogs. I gave Copilot an extremely generic prompt:
 
-```prompt
-Using the AccessibleLink component, create links to previous and next posts on the blog post pages
-```
+<Prompt>
+  Using the AccessibleLink component, create links to previous and next posts on
+  the blog post pages
+</Prompt>
 
 I wasn’t sure if it’d select the AccessibleLink that I’m using (that Copilot created at my request) for all internal links, but felt it’d be worth specifying. But note that I said "blog post pages" and didn’t include anything about photo posts.
 
@@ -72,9 +76,11 @@ It might sound like this was a lot of rework, but it really wasn’t. I got this
 
 All of my MDX files are either in `/content/blog` or `/content/photos`. If I manage to follow through with posting more, those directories could become unmanageable real quick. So I wanted to at least, for now, organize my posts by year, yet keep my current URLs following the same pattern. For some reason, I’m nitpicky and I like clean URLs. Maybe I’ll regret this in the future if I start struggling with unique slugs, but this feels right for now. Here is the prompt I used:
 
-```prompt
-For my mdx files moving forward, I want to add a folder for year, but I do not want change the urls. For example, a blog post would be in content/blog/2025/foo.mdx and the url will still be /blog/foo
-```
+<Prompt>
+  For my mdx files moving forward, I want to add a folder for year, but I do not
+  want change the urls. For example, a blog post would be in
+  content/blog/2025/foo.mdx and the url will still be /blog/foo
+</Prompt>
 
 Copilot handled this task really well. We created the folder and moved one post into it, and left the others alone. Then started the app and saw that everything remained as it should.
 

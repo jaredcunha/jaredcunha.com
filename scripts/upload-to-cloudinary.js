@@ -40,15 +40,8 @@ async function optimizeImage(inputPath, outputPath) {
     const image = sharp(inputPath);
     const metadata = await image.metadata();
 
-    console.log(
-      `Processing: ${path.basename(inputPath)} (${metadata.width}x${
-        metadata.height
-      })`
-    );
-
     // Only resize if width is greater than MAX_WIDTH
     if (metadata.width <= MAX_WIDTH) {
-      console.log(`  → No resize needed (already ${metadata.width}px wide)`);
       return false; // Don't process images that don't need resizing
     }
 
@@ -172,7 +165,7 @@ async function uploadImages() {
         optimized++;
         console.log(`✓ Optimized: ${relativePath}`);
       } else {
-        console.log(`→ Skipped optimization: ${relativePath}`);
+        //console.log(`→ Skipped optimization: ${relativePath}`);
       }
 
       // Step 2: Upload to Cloudinary (skip in test mode)
