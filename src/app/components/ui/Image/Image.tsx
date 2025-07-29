@@ -112,7 +112,7 @@ export function Image({
     };
 
     generateBlurDataURL();
-  }, [publicId, useBlurPlaceholder]);
+  }, [publicId, useBlurPlaceholder, src]);
 
   return (
     <CldImage
