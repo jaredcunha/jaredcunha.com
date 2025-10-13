@@ -23,11 +23,19 @@
   > figure,
   > table,
   > hr,
+  > iframe,
   > pre,
   > code,
   .post-navigation {
     grid-column: 3;
     max-width: none;
+  }
+
+  > h1,
+  > h2,
+  > h3,
+  > h4 {
+    text-wrap: pretty;
   }
 
   > p code,
@@ -36,6 +44,12 @@
     border-radius: 4px;
     font-size: var(--15px);
     padding: 0.2em 0.4em;
+  }
+
+  span[data-rehype-pretty-code-figure] code {
+    background-color: var(--background--offset) !important;
+    border: 1px solid rgba($charcoal, 0.15) !important;
+    color: var(--heading-color-accent) !important;
   }
 
   > hr {
@@ -121,5 +135,11 @@
       text-wrap: break-word;
       padding: 0 2rem;
     }
+  }
+
+  iframe {
+    border: 0;
+    grid-column: wide-start/wide-end;
+    width: 100%;
   }
 }

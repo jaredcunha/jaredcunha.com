@@ -1,0 +1,140 @@
+---
+type: blog
+title: 'HTML dialog: Getting accessibility and UX right'
+excerpt: The HTML dialog element gives us powerful native modal capabilities, but creating dialogs that work well for all users still requires intentional accessibility and UX decisions.
+slug: 'html-dialog-getting-accessibility-and-ux-right'
+categories: ['accessibility', 'Web development']
+date: 2025-10-13
+---
+
+<Intro>
+  The HTML dialog element gives us powerful native modal capabilities, but
+  creating dialogs that work well for all users still requires intentional
+  accessibility and UX decisions.
+</Intro>
+
+Back in 2021, I had the privilege of working on the [U.S. Web Design System (USWDS)](https://designsystem.digital.gov/), designing, coding, and writing documentation for a variety of UI components. This might be some of the widest-reaching work I have ever done, or ever will do. The USWDS is used on nearly every public-facing government website and many internal systems. We can probably toss a few state websites into the mix as well. Getting accessibility right is critical, because any defect within a component affects every instance of that component.
+
+<Image
+  src="/images/blogs-2025/modal.png"
+  alt="A modal dialog from the U.S. Web Design System asking 'Are you sure you want to continue?' with a warning about unsaved changes and two buttons: 'Continue without saving' and 'Go back'."
+  caption="USWDS modal window component"
+/>
+
+Of all the components I worked on, my favorite is the [modal](https://designsystem.digital.gov/components/modal/). In our research with USWDS users, it was one of the most-requested features. It was also one of the biggest opportunities for impact. Without a modal, teams were left to build their own solutions—each slightly different from one another, and in terms of accessibility, mileage may vary. Modals have a well-earned reputation for being inaccessible, not because they are inherently inaccessible, but because they are often implemented with accessibility defects. An accessible modal should offer an equivalent experience to how a sighted user using a cursor would experience one. That will require:
+
+- Making users aware the modal exists
+- Easy access to the contents of the modal
+- Preventing access to content underneath the modal
+- A clear method to dismiss the modal, if it can be dismissed
+- Returning the user to a logical place when the modal is closed
+
+Much of this is done through focus management and disabling underlying content while the modal is active. There’s a lot of JavaScript handling that, in addition to the JavaScript required for showing and hiding the modal. There’s also plenty of testing and tweaking so it works in any browser and screen reader combination, speaking from experience. Thankfully, now we can get rid of most of that with the new(ish) `<dialog>` element and `showModal()`.
+
+As cool as the [HTML dialog](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/dialog) is, there are still some important considerations to make in order to create a modal that is both accessible and usable. I will go through them, using CSS from the U.S. Web Design System.
+
+## What you get out of the box
+
+Here is a mostly out-of-the-box example of how HTML dialog works. We have a `<dialog>` element that is toggled with `showModal()` and closed with `close()`. The element itself has a `closedby="any"` attribute, which lets us close the modal by clicking the `::backdrop` pseudo element or pressing the ESCAPE key. It’s really cool what we can do here with minimal code.
+
+<iframe
+  height="600"
+  title="Untitled"
+  src="https://codepen.io/jaredcunha/embed/yyeoxdK?default-tab=html%2Cresult"
+  loading="lazy"
+  allowFullScreen={true}
+>
+  See the Pen <a href="https://codepen.io/jaredcunha/pen/yyeoxdK">Untitled</a>{' '}
+  by Jared Cunha (<a href="https://codepen.io/jaredcunha">@jaredcunha</a>) on{' '}
+  <a href="https://codepen.io">CodePen</a>.
+</iframe>
+
+But without additional intervention, there are some UX issues worth our attention. `showModal()` has built-in focus management. When it is called to open the modal, it automatically sends focus to the first focusable element. If that focusable element is at the bottom of the modal DOM, the modal opens scrolled all the way down, requiring users to scroll back up. That’s pretty frustrating.
+
+There is an `autofocus` attribute, which MDN instructs to use as so (emphasis mine):
+
+> The autofocus attribute should be added to the element the user is expected to interact with immediately upon opening a modal dialog. If no other element involves more immediate interaction, it is recommended to add autofocus to the close button inside the dialog, **or the dialog itself** if the user is expected to click/activate it to dismiss.
+
+However, placing `autofocus` on the `<dialog>` seems to work in every browser except for Chrome. Given Chrome’s market share, that’s not something we want to ignore. Another issue—this one affecting all browsers—is that it is still possible to scroll the underlying content. Luckily, that content is automatically inert. But the fact that it is still scrollable, which may result in having two vertical scrollbars present at the same time, can be a little vexing.
+
+The `close()` function works surprisingly well. It automatically sends focus back to the control that originally opened the modal. If more than one control opens the same modal, focus is always returned to the correct place. I love that we don’t have to write additional functionality for that!
+
+The issues are fixable, but there might not be a one-size-fits-all solution.
+
+## Fine-tuning for real-world use
+
+Here is the modal with fixes for all the issues above. We'll break down each of them below. I have tested these examples using a variety of combinations of screen readers (VoiceOver, JAWS, and NVDA) and different browser combinations. What follows is what has gotten me the best results.
+
+<iframe
+  height="600"
+  title="Untitled"
+  src="https://codepen.io/jaredcunha/embed/ByjdMGr?default-tab=html%2Cresult"
+  loading="lazy"
+  allowFullScreen={true}
+>
+  See the Pen <a href="https://codepen.io/jaredcunha/pen/ByjdMGr">Untitled</a>{' '}
+  by Jared Cunha (<a href="https://codepen.io/jaredcunha">@jaredcunha</a>) on{' '}
+  <a href="https://codepen.io">CodePen</a>.
+</iframe>
+
+### Fix the focus flow
+
+The focus handling in `showModal()` seems heavy-handed, and in my opinion, creates the most significant potential for usability issues. In the updated example, moving the close icon below the heading strikes the best balance between usability and accessibility. When I had placed the close button above the heading, the screen reader would immediately announce the "close" button, but not the heading. One might want a little more information about what they just opened, especially if what triggered it isn’t especially clear, such as with a session timeout warning.
+
+Moving the close button below the heading worked well on each my screen readers, announcing the heading first, then the close button, since that is where the focus indicator had landed. I don’t think I like this type of structural dependency, but maybe it is for the best since we're giving the close button some context by placing it underneath a heading.
+
+If your modal doesn’t use a close icon, I would recommend applying the `autofocus` attribute to the modal heading. This works well in Chrome and every other browser and screen reader combination I had tested.
+
+### Lock the background scroll
+
+The next piece is locking the window from being able to scroll. Here’s what we’re adding when we open the modal.
+
+```js
+const currentVerticalScroll = window.scrollY;
+modal.showModal();
+document.body.classList.add('usa-js-modal--active');
+window.scrollTo(0, currentVerticalScroll);
+```
+
+1. We get the current scroll position
+2. We open the modal
+3. We apply a classname that hides the overflow (`usa-js-modal--active` comes from USWDS)
+4. We scroll back to where we were when we opened the modal
+
+If we were to hide the overflow without setting the scroll position, the browser would simply scroll to the top. The modal will function as expected, but the effect would be visually jarring.
+
+### Eliminating visual jumps
+
+While our added JavaScript functionality nicely prevents unnecessary scrolling, there is still a minor horizontal shift that occurs when the scrollbar is removed due to setting our `overflow` to `hidden`. When I worked on the USWDS modal, I had written some JavaScript to calculate the width of the scrolltrack to calculate padding I could apply as a countermeasure.
+
+Now we can fix that with CSS.
+
+```css
+:root:has(.usa-js-modal--active) {
+  scrollbar-gutter: stable;
+}
+```
+
+When the modal is active, we can preserve the scrollbar gutter.
+
+Another little tweak, just for styling purposes, is on the modal itself. If the modal content is taller, a scrollbar appears. But the scrolltrack has sharp corners that don’t really play nicely with our rounded corners. We can make this cosmetic update by adding the following property to the `<dialog>` class.
+
+Styling the scrollbar has varying browser support, but is generally pretty good.
+
+```css
+scrollbar-color: lightGray transparent;
+```
+
+### Keep focus contained
+
+There’s some debate over whether or not the best practice is to let users leave the modal and get into the browser chrome while the modal is active, or to keep an active focus trap while it is open. I can see the merits of either side of the argument, but I have a slight preference towards trapping focus.
+
+In the CodePen, I have added a focus trap utility function to demonstrate how this works. Using tab navigation, the focus indicator cycles through the interactive elements inside the modal, making it impossible to leave. I can see why this wasn’t added to `showModal()` by default.
+
+## Dialog vs USWDS modal
+
+If I were to redo the USWDS modal window from scratch, I’d take an approach that looks more like this one. While `showModal()` isn’t perfect, it’s damn near close. The USWDS modal has nearly 400 lines of JavaScript, which doesn’t include the four imported utility functions. This approach gets the same functionality—it’s actually able to support multiple modals—in 38 lines, not counting the single focus trap function.
+
+I’m really proud of the work we did building modals for the USWDS. We really did put a lot of care and attention to detail, rigorous testing, and applied safe measures for all the wild ways it might get implemented into different projects.
+
+But I am floored by what the browsers are giving us for free!
