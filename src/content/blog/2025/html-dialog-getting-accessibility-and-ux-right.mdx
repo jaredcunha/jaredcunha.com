@@ -33,7 +33,7 @@ Much of this is done through focus management and disabling underlying content w
 
 As cool as the [HTML dialog](https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/dialog) is, there are still some important considerations to make in order to create a modal that is both accessible and usable. I will go through them, using CSS from the U.S. Web Design System.
 
-## Basic HTML Dialog
+## What you get out of the box
 
 Here is a mostly out-of-the-box example of how HTML dialog works. We have a `<dialog>` element that is toggled with `showModal()` and closed with `close()`. The element itself has a `closedby="any"` attribute, which lets us close the modal by clicking the `::backdrop` pseudo element or pressing the ESCAPE key. It’s really cool what we can do here with minimal code.
 
@@ -61,9 +61,9 @@ The `close()` function works surprisingly well. It automatically sends focus bac
 
 The issues are fixable, but there might not be a one-size-fits-all solution.
 
-## Add some small tweaks
+## Fine-tuning for real-world use
 
-Here is the modal with all of the changes in place. We'll break down each of them below. I have tested these examples using a variety of combinations of screen readers (VoiceOver, JAWS, and NVDA) and different browser combinations. What follows is what has gotten me the best results.
+Here is the modal with fixes for all the issues above. We'll break down each of them below. I have tested these examples using a variety of combinations of screen readers (VoiceOver, JAWS, and NVDA) and different browser combinations. What follows is what has gotten me the best results.
 
 <iframe
   height="600"
@@ -77,15 +77,15 @@ Here is the modal with all of the changes in place. We'll break down each of the
   <a href="https://codepen.io">CodePen</a>.
 </iframe>
 
-### Place the close icon button directly below the heading
+### Fix the focus flow
 
-This, to me, is probably the strangest of all the changes. In this example, moving the close icon strikes the best balance between usability and accessibility. When I had placed the close button above the heading, the screen reader would immediately announce "close" and not the heading. One might want a little more information about what they just opened, especially if what triggered it isn’t especially clear, such as a timeout warning.
+The focus handling in `showModal()` seems heavy-handed, and in my opinion, creates the most significant potential for usability issues. In the updated example, moving the close icon below the heading strikes the best balance between usability and accessibility. When I had placed the close button above the heading, the screen reader would immediately announce the "close" button, but not the heading. One might want a little more information about what they just opened, especially if what triggered it isn’t especially clear, such as with a session timeout warning.
 
-Moving the close button below the heading gets each of my screen readers to announce the heading first, then the close button, since that is where the focus indicator is located. I don’t think I like this type of structural dependency, but maybe it is for the best since we're giving the close button some context by placing it underneath a heading.
+Moving the close button below the heading worked well on each my screen readers, announcing the heading first, then the close button, since that is where the focus indicator had landed. I don’t think I like this type of structural dependency, but maybe it is for the best since we're giving the close button some context by placing it underneath a heading.
 
-If the modal doesn’t use a close icon, I would recommend applying the `autofocus` attribute to the modal heading. This works in Chrome and every other browser.
+If your modal doesn’t use a close icon, I would recommend applying the `autofocus` attribute to the modal heading. This works well in Chrome and every other browser and screen reader combination I had tested.
 
-### Prevent content underneath from scrolling
+### Lock the background scroll
 
 The next piece is locking the window from being able to scroll. Here’s what we’re adding when we open the modal.
 
@@ -103,7 +103,7 @@ window.scrollTo(0, currentVerticalScroll);
 
 If we were to hide the overflow without setting the scroll position, the browser would simply scroll to the top. The modal will function as expected, but the effect would be visually jarring.
 
-### Minor styling fixes
+### Eliminating visual jumps
 
 While our added JavaScript functionality nicely prevents unnecessary scrolling, there is still a minor horizontal shift that occurs when the scrollbar is removed due to setting our `overflow` to `hidden`. When I worked on the USWDS modal, I had written some JavaScript to calculate the width of the scrolltrack to calculate padding I could apply as a countermeasure.
 
@@ -125,7 +125,7 @@ Styling the scrollbar has varying browser support, but is generally pretty good.
 scrollbar-color: lightGray transparent;
 ```
 
-### Trapping focus
+### Keep focus contained
 
 There’s some debate over whether or not the best practice is to let users leave the modal and get into the browser chrome while the modal is active, or to keep an active focus trap while it is open. I can see the merits of either side of the argument, but I have a slight preference towards trapping focus.
 
