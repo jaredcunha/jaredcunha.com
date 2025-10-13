@@ -23,6 +23,7 @@
   > figure,
   > table,
   > hr,
+  > iframe,
   > pre,
   > code,
   .post-navigation {
@@ -121,5 +122,11 @@
       text-wrap: break-word;
       padding: 0 2rem;
     }
+  }
+
+  iframe {
+    border: 0;
+    grid-column: wide-start/wide-end;
+    width: 100%;
   }
 }
