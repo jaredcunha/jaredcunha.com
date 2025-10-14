@@ -51,11 +51,11 @@ Here is a mostly out-of-the-box example of how HTML dialog works. We have a `<di
 
 But without additional intervention, there are some UX issues worth our attention. `showModal()` has built-in focus management. When it is called to open the modal, it automatically sends focus to the first focusable element. If that focusable element is at the bottom of the modal DOM, the modal opens scrolled all the way down, requiring users to scroll back up. That’s pretty frustrating.
 
-There is an `autofocus` attribute, which MDN instructs to use as so (emphasis mine):
+There is the `autofocus` attribute, which MDN instructs to use as so (emphasis mine):
 
 > The autofocus attribute should be added to the element the user is expected to interact with immediately upon opening a modal dialog. If no other element involves more immediate interaction, it is recommended to add autofocus to the close button inside the dialog, **or the dialog itself** if the user is expected to click/activate it to dismiss.
 
-However, placing `autofocus` on the `<dialog>` seems to work in every browser except for Chrome. Given Chrome’s market share, that’s not something we want to ignore. Another issue—this one affecting all browsers—is that it is still possible to scroll the underlying content. Luckily, that content is automatically inert. But the fact that it is still scrollable, which may result in having two vertical scrollbars present at the same time, can be a little vexing.
+However, placing `autofocus` on the `<dialog>` seems to work in every browser except for Chrome on MacOS and Windows (it works in Chrome on iOS). Given Chrome’s market share, that’s not something we want to ignore. Another issue—this one affecting all browsers—is that it is still possible to scroll the underlying content. Luckily, that content is automatically inert. But the fact that it is still scrollable, which may result in having two vertical scrollbars present at the same time, can be a little vexing.
 
 The `close()` function works surprisingly well. It automatically sends focus back to the control that originally opened the modal. If more than one control opens the same modal, focus is always returned to the correct place. I love that we don’t have to write additional functionality for that!
 
@@ -83,7 +83,7 @@ The focus handling in `showModal()` seems heavy-handed, and in my opinion, creat
 
 Moving the close button below the heading worked well on each my screen readers, announcing the heading first, then the close button, since that is where the focus indicator had landed. I don’t think I like this type of structural dependency, but maybe it is for the best since we're giving the close button some context by placing it underneath a heading.
 
-If your modal doesn’t use a close icon, I would recommend applying the `autofocus` attribute to the modal heading. This works well in Chrome and every other browser and screen reader combination I had tested.
+If your modal doesn’t use a close icon, I would recommend applying the `autofocus` attribute to the modal heading until the issue with placing it on `<dialog>` is resolved in Chrome. Placing `autofocus` on the heading works well in Chrome and every other browser and screen reader combination I had tested.
 
 ### Lock the background scroll
 
