@@ -4,7 +4,7 @@ import { Image } from '../Image/Image';
 
 interface PhotoGridProps {
   children: ReactNode;
-  caption?: string;
+  caption?: ReactNode;
 }
 
 export function PhotoGrid({ children, caption }: PhotoGridProps) {
