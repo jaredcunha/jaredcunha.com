@@ -1,0 +1,167 @@
+---
+type: blog
+title: 'My talk for DotGov Design 2025'
+excerpt: I had the opportunity to speak at the 2025 DotGov Design conference. My talk was titled “Design for Accessibility and Inclusiveness in Civic Space” which covered topics such as why it's so important to learn assistive technology and how we must adapt to an increasingly difficult landscape.
+slug: 'dotgov-design-2025'
+categories: ['accessibility', 'public speaking']
+date: 2025-11-09
+ogImage: '/images/blogs-2025/triple-diamond.png'
+---
+
+<Intro>
+  I had the opportunity to speak at the [2025 DotGov Design
+  conference](https://dotgovdesign.org/). My talk was titled “Design for
+  Accessibility and Inclusiveness in Civic Space” which covered topics such as
+  why it's so important to learn assistive technology and how we must adapt to
+  an increasingly difficult landscape. This post covers the basic tenets of my
+  talk.
+</Intro>
+
+Initially, my talk wasn't going to be a talk at all, but a panel discussion with other folks working on accessibility within the civic tech space. Things fell through with the other panelists about a week out, and I was asked if I would be interested in giving a keynote presentation instead. This talk was something I have had in mind for while—it just needed to be transferred from inside my head into a slide deck—so I happily accepted the offer.
+
+The conference itself took place on November 4th, 2025 at the National Union Building at 918 F St. NW in Washington, DC. It used to belong to my former employer, LivingSocial, so being there carried some nostalgia with it for me. It’s a beautiful space and the building has lovely, historic facade.
+
+<PhotoGrid
+  caption={
+    <>
+      I brought my film camera and took a few photos around the building. The
+      last photo features cards beautifully design by{' '}
+      <a href="https://www.francesyllana.design/">Frances Yllana</a>
+    </>
+  }
+>
+  <PhotoGridItem
+    cols={4}
+    src="/images/blogs-2025/918-window.jpg"
+    alt="View from inside a modern building looking out through large glass windows and doors at a neighboring red brick apartment building. The brick building features multiple floors with white-framed windows and small balconies. The interior space has white walls and appears to be unfurnished, with reflections of the brick building visible in the glass panels."
+  />
+  <PhotoGridItem
+    cols={4}
+    src="/images/blogs-2025/918-alley.jpg"
+    alt="Aerial view looking down into a narrow urban alleyway between red brick buildings. A lone person in dark clothing walks along the concrete pathway below. The alley is framed by tall brick walls with various windows, including one with a decorative mesh screen in the foreground on the right. At the end of the alley, the passage opens to a street with trees visible in the distance. The perspective creates a strong sense of depth and urban geometry."
+  />
+  <PhotoGridItem
+    cols={4}
+    src="/images/blogs-2025/hops-card.jpg"
+    alt="Display of illustrated cards standing upright on a dark surface. The card in focus features intricate black and white hand-drawn artwork with decorative lettering and patterns, including text that reads '18F' prominently in the center. Several similar cards are arranged in a row behind it, slightly out of focus, and another card with yellow illustration is visible in the foreground."
+  />
+</PhotoGrid>
+
+## The talk
+
+Whenever I talk about accessibility, I have this tendency to want to cover all the things. This is partially due to my opinion that accessibility is still not represented nearly enough in the conference space. But it's also a topic that I just generally enjoy talking about because of how it helped me think about what makes truly makes good digital product design, and how it helped me overcome imposter syndrome as a design and engineering generalist.
+
+### We must learn to use Assistive Technology (AT)
+
+I mentioned that if there's one thing to take away from my presentation, it's that everyone should pick up the AT that is most likely already available on their computers and learn to use it. Not just to learn in a technical sense, but really learn to use to _do something_. There many reasons why this critical to our work.
+
+First, our automated tools can only go so far, mostly just scratching the surface with finding coding errors and other issues that computers are good at finding. These tools certainly provide real value—and we should always use them—but not rely solely on them. What these tools lack is the ability to determine context, which is essential if we want to make any kind of determinations about usability.
+
+We should learn to use AT because our jobs require it. When the market for touch screens proved viable, we learned how to design experiences tailored for this entirely new set of interactions. We learned how to support touch and cursor-based interactions simultaneously as well when Responsive Web Design became the new default. But throughout the advent of these new technologies—when they were actually new—assistive tech was still there waiting for us. Why not do what we've already done? Why not learn how to design for these other ways to interact with digital applications as well?
+
+I have this strong belief that it is impossible to create accessible experiences having never used assistive technology in the same way I believe it is impossible to build a car without ever driving one, working only off a technical description of what a car should do. Recently, I wrote a post (based on another talk) about the need to develop muscle memory, using my experience of playing drums as the metaphor. You can read it: <Link href="/blog/building-muscle-memory-for-accessibility">Building muscle memory for accessibility</Link>.
+
+In drumming, we develop muscle memory through deliberate repetition of small patterns known as rudiments. Most of the rudiments are simple patterns, but there are others with higher degrees of complexity that are easier to play once you develop a feel for simpler ones. Let's look at interactions as rudiments, some low-complexity examples might be: finding an interesting article to read, opening a modal, navigating a table, signing up for a newsletter, or learning the document structure of page. Then once we develop comfort with that, we can slightly more complex interactions like: finding a particular product on an online store, making a purchase, posting to social media, etc. It is useful to try this on different websites and make mental notes about what makes one implementation more intuitive than another.
+
+When we develop that muscle memory, that gives us the framework to better support assistive technology in our work and incorporate what we now know as part of our initial design concepts. It helps make sure the needs of assistive technology are represented in our acceptance criteria. And I don't mean that simply adding "is accessible" is acceptable. It must be specific, deliberate.
+
+To truly do this well, we must first understand that there's single solution to make solution both accessible and usable. We will always have to work with different contexts, users, or technical constraints. Determining the best option requires us to learn to use assistive technology so that we know what are our options are. It is also helpful to think of accessibility through a UX lens. By that, I mean understanding how to create an equivalent experience to the visual one, providing the same information at the same time, without creating additional burden for users to access it. This is also about not going overboard and delivering an annoyingly verbose in the name of accessibility. Again, this is only possible if understand how to use assistive technology.
+
+<Image
+  src="/images/blogs-2025/triple-diamond.png"
+  alt="Diagram titled 'Accessibility cannot be shoehorned later' showing three diamond-shaped design thinking processes. The first two diamonds represent the proper approach: 'Problem' (with Discover and Define phases) flowing into 'Solution' (with Ideate and Deliver phases). A third dashed diamond labeled 'Oh crap we forgot accessibility' shows the problematic reactive approach with 'Freak out' and 'Half-ass' phases. Below the diamonds, horizontal timeline bars show the spans of Discover (green), Design (red), Develop (blue), and Whoops (gray) phases, illustrating how accessibility issues arise when not considered from the start of the design process."
+  caption="One of the slides from my presentation depicting the UX triple diamond, which doesn’t exist of course"
+/>
+
+I want to see any and all releases have baseline accessibility. I'm talking prototypes, MVPs, etc. Everything should function with assistive technology right off the bat. This is important because you cannot perform any kind usability with assistive technology if things don't work. Imagine building a study, recruiting participants, and getting everything scheduled only to have it all come crashing down because none of the buttons on your prototype had any functionality! That's a huge waste of time and money, and that's exactly what happens if you're not supporting accessibility from the start. Also, if you don't know how assistive technology, how can possibly provide tech support should users encounter any difficulty? It will happen!
+
+Once we reach a comfortable place, accessibility support will at this point start to fold more naturally into our process. In fact, it will seems that accessibility starts to become less and less outward in our work and is more or less just the way do things. Accessibility by default, almost discreet. And it seems being discreet might be more important than it ever has been.
+
+### 2025 has not been a great year for inclusive design
+
+<Image
+  src="/images/blogs-2025/whgov.png"
+  alt="Screenshot of the whitehouse.gov website"
+  caption="The whitehouse.gov website does not have an accessibility statement, nor is the website accessible"
+/>
+
+Accessibility sure seems to be under attack, after what felt like years of forward progress. None of the latest dot gov websites that have come out this administration have accessibility statements: White House dot gov, and everything that has come out of the National Design Studio. One could say this is a simple oversight, but to me, that's charitable at best. Each of these sites has been publicly flogged for both lacking an accessibility statement, as well as their own accessibility defects, all of which have been out there for months and have yet to be resolved. At this point, it's hard to see these omissions as anything but a deliberate choice. That also sends a clear message of who this administration feels has a place in American life, who is worthy enough to access information and services and who is not worth their time.
+
+Combine that with Executive Orders that have targeted diversity, equity, inclusion, and accessibility (DEIA). What is originally written to target hiring practices has led to an indiscriminate word search to eliminate literally anything that mentions accessibility or inclusivity or anything else they deem scary and woke (not including all the other awful, inhumane impacts left in its wake). We've seen the language of "accessibility" replaced with Section 508. We can that does not materially change the way we do our work, but there is semantic difference: Section 508 specifies alignment to Web Content Accessibility Guidelines (WCAG) 2.0 AA. The current spec is WCAG 2.2, so any accessibility-related future-proofing can appear discouraged.
+
+A lot of valuable accessibility content has also vanished from the web, and I still cannot figure why other than going beyond compliance in advance (see what I did there?). I'm talking about contents like playbooks, blog posts, you name it. Also, with shuttering agencies such as 18F, and forcing good civil servants out of there jobs and positions of influence, everything like so much more of an uphill battle.
+
+All of this sends a rather clear signal to companies that already see accessibility as an edge case, a burden. And that why all of this is so upsetting. You really can see how the the actions of the President and the Executive Branch trickle down into every day life. Accessibility is one example, but we also see it in how we treat each other, what's an acceptable way to act in a society, and so on.
+
+### What can we still do?
+
+I believe we can still make forward strides for accessibility. First and foremost, as practitioners, we are well-positioned to get up to speed with learning how to use assistive technology. We already have deep understanding of UX best practices and human-centered design. We really just need to apply this to assistive technology, and I think it is entirely possible to do this within a reasonable amount of time. We have the skills!
+
+Leadership buy-in is important because that opens up so many resources and opportunities for an organization. For this, I am glad to be working in civic tech because accessibility seems to be strongly valued in this industry.
+
+One of the biggest impacts is bringing in designers, engineers, and PMs with deep accessibility experience. I'm talking about actively seeking out and hiring people with these skills. Here's the kicker though, don't use them only for accessibility work. For example, an accessibility engineer should also be involved in run-of-the-mill front-end development. Why? Because accessibility work isn't about trimming a backlog. The potential for accessibility considerations can pop up anywhere at any time. Accessibility engineers will likely be senior level folks, with more advance cross-functional collaboration skills. Trust me, they are force multipliers.
+
+You'll also want to have more than one person around with accessibility expertise. As I mentioned earlier, there's never just one solution, and figuring out the right one can often require conversation. I have first-hand experience from my work on Direct File working with multiple accessibility specialists, and that resulted in some users filing their taxes with a screen reader in less than 30 minutes. That would be win for anyone! Having multiple experts also helps mitigate against burnout, because accessibility work is demanding and could literally be life or death for some users.
+
+Another action, and one that requires minimal effort, is creating a space to share accessibility information. This is as simple as a dedicated channel on your collaboration tool of choice. It is critical though that all accessibility conversations should take place here instead of being locked away in direct message. This visibility benefits everyone because it's an opportunity to demonstrate how accessibility might require the same level of back-and-forth as any other UX thread. It might shed light on issues that people were unaware that they are accessibility issues.
+
+Finally, accessibility is a great way to collaborate your way out of the silo, because accessibility is always at the intersection of design and engineering. Collaboration is required here. And you know how technologies created for accessibility have a way of benefiting everyone, like text message and closed captioning? Well, any collaboration on accessibility helps teams get better collaborating more in general, even on non-accessibility matters.
+
+If you want to keep of where your organization's accessibility program, and how to get where you'd like to be, establishing a maturity model will be helpful. Check out [TGPi's accessibility maturity model guide](https://www.tpgi.com/what-is-the-digital-accessibility-maturity-model/).
+
+### Closing out
+
+The entire talk was our [Accessibility Playbook](https://coforma.io/resources/playbooks/accessibility-playbook) in narrative form. While I didn’t cover every play, I did cover its three chapters and basic themes:
+
+1. Establish foundations
+2. Build with intention
+3. Create momentum
+
+Over the last few years, accessibility has been a huge driver of my career path. I shifted—permanently at this point, I think—to engineering because I think that I can be a more effective designer. It's played a major role in how execute my job function as a senior engineering director at Coforma. It's given me a whole new way to approach design and I love every part of this journey. Accessibility is fun, it's joy, and we need more of that in 2025.
+
+And you know what? I think we should stop so quiet about it. Accessibility benefits everyone. Try building enterprise software—the type of tooling that people use everyday for work—without any keyboard support or focus management. Watch how quickly users revolt. Keyboard navigation makes tools many times more efficient than trying to position a mouse cursor. I mentioned how quickly a user was able to file their taxes on a screen reader, but if I told you the patterns we used on Direct File with screen readers allowed sighted users to file their taxes in 15 minutes? What if I told you those accessible patterns made filing taxes easier for everyone, and free! We should be shouting this stuff from rooftops!
+
+In fact, that's exactly what I've been this past year. I've been submitting more proposals to speak at conferences, publishing to my personal site and social media. This information should be shared, and we should be sharing it!
+
+## Things I wish I said during the talk
+
+As with anything I've ever said ever, there are always things I wish I would have said upon reflection. Here some things I think I would mention if I do this talk again:
+
+- Stating up front that this talk will not and cannot cover the full gamut of accessibility. It's largely focused on assistive technology, mainly screen readers, keyboard navigation, and voice input
+- Not being so gloomy about needing to discreet about accessibility. I actually think that's a place I want to be, where we just do accessible design as naturally as we do for mouse cursors. If that were the case, it would be indicative of the team having very strong capabilities
+- Emphasizing more on accessibility engineers and designers embedding in regular work, and the benefits that brings to team operation
+- Mention that we're also kind of winging it and that great things can come out of YOLO mode
+- I wanted to share a story of a colleague who got really interested in accessibility, decided to pursue getting a professional certification, and has been blogging and presenting about his journey. It was really inspirational!
+
+## Helpful resources related to the talk
+
+- [Deque University screen reader shortcuts and gestures](https://dequeuniversity.com/screenreaders/): Excellent collection of how-tos and setup information for using screen readers and keyboard navigation
+- [NVDA Download](https://www.nvaccess.org/download/): Download the NVDA screen reader for your windows device
+- [NVDA Screen Reader Basics (YouTube)](https://www.youtube.com/watch?v=Jao3s_CwdRU): YouTube videos for how to use NVDA
+- [Coforma’s Accessibility Playbook](https://coforma.io/resources/playbooks/accessibility-playbook)
+
+## Thoughts on public speaking
+
+Most of my public speaking to date has been for virtual meetings and conferences, or as a panelist. This was my first time delivering a keynote in front a live audience. As someone who likes to talk, I actually find it weird that I haven't attempted this earlier, because I really had fun. Maybe at some point I'll do a more formal write-up for anyone else who is interested and holding a microphone and talking for 40 minutes about a topic they enjoy. I'm a huge fan of writing as you learn, and I actually think that might have less value when I'm seasoned and gristled. My jumbled thoughts are so far:
+
+- The audience is rooting for you, not against you, and wants to see you succeed
+- Panels and lightning talks are a great way to start
+- Actually, any stage experience is good. Playing in bands helped me, but actually, do anything that amounts to practicing having fun on stage in front of people you don't know, Sing karaoke
+- You have unique perspective because you are you, and only you have your experience. Don't forget that
+- Find a way to tell a story, but also give the audience something they can take with them
+- The act of writing plays a bigger role than you think. Most of the talks I've done originated as blog posts (or at least, ideas for blog posts)
+
+I have plenty of more ideas and…
+
+<Image
+  src="/images/blogs-2025/shingles-doesnt-care2.jpg"
+  alt="Woman riding exercise bike in a spin class. Overlaid is the text: 'shingles doesn't care'"
+/>
+
+Okay, so during my talk I was trying to muscle through what I thought was just some tooth pain, perhaps from anticipating my talk and too many sleepless nights thinking about my slides. By the next day, it was clear that it wasn't a dental issue at all. I had shingles. Fucking shingles!!! And, it was on my face, in my mouth. It's painful as all hell.
+
+But what does this have to do with accessibility? Why am I mentioning this? Because it turns out that shingles on your face could be something quite serious. One rash got pretty close to my eye, which could cause blindness. Thankfully, after visiting the ophthalmologist, it seems I'll be okay. But it's just one more example of how disability can come for any of us, and when we least expect it. This got me thinking about accessibility and UX, and how meaningful it might be for someone to have a painless experience completing a task (that they probably don't want to do in the first place) who was recently dealt a difficult hand.
+
+The good news is that at the time I'm writing this, I feel like I'm on the mend, but I'll know more for sure in the next coming days. I still need to vigilant that nothing got into my ear that could trigger Ramsay Hunt Syndrome or if I develop PHN and long-term nerve pain after the visible effects subside. Luckily, I think I got my antiviral medication within 72 hours, so that minimizes my chances, at least. My advice: if you have some weird tingling, maybe something that looks like it might be a zit, and new tooth pain, and all of it is on the same side, get to doctor immediately. This stuff is no joke.
+
+Why does 2025 have to be so damn 2025?
