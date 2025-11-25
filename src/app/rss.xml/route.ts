@@ -4,11 +4,13 @@ import { BlogPost, PhotoPost } from '@/app/lib/defs';
 
 // Get the base URL for the site
 function getBaseUrl() {
-  if (process.env.VERCEL_URL) {
-    return `https://${process.env.VERCEL_URL}`;
-  }
+  // Always use production domain in production, even on Vercel
   if (process.env.NODE_ENV === 'production') {
     return 'https://jaredcunha.com';
+  }
+  // Use Vercel preview URL for preview deployments
+  if (process.env.VERCEL_URL) {
+    return `https://${process.env.VERCEL_URL}`;
   }
   return 'http://localhost:3000';
 }

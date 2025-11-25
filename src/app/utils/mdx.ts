@@ -16,7 +16,8 @@ function parseSimpleYaml(yamlStr: string): Record<string, string> {
       ) {
         value = value.slice(1, -1);
       }
-      obj[key.trim()] = value;
+      // Convert to string to handle numeric values correctly
+      obj[key.trim()] = String(value);
     }
   }
   return obj;
@@ -109,7 +110,11 @@ export function getPostsByType<T extends BaseFrontmatter>(
   });
 
   // Sort by date descending
-  posts.sort((a, b) => (a.date < b.date ? 1 : -1));
+  posts.sort((a, b) => {
+    const dateA = new Date(a.date).getTime();
+    const dateB = new Date(b.date).getTime();
+    return dateB - dateA;
+  });
 
   // Return limited number of posts if count is specified
   return count ? posts.slice(0, count) : posts;
