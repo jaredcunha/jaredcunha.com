@@ -68,7 +68,6 @@ export async function GET() {
         'Civic tech',
         'Web development',
       ],
-      pubDate: allPosts.length > 0 ? new Date(allPosts[0].date) : new Date(),
       ttl: 60,
     });
 
