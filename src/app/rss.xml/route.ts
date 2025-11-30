@@ -2,6 +2,8 @@ import RSS from 'rss';
 import { getPostsByType } from '@/app/utils/mdx';
 import { BlogPost, PhotoPost } from '@/app/lib/defs';
 
+export const dynamic = 'force-dynamic';
+
 // Get the base URL for the site
 function getBaseUrl() {
   // Always use production domain in production, even on Vercel
@@ -49,6 +51,11 @@ export async function GET() {
       (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
     );
 
+    // Get the most recent post date for lastBuildDate
+    const mostRecentDate = allPosts.length > 0
+      ? new Date(allPosts[0].date)
+      : new Date();
+
     // Create RSS feed
     const feed = new RSS({
       title: 'Jared Cunha',
@@ -56,19 +63,8 @@ export async function GET() {
       feed_url: `${baseUrl}/rss.xml`,
       site_url: baseUrl,
       image_url: `${baseUrl}/images/_ui/logo.png`,
-      managingEditor: 'Jared Cunha',
-      webMaster: 'Jared Cunha',
-      copyright: `${new Date().getFullYear()} Jared Cunha`,
       language: 'en',
-      categories: [
-        'Design',
-        'Technology',
-        'Photography',
-        'Accessibility',
-        'Civic tech',
-        'Web development',
-      ],
-      ttl: 60,
+      pubDate: mostRecentDate,
     });
 
     // Add items to feed
@@ -93,7 +89,14 @@ export async function GET() {
       });
     });
 
-    const xml = feed.xml({ indent: true });
+    let xml = feed.xml({ indent: true });
+
+    // Replace lastBuildDate with the most recent post date to prevent
+    // RSS readers from thinking the entire feed updates on every build
+    xml = xml.replace(
+      /<lastBuildDate>.*?<\/lastBuildDate>/,
+      `<lastBuildDate>${mostRecentDate.toUTCString()}</lastBuildDate>`
+    );
 
     return new Response(xml, {
       headers: {
