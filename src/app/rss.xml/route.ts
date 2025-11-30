@@ -52,9 +52,8 @@ export async function GET() {
     );
 
     // Get the most recent post date for lastBuildDate
-    const mostRecentDate = allPosts.length > 0
-      ? new Date(allPosts[0].date)
-      : new Date();
+    const mostRecentDate =
+      allPosts.length > 0 ? new Date(allPosts[0].date) : new Date();
 
     // Create RSS feed
     const feed = new RSS({
@@ -64,7 +63,6 @@ export async function GET() {
       site_url: baseUrl,
       image_url: `${baseUrl}/images/_ui/logo.png`,
       language: 'en',
-      pubDate: mostRecentDate,
     });
 
     // Add items to feed
