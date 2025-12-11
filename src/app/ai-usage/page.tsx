@@ -22,9 +22,9 @@ export default function About() {
               <p>
                 It might be hard for me to quantify how much of my code has been
                 written using LLMs. Primarily, I am using LLMs here as
-                playground to help me better understand how I can use them in my
-                work. I try to write to as much as possible about the process
-                and how I’m thinking about it along the way.
+                playground to help me better understand how I can think about
+                and use them at work. I try to write to as much as possible
+                about the process and how I’m thinking about it along the way.
               </p>
               <p>
                 I still write all of my own CSS and make all decisions about
@@ -41,10 +41,11 @@ export default function About() {
               </p>
               <h2>Content writing</h2>
               <p>
-                I do not use LLMs to write any content on this site. The only
-                time I use it in writing is correct grammar mistakes when I am
-                done writing a post. I include instructions not change content,
-                voice, or tone; only fix grammar.
+                All em dashes are my own. I do not use LLMs to write any content
+                on this site. The only time I use it in writing is correct
+                grammar mistakes when I am done writing a post. I include
+                instructions not change content, voice, or tone; only fix
+                grammar.
               </p>
               <h2>Image creation</h2>
               <p>None unless it is contextually relevant.</p>
