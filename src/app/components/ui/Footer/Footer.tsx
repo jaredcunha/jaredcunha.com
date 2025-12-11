@@ -50,6 +50,9 @@ export function Footer() {
                 </AccessibleLink>
               </li>
               <li>
+                <AccessibleLink href="/ai-usage">AI usage</AccessibleLink>
+              </li>
+              <li>
                 <a href="/rss.xml">RSS feed</a>
               </li>
               <li>
