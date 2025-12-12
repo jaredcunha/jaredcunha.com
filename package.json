@@ -20,7 +20,7 @@
     "cloudinary": "^2.8.0",
     "date-fns": "^4.1.0",
     "focus-trap-react": "^11.0.4",
-    "next": "^15.5.7",
+    "next": "^15.5.9",
     "next-cloudinary": "^6.17.5",
     "next-mdx-remote": "^5.0.0",
     "react": "^19.2.1",
