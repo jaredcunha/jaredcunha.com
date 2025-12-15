@@ -1,4 +1,10 @@
+import { Metadata } from 'next';
 import { PhotoGrid, PhotoGridItem } from '../components/ui/PhotoGrid/PhotoGrid';
+
+export const metadata: Metadata = {
+  title: 'About me | Jared Cunha',
+  description: 'Information about me.',
+};
 
 export default function About() {
   return (

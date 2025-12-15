@@ -1,4 +1,10 @@
+import { Metadata } from 'next';
 import { AccessibleLink } from '../components/ui/Link/Link';
+
+export const metadata: Metadata = {
+  title: 'AI usage | Jared Cunha',
+  description: 'Disclousre of how AI is used on this site.',
+};
 
 export default function About() {
   return (
