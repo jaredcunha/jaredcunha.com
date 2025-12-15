@@ -1,6 +1,12 @@
 import { getPostsByType } from '@/app/utils/mdx';
 import { PhotoPost } from '../lib/defs';
 import { PostsList } from '../components/ui/PostsList/PostsList';
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Photo essays | Jared Cunha',
+  description: 'Photo essays that I’ve written.',
+};
 
 export default function PhotoIndexPage() {
   const posts = getPostsByType<PhotoPost>('photos', (frontmatter, slug) => ({

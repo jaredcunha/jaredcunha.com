@@ -1,3 +1,10 @@
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Contact | Jared Cunha',
+  description: 'Contact me.',
+};
+
 export default function Contact() {
   return (
     <>
