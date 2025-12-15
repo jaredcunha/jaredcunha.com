@@ -10,10 +10,7 @@ export function Footer() {
           <nav aria-label="Social Media">
             <ul className="footer__nav-list">
               <li>
-                <a
-                  href="https://bsky.app/profile/jaredcunha.bsky.social"
-                  rel="me"
-                >
+                <a href="https://bsky.app/profile/jaredcunha.com" rel="me">
                   Bluesky
                 </a>
               </li>
