@@ -41,7 +41,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
   // Dynamic blog posts
   const blogSlugs = getMdxSlugs('blog');
   const blogRoutes: MetadataRoute.Sitemap = blogSlugs.map((slug) => {
-    const { frontmatter } = getMdxBySlug('blog', slug);
+    const { frontmatter } = getMdxBySlug('blog', slug) as {
+      frontmatter: { date?: string };
+    };
     return {
       url: `${baseUrl}/blog/${slug}`,
       lastModified: frontmatter.date ? new Date(frontmatter.date) : new Date(),
@@ -53,7 +55,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
   // Dynamic photo posts
   const photoSlugs = getMdxSlugs('photos');
   const photoRoutes: MetadataRoute.Sitemap = photoSlugs.map((slug) => {
-    const { frontmatter } = getMdxBySlug('photos', slug);
+    const { frontmatter } = getMdxBySlug('photos', slug) as {
+      frontmatter: { date?: string };
+    };
     return {
       url: `${baseUrl}/photos/${slug}`,
       lastModified: frontmatter.date ? new Date(frontmatter.date) : new Date(),
