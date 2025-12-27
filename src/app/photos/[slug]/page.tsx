@@ -1,5 +1,6 @@
 import { getMdxSlugs, getMdxBySlug, getAdjacentPosts } from '@/app/utils/mdx';
 import { generatePostMetadata } from '@/app/utils/metadata';
+import { generateArticleSchema } from '@/app/utils/json-ld';
 import { MDXRemote } from 'next-mdx-remote/rsc';
 import { mdxComponents } from '@/app/components/mdx-components';
 import { Post } from '@/app/components/ui/Post/Post';
@@ -67,21 +68,41 @@ export default async function PhotoPostPage({ params }: PhotoPageProps) {
 		})
 	);
 
-	return (
-		<main>
-			<Post>
-				<h1>{frontmatter.title}</h1>
-				<p className="post__date">
-					<Date dateString={frontmatter.date} />
-				</p>
-				<MDXRemote source={content} components={mdxComponents} />
+	// Generate JSON-LD structured data
+	const articleSchema = generateArticleSchema(
+		{
+			type: 'photos',
+			title: frontmatter.title,
+			date: frontmatter.date,
+			excerpt: frontmatter.excerpt || frontmatter.description || '',
+			slug: awaitedParams.slug,
+			coverImage: frontmatter.coverImage,
+			ogImage: frontmatter.ogImage,
+		},
+		`https://jaredcunha.com/photos/${awaitedParams.slug}`
+	);
 
-				<PostNavigation
-					previous={previous}
-					next={next}
-					type="photos"
-				/>
-			</Post>
-		</main>
+	return (
+		<>
+			<script
+				type="application/ld+json"
+				dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }}
+			/>
+			<main>
+				<Post>
+					<h1>{frontmatter.title}</h1>
+					<p className="post__date">
+						<Date dateString={frontmatter.date} />
+					</p>
+					<MDXRemote source={content} components={mdxComponents} />
+
+					<PostNavigation
+						previous={previous}
+						next={next}
+						type="photos"
+					/>
+				</Post>
+			</main>
+		</>
 	);
 }

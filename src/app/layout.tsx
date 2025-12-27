@@ -4,6 +4,7 @@ import './styles/globals.scss';
 import BodyClassProvider from './components/BodyClassProvider';
 import { SiteHeader } from './components/ui/SiteHeader/SiteHeader';
 import { Footer } from './components/ui/Footer/Footer';
+import { generateWebSiteSchema } from './utils/json-ld';
 import Script from 'next/script';
 
 const raleway = Raleway({
@@ -91,6 +92,9 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  // Generate JSON-LD structured data
+  const webSiteSchema = generateWebSiteSchema();
+
   return (
     <html lang="en">
       <head>
@@ -99,6 +103,10 @@ export default async function RootLayout({
           type="application/rss+xml"
           title="Jared Cunha RSS Feed"
           href="/rss.xml"
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(webSiteSchema) }}
         />
         <Script
           src="https://scripts.withcabin.com/hello.js"
