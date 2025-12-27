@@ -1,5 +1,6 @@
 import { getPostsByType } from './utils/mdx';
 import { BlogPost, PhotoPost } from './lib/defs';
+import { generatePersonSchema } from './utils/json-ld';
 import { AccessibleLink } from './components/ui/Link/Link';
 import { PostsList } from './components/ui/PostsList/PostsList';
 import { Image } from './components/ui/Image/Image';
@@ -34,8 +35,15 @@ export default function Home() {
     4
   );
 
+  // Generate JSON-LD structured data
+  const personSchema = generatePersonSchema();
+
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(personSchema) }}
+      />
       <main>
         <div className="hero content-block--xy-only">
           <div className="content-block__wrap">

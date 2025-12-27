@@ -1,5 +1,6 @@
 import { getMdxSlugs, getMdxBySlug, getAdjacentPosts } from '@/app/utils/mdx';
 import { generatePostMetadata } from '@/app/utils/metadata';
+import { generateArticleSchema } from '@/app/utils/json-ld';
 import { MDXRemote } from 'next-mdx-remote/rsc';
 import { mdxComponents } from '@/app/components/mdx-components';
 import { Post } from '@/app/components/ui/Post/Post';
@@ -80,26 +81,45 @@ export default async function BlogPostPage({ params }: BlogPageProps) {
 		})
 	);
 
+	// Generate JSON-LD structured data
+	const articleSchema = generateArticleSchema(
+		{
+			type: 'blog',
+			title: frontmatter.title,
+			date: frontmatter.date,
+			excerpt: frontmatter.excerpt || frontmatter.description || '',
+			slug: awaitedParams.slug,
+			ogImage: frontmatter.ogImage,
+		},
+		`https://jaredcunha.com/blog/${awaitedParams.slug}`
+	);
+
 	return (
-		<main>
-			<Post>
-				<h1>{frontmatter.title}</h1>
-				<p className="post__date">
-					<Date dateString={frontmatter.date} />
-				</p>
+		<>
+			<script
+				type="application/ld+json"
+				dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }}
+			/>
+			<main>
+				<Post>
+					<h1>{frontmatter.title}</h1>
+					<p className="post__date">
+						<Date dateString={frontmatter.date} />
+					</p>
 
-				<MDXRemote
-					source={content}
-					components={mdxComponents}
-					options={mdxOptions}
-				/>
+					<MDXRemote
+						source={content}
+						components={mdxComponents}
+						options={mdxOptions}
+					/>
 
-				<PostNavigation
-					previous={previous}
-					next={next}
-					type="blog"
-				/>
-			</Post>
-		</main>
+					<PostNavigation
+						previous={previous}
+						next={next}
+						type="blog"
+					/>
+				</Post>
+			</main>
+		</>
 	);
 }
