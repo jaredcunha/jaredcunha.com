@@ -22,6 +22,13 @@
   overflow: hidden;
 }
 
+.photo-grid__item--cols-2 {
+  grid-column: auto / span 12;
+  @media (min-width: $tablet) {
+    grid-column: auto / span 2;
+  }
+}
+
 .photo-grid__item--cols-3 {
   grid-column: auto / span 3;
 }
@@ -34,7 +41,10 @@
 }
 
 .photo-grid__item--cols-5 {
-  grid-column: auto / span 5;
+  grid-column: auto / span 12;
+  @media (min-width: $tablet) {
+    grid-column: auto / span 5;
+  }
 }
 
 .photo-grid__item--cols-6 {
