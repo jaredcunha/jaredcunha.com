@@ -17,12 +17,15 @@ export function PhotoGrid({ children, caption }: PhotoGridProps) {
 }
 
 interface PhotoGridItemProps {
-  cols: 4 | 6 | 8 | 12;
+  cols: '2' | '5' | '4' | '6' | '8' | '12';
   src: string;
   alt?: string | undefined;
 }
 
 export function PhotoGridItem({ cols, src, alt }: PhotoGridItemProps) {
+  // Coerce cols to a number to handle string input from MDX
+  const colsNum = typeof cols === 'string' ? parseInt(cols, 10) : cols;
+
   // Calculate responsive sizes based on cols
   const getSizes = (cols: number): string => {
     switch (cols) {
@@ -55,11 +58,11 @@ export function PhotoGridItem({ cols, src, alt }: PhotoGridItemProps) {
     }
   };
 
-  const sizes = getSizes(cols);
-  const width = getWidth(cols);
+  const sizes = getSizes(colsNum);
+  const width = getWidth(colsNum);
 
   return (
-    <div className={`photo-grid__item photo-grid__item--cols-${cols}`}>
+    <div className={`photo-grid__item photo-grid__item--cols-${colsNum}`}>
       <Image
         useBlurPlaceholder={true}
         src={src}

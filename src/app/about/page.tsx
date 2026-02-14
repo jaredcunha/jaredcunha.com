@@ -41,12 +41,12 @@ export default function About() {
             </div>
             <PhotoGrid>
               <PhotoGridItem
-                cols={6}
+                cols="6"
                 src="/images/jared-obama.jpg"
                 alt="Me shaking hands with President Obama on the Navy Steps of the Eisenhower Executive Office Building, outside the West Wing of the White House."
               />
               <PhotoGridItem
-                cols={6}
+                cols="6"
                 src="/images/me-beard.jpg"
                 alt="Portrait of me with a beard, wearing a black shirt and glasses, smiling at the camera."
               />
