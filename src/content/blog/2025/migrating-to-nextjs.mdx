@@ -40,19 +40,19 @@ postImages:
 ---
 
 <PhotoGrid>
-  <PhotoGridItem cols={12}>
+  <PhotoGridItem cols="12">
     <Image
       src={props.data.mdx.frontmatter.postImages[0]}
       alt=""
     />
   </PhotoGridItem>
-  <PhotoGridItem cols={6}>
+  <PhotoGridItem cols="6">
     <Image
       src={props.data.mdx.frontmatter.postImages[1]}
       alt=""
     />
   </PhotoGridItem>
-  <PhotoGridItem cols={6}>
+  <PhotoGridItem cols="6">
     <Image
       src={props.data.mdx.frontmatter.postImages[2]}
       alt=""
@@ -75,9 +75,9 @@ coverImageAltText: ''
 ---
 
 <PhotoGrid>
-  <PhotoGridItem cols={12} src="/images/ireland-2023/dublin-street0.jpg" alt="" />
-  <PhotoGridItem cols={6} src="/images/ireland-2023/dublin-street1.jpg" alt="" />
-  <PhotoGridItem cols={6} src="/images/ireland-2023/dublin-street2.jpg" alt="" />
+  <PhotoGridItem cols="12" src="/images/ireland-2023/dublin-street0.jpg" alt="" />
+  <PhotoGridItem cols="6" src="/images/ireland-2023/dublin-street1.jpg" alt="" />
+  <PhotoGridItem cols="6" src="/images/ireland-2023/dublin-street2.jpg" alt="" />
 </PhotoGrid>
 ```
 
@@ -88,8 +88,16 @@ I have so many photos from the past year and a half or so that I want to catalog
 I didn’t make significant changes to the design, but moving more from Sass into CSS variables made it possible to support dark mode with just a few lines.
 
 <PhotoGrid caption="Home page in both light and dark mode.">
-  <PhotoGridItem cols={6} src="/images/next-light.png" alt="Homepage of jaredcunha.com in light mode" />
-  <PhotoGridItem cols={6} src="/images/next-dark.png" alt="Homepage of jaredcunha.com in dark mode" />
+  <PhotoGridItem
+    cols="6"
+    src="/images/next-light.png"
+    alt="Homepage of jaredcunha.com in light mode"
+  />
+  <PhotoGridItem
+    cols="6"
+    src="/images/next-dark.png"
+    alt="Homepage of jaredcunha.com in dark mode"
+  />
 </PhotoGrid>
 
 Some other changes include updates to typography—I’m using Google Fonts ([Raleway](https://fonts.google.com/specimen/Raleway) and [Noto Serif](https://fonts.google.com/noto/specimen/Noto+Serif?query=Noto+serif)) instead of hosting the fonts directly.
@@ -150,7 +158,7 @@ export function AccessibleLink({
             () => {
               h1.removeAttribute('tabindex');
             },
-            { once: true }
+            { once: true },
           );
         }
       }, 100);
