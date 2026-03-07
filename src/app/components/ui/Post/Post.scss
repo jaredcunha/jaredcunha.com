@@ -50,6 +50,9 @@
     background-color: var(--background--offset) !important;
     border: 1px solid rgba($charcoal, 0.15) !important;
     color: var(--heading-color-accent) !important;
+    @media (prefers-color-scheme: dark) {
+      color: $alabaster !important;
+    }
   }
 
   > hr {
