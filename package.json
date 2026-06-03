@@ -42,7 +42,7 @@
     "@types/react-dom": "^19",
     "@types/rss": "^0.0.32",
     "chokidar-cli": "^3.0.0",
-    "concurrently": "^9.2.1",
+    "concurrently": "^10.0.3",
     "dotenv": "^17.4.2",
     "eslint": "^10",
     "eslint-config-next": "16.2.6",
