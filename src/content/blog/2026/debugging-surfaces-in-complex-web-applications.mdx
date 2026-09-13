@@ -19,11 +19,9 @@ When we were building IRS Direct File, two bottlenecks quickly became apparent: 
 
 That level of complexity, it turns out, is difficult to debug. And that complexity increases with scope. It creates extra, time-consuming work for developers, designers, stakeholders, and anyone else helping maintain accuracy who needed visibility into the application. The deeper anyone goes into the app, the more time it requires from the team. Getting to a particular screen means answering more and more questions in a specific way. We solved this problem in two ways: building an Audit Panel to upload a pre-filled _fact graph_ and building the All Screens page to see everything in a single view.
 
-I didn’t write about Direct File’s Audit Panel, and now I wish I had. But I did write about the All Screens page and how we evolved it from a simple loop to a full-featured tool with filtering controls and layer toggles. I wrote about it in <Link href="/blog/exploring-direct-file-using-the-all-screens-page">_Exploring IRS Direct File using the All Screens page_</Link>. The Direct File All Screens page was essential for everyone who worked on or was involved with the program, and it’s all that is left of it that the public can still see and use.
+I didn’t write about Direct File’s Audit Panel, and now I wish I had. But I did write about the All Screens page and how we evolved it from a simple loop to a full-featured tool with filtering controls and layer toggles. I wrote about it in <Link href="/blog/exploring-direct-file-using-the-all-screens-page">_Exploring IRS Direct File using the All Screens page_</Link>. The Direct File All Screens page was essential for everyone who worked on or was involved with the program, and it’s all that is left of it that the public can still see and use since [the federal government cancelled it](https://www.forbes.com/sites/kellyphillipserb/2025/11/05/irs-kills-off--popular-free-direct-file-option-for-the-2026-tax-filing-season/) (despite its tremendous popularity).
 
 This year, we modernized the [IRS Tax Withholding Estimator](https://apps.irs.gov/app/tax-withholding-estimator), also known by its unintentionally endearing acronym: TWE. The UI and user flow are very different from Direct File (a constraint we had to work with), and though it’s less robust, it still contains a lot of complexity that handles which fields are shown and how results are calculated. Manually validating content accuracy and debugging can be time-consuming and brittle, so we knew from the beginning that we needed features similar to Direct File. Our stakeholders needed those features too.
-
-Once again, we created these debugging surfaces—specific to our app and specific to what we needed to communicate and to whom.
 
 I wrote an architectural decision record (ADR) about [TWE’s debugging surfaces](https://github.com/IRS-Public/tax-withholding-estimator/blob/main/docs/adr/004-internal-debugging-surfaces.md), some of which I’ll cover here. While our decision to build our debugging surfaces had several drivers, the most important were:
 
@@ -76,15 +74,15 @@ Like the Audit Panel, this page also includes the feature that displays show con
 
 Unlike the Audit Panel, the All Screens page is only available in the local development environment. This was a deliberate choice because we didn’t want users to accidentally encounter this page and potentially create confusion. In order to see this page, you would need to run TWE locally and visit `http://localhost:3000/app/tax-withholding-estimator/all-screens`.
 
-TWE’s All Screens page is arguably less exciting than the one we built for Direct File, but it is no less useful for how our team was able to operate.
+TWE’s All Screens page is arguably less exciting than the one we built for Direct File, but it is no less useful for how our team was able to operate. Direct File’s All Screens page had tons of bells and whistles, but it was also a very different application and one we spent much more time building. But I am extremely happy with what we were able to achieve on TWE. We even made some of the features better than we did on Direct File.
 
-## Debugging surfaces elsewhere
+## Worth a thousand meetings
 
 I’m not sure how unique our particular solutions are, but when I showcase them, I often hear from other teams how much they would have loved to have something similar. We were never explicitly asked to build any of these tools. We built them because we needed them, and later learned how much our stakeholders needed them. Do they take time to build? Yes. But once built, they can save time, improve clarity, and increase trust.
 
 Building these pages might be easier to do organically than if you want to seek explicit approval. In every case, for me, at least, the value added has been felt immediately. I think about it in the way a prototype is worth a thousand meetings. As a team, we’re well-attuned to where the inefficiencies and frustrations lurk within our projects. So we ask what layers we can add that would give us the visibility we need. We start small with a proof of concept, and enhance from there.
 
-Perfect isn’t the goal. We’re making features for ourselves and perhaps a small handful of others that solve specific problems that our core user-facing products are not meant to solve. I would even add that using coding agents might help ensure that work on debugging surfaces doesn’t end up siphoning off more of our attention than necessary.
+Perfection isn’t the goal. We’re making features for ourselves and perhaps a small handful of others that solve specific problems that our core user-facing products are not meant to solve. I would even add that using coding agents might help ensure that work on debugging surfaces doesn’t end up siphoning off more of our attention than necessary. We used them to develop many of TWE’s debugging features and were able to build enhancements that we otherwise might have left on the table.
 
 One feature I’ve seen a lot of teams build is what we tend to call _kitchen sink pages_. These pages are exactly what they sound like: a page with ALL THE THINGS. These pages are great because they put everything built in a single page, and they often help uncover spacing issues and conflicts between different elements.
 
