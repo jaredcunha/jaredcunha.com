@@ -84,7 +84,7 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-body.post-page {
+body:has(.post) {
   background-color: var(--frame-color);
   border: none;
 }

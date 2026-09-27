@@ -1,7 +1,6 @@
 import type { Metadata } from 'next';
 import { Raleway, Noto_Serif } from 'next/font/google';
 import './styles/globals.scss';
-import BodyClassProvider from './components/BodyClassProvider';
 import { SiteHeader } from './components/ui/SiteHeader/SiteHeader';
 import { Footer } from './components/ui/Footer/Footer';
 import { generateWebSiteSchema } from './utils/json-ld';
@@ -135,7 +134,6 @@ export default async function RootLayout({
         className={`${notoSerif.variable} ${raleway.variable}`}
         suppressHydrationWarning
       >
-        <BodyClassProvider />
         <SiteHeader />
         {children}
         <Footer />
