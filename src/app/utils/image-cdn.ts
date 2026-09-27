@@ -94,3 +94,17 @@ export function getContentImageUrlWithGifSupport(
     crop: 'scale',
   });
 }
+
+/**
+ * Get an absolute URL for social share cards, RSS, and structured data.
+ * Crops to 1200x630 and serves JPG, since crawlers don't always handle
+ * f_auto formats.
+ */
+export function getShareImageUrl(src: string): string {
+  return getOptimizedImageUrl(src, {
+    width: 1200,
+    height: 630,
+    format: 'jpg',
+    crop: 'fill',
+  });
+}

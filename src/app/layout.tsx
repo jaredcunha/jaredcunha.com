@@ -5,6 +5,7 @@ import BodyClassProvider from './components/BodyClassProvider';
 import { SiteHeader } from './components/ui/SiteHeader/SiteHeader';
 import { Footer } from './components/ui/Footer/Footer';
 import { generateWebSiteSchema } from './utils/json-ld';
+import { getShareImageUrl } from './utils/image-cdn';
 import Script from 'next/script';
 
 const raleway = Raleway({
@@ -21,6 +22,23 @@ export const metadata: Metadata = {
   title: 'Jared Cunha',
   description:
     'Jared Cunha is a civic technologist and hybrid engineer/designer based in Washington, DC',
+  // Default share image for pages that don't set their own
+  openGraph: {
+    siteName: 'Jared Cunha',
+    type: 'website',
+    images: [
+      {
+        url: getShareImageUrl('/images/share-card-generic.png'),
+        width: 1200,
+        height: 630,
+        alt: 'Jared Cunha',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    images: [getShareImageUrl('/images/share-card-generic.png')],
+  },
   icons: {
     icon: [
       {

@@ -1,4 +1,5 @@
 import { Post } from '@/app/lib/defs';
+import { getOptimizedImageUrl, getShareImageUrl } from './image-cdn';
 
 export interface ArticleSchema {
   '@context': 'https://schema.org';
@@ -57,11 +58,8 @@ export function generateArticleSchema(
   url: string
 ): ArticleSchema {
   const baseUrl = 'https://jaredcunha.com';
-  const imageUrl = post.ogImage
-    ? `${baseUrl}${post.ogImage}`
-    : post.coverImage
-      ? `${baseUrl}${post.coverImage}`
-      : undefined;
+  const imageSrc = post.ogImage || post.coverImage;
+  const imageUrl = imageSrc ? getShareImageUrl(imageSrc) : undefined;
 
   return {
     '@context': 'https://schema.org',
@@ -94,7 +92,10 @@ export function generatePersonSchema(): PersonSchema {
     '@type': 'Person',
     name: 'Jared Cunha',
     url: 'https://jaredcunha.com',
-    image: 'https://jaredcunha.com/images/_ui/me.png',
+    image: getOptimizedImageUrl('/images/_ui/me.png', {
+      width: 800,
+      format: 'png',
+    }),
     jobTitle: 'Senior Director of Creative Technology',
     worksFor: {
       '@type': 'Organization',
