@@ -19,8 +19,6 @@ export default function BodyClassProvider() {
       if (isPostPage) {
         body.classList.add('post-page');
       }
-
-      console.log('Current pathname:', pathname);
     }
   }, [pathname]);
 
