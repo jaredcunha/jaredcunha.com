@@ -1,6 +1,7 @@
 import RSS from 'rss';
 import { getPostsByType } from '@/app/utils/mdx';
 import { BlogPost, PhotoPost } from '@/app/lib/defs';
+import { getOptimizedImageUrl, getShareImageUrl } from '@/app/utils/image-cdn';
 
 export const dynamic = 'force-dynamic';
 
@@ -61,7 +62,10 @@ export async function GET() {
       description: 'Blog posts and photo essays by Jared Cunha',
       feed_url: `${baseUrl}/rss.xml`,
       site_url: baseUrl,
-      image_url: `${baseUrl}/images/_ui/logo.png`,
+      image_url: getOptimizedImageUrl('/images/_ui/me.png', {
+        width: 144,
+        format: 'png',
+      }),
       language: 'en',
     });
 
@@ -80,7 +84,7 @@ export async function GET() {
         date: new Date(post.date),
         enclosure: post.coverImage
           ? {
-              url: `${baseUrl}${post.coverImage}`,
+              url: getShareImageUrl(post.coverImage),
               type: 'image/jpeg',
             }
           : undefined,

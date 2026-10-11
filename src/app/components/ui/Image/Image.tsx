@@ -68,7 +68,6 @@ export function Image({
   // Generate proper blur data URL for better placeholder support
   useEffect(() => {
     // Only generate blur data URL if useBlurPlaceholder is true
-    console.log('useBlurPlaceholder:', useBlurPlaceholder);
     if (!useBlurPlaceholder || src.toLowerCase().includes('.png')) {
       return;
     }

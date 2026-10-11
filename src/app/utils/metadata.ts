@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { getShareImageUrl } from './image-cdn';
 
 interface PostFrontmatter {
   title: string;
@@ -31,10 +32,11 @@ export function generatePostMetadata({
   const url = `https://jaredcunha.com/${type}/${slug}`;
 
   // For photos, fall back to coverImage if no ogImage
-  const ogImage =
+  const ogImage = getShareImageUrl(
     frontmatter.ogImage ||
-    (type === 'photos' ? frontmatter.coverImage : null) ||
-    '/images/share-card-generic.png';
+      (type === 'photos' ? frontmatter.coverImage : null) ||
+      '/images/share-card-generic.png'
+  );
 
   // Use coverImageAltText for photos, title as fallback
   const imageAlt = frontmatter.coverImageAltText || frontmatter.title;

@@ -55,8 +55,6 @@ export function SiteHeader() {
 			document.removeEventListener('keydown', escFunction);
 		}
 
-		console.log(menuVisible);
-
 		// Cleanup event listener on unmount
 		return () => {
 			document.removeEventListener('keydown', escFunction);
