@@ -9,6 +9,9 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
     "upload:images": "node scripts/upload-to-cloudinary.js",
     "watch:images": "chokidar 'public/images/**/*.{jpg,jpeg,png,gif,webp}' --ignore '**/*.temp' --ignore '**/*.backup' -c 'npm run upload:images' --silent"
   },
@@ -37,16 +40,23 @@
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
+    "@testing-library/dom": "^10.4.2",
+    "@testing-library/jest-dom": "^7.0.1",
+    "@testing-library/react": "^16.3.3",
+    "@testing-library/user-event": "^14.6.8",
     "@types/node": "^26",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "@types/rss": "^0.0.32",
+    "@vitejs/plugin-react": "^6.1.2",
     "chokidar-cli": "^3.0.0",
     "concurrently": "^10.0.5",
     "dotenv": "^18.0.6",
     "eslint": "^10",
     "eslint-config-next": "16.3.6",
+    "jsdom": "^29.1.1",
     "sass": "^1.105.0",
-    "typescript": "^6.0.3"
+    "typescript": "^6.0.3",
+    "vitest": "^5.0.4"
   }
 }

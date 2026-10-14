@@ -2,9 +2,10 @@ import { getMdxSlugs, getMdxBySlug, getAdjacentPosts } from '@/app/utils/mdx';
 import { generatePostMetadata } from '@/app/utils/metadata';
 import { generateArticleSchema } from '@/app/utils/json-ld';
 import { MDXRemote } from 'next-mdx-remote/rsc';
-import { mdxComponents } from '@/app/components/mdx-components';
+import { photoMdxComponents } from '@/app/components/photo-mdx-components';
 import { Post } from '@/app/components/ui/Post/Post';
 import { PostNavigation } from '@/app/components/ui/PostNavigation/PostNavigation';
+import { PhotoViewerProvider } from '@/app/components/ui/PhotoViewer/PhotoViewerProvider';
 import Date from '@/app/components/Date';
 import type { Metadata } from 'next';
 import { Suspense } from 'react';
@@ -95,9 +96,11 @@ export default async function PhotoPostPage({ params }: PhotoPageProps) {
           <p className="post__date">
             <Date dateString={frontmatter.date} />
           </p>
-          <Suspense fallback={<>Loading...</>}>
-            <MDXRemote source={content} components={mdxComponents} />
-          </Suspense>
+          <PhotoViewerProvider>
+            <Suspense fallback={<>Loading...</>}>
+              <MDXRemote source={content} components={photoMdxComponents} />
+            </Suspense>
+          </PhotoViewerProvider>
 
           <PostNavigation previous={previous} next={next} type="photos" />
         </Post>

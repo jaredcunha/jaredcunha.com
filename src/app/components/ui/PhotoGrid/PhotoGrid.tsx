@@ -1,6 +1,18 @@
-import React, { ReactNode } from 'react';
+import React, { ComponentType, ReactNode } from 'react';
 import './PhotoGrid.scss';
 import { Image } from '../Image/Image';
+
+export interface PhotoWrapperProps {
+  src: string;
+  alt: string;
+  caption?: string;
+  children: ReactNode;
+}
+
+// Renders the photo as-is. Photo essays swap in the photo viewer trigger.
+export function PlainPhoto({ children }: PhotoWrapperProps) {
+  return <>{children}</>;
+}
 
 interface PhotoGridProps {
   children: ReactNode;
@@ -20,9 +32,18 @@ interface PhotoGridItemProps {
   cols: '2' | '5' | '4' | '6' | '8' | '12';
   src: string;
   alt?: string | undefined;
+  // Shown only in the full-screen photo viewer, never under the photo
+  caption?: string;
+  Wrapper?: ComponentType<PhotoWrapperProps>;
 }
 
-export function PhotoGridItem({ cols, src, alt }: PhotoGridItemProps) {
+export function PhotoGridItem({
+  cols,
+  src,
+  alt,
+  caption,
+  Wrapper = PlainPhoto,
+}: PhotoGridItemProps) {
   // Coerce cols to a number to handle string input from MDX
   const colsNum = typeof cols === 'string' ? parseInt(cols, 10) : cols;
 
@@ -63,13 +84,15 @@ export function PhotoGridItem({ cols, src, alt }: PhotoGridItemProps) {
 
   return (
     <div className={`photo-grid__item photo-grid__item--cols-${colsNum}`}>
-      <Image
-        useBlurPlaceholder={true}
-        src={src}
-        alt={alt ?? ''}
-        width={width}
-        sizes={sizes}
-      />
+      <Wrapper src={src} alt={alt ?? ''} caption={caption}>
+        <Image
+          useBlurPlaceholder={true}
+          src={src}
+          alt={alt ?? ''}
+          width={width}
+          sizes={sizes}
+        />
+      </Wrapper>
     </div>
   );
 }
