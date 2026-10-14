@@ -1,0 +1,273 @@
+@use '../../../styles/sass/sass.scss' as *;
+
+// Icons sit on a dark translucent circle so they keep at least 3:1 contrast
+// even over the brightest part of a photo
+$viewer-control-rest: #c8c8c8;
+$viewer-control-bg: rgba(0, 0, 0, 0.65);
+$viewer-control-bg--active: rgba(0, 0, 0, 0.85);
+$viewer-touch-target: 44px;
+// Room for the top controls: their offset, height, and a small gap
+$viewer-chrome-space: calc(
+  #{units(1.5)} + #{$viewer-touch-target} + #{units(1)}
+);
+
+.photo-viewer {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  max-width: none;
+  height: 100%;
+  height: 100dvh;
+  max-height: none;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  overflow: hidden;
+  color: $alabaster;
+  background: #000;
+  font-family: var(--font-raleway);
+
+  &[open] {
+    display: block;
+  }
+
+  &::backdrop {
+    background: #000;
+  }
+}
+
+.photo-viewer__inner {
+  position: relative;
+  display: grid;
+  grid-template-rows: minmax(0, 1fr) auto;
+  width: 100%;
+  height: 100%;
+  background: #000;
+}
+
+// Controls
+.photo-viewer__button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: $viewer-touch-target;
+  min-height: $viewer-touch-target;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 999px;
+  color: $viewer-control-rest;
+  font: inherit;
+  background: $viewer-control-bg;
+  cursor: pointer;
+  transition:
+    opacity 0.2s ease,
+    color 0.2s ease,
+    background-color 0.2s ease;
+
+  &:hover,
+  &:focus-visible {
+    color: #fff;
+    background: $viewer-control-bg--active;
+  }
+
+  svg {
+    width: auto;
+    height: units(2);
+  }
+}
+
+// Override the site's default focus color, which is too dark on black
+.photo-viewer .photo-viewer__button:focus-visible {
+  outline: 3px solid $naples-yellow;
+  outline-offset: 2px;
+}
+
+.photo-viewer .photo-viewer__button:focus:not(:focus-visible) {
+  outline: none;
+}
+
+// The viewer itself takes focus when it opens. It isn't a control, so it
+// doesn't need a focus ring.
+.photo-viewer.photo-viewer:focus {
+  outline: none;
+}
+
+.photo-viewer .photo-viewer__scroller:focus {
+  outline: none;
+}
+
+.photo-viewer .photo-viewer__scroller:focus-visible {
+  outline: 3px solid $naples-yellow;
+  outline-offset: -3px;
+}
+
+.photo-viewer__top-controls {
+  position: absolute;
+  top: calc(#{units(1.5)} + env(safe-area-inset-top));
+  right: calc(#{units(1.5)} + env(safe-area-inset-right));
+  z-index: 2;
+  display: flex;
+  gap: units(1);
+}
+
+.photo-viewer__counter {
+  position: absolute;
+  top: calc(#{units(1.5)} + env(safe-area-inset-top));
+  left: calc(#{units(2)} + env(safe-area-inset-left));
+  z-index: 2;
+  margin: 0;
+  color: $viewer-control-rest;
+  font-size: var(--14px);
+  line-height: $viewer-touch-target;
+  font-variant-numeric: tabular-nums;
+}
+
+// Photo
+.photo-viewer__stage {
+  position: relative;
+  grid-row: 1;
+  min-height: 0;
+}
+
+// A horizontal strip of photos with native scroll snapping, so swiping
+// follows the finger with the platform's own momentum and edge bounce
+.photo-viewer__scroller {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-snap-type: x mandatory;
+  // Don't trigger the browser's swipe-to-go-back at either end
+  overscroll-behavior-x: contain;
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+.photo-viewer__slide {
+  position: relative;
+  flex: 0 0 100%;
+  scroll-snap-align: center;
+  // One photo per swipe, however hard the flick
+  scroll-snap-stop: always;
+}
+
+.photo-viewer__frame {
+  position: absolute;
+  // Equal space above and below so photos sit in the middle of the screen,
+  // just clearing the top controls
+  inset: calc(#{$viewer-chrome-space} + env(safe-area-inset-top))
+    env(safe-area-inset-right)
+    calc(#{$viewer-chrome-space} + env(safe-area-inset-bottom))
+    env(safe-area-inset-left);
+
+  @media (min-width: $tablet) {
+    inset: calc(#{$viewer-chrome-space} + env(safe-area-inset-top))
+      calc(#{$viewer-touch-target} + #{units(4)} + env(safe-area-inset-right))
+      calc(#{$viewer-chrome-space} + env(safe-area-inset-bottom))
+      calc(#{$viewer-touch-target} + #{units(4)} + env(safe-area-inset-left));
+  }
+}
+
+.photo-viewer__img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.photo-viewer__img--full {
+  opacity: 0;
+  transition: opacity 0.25s ease;
+
+  &.is-loaded {
+    opacity: 1;
+  }
+}
+
+// Previous / next
+.photo-viewer__nav {
+  position: absolute;
+  top: 50%;
+  z-index: 1;
+  transform: translateY(-50%);
+}
+
+.photo-viewer__nav--prev {
+  left: calc(#{units(1.5)} + env(safe-area-inset-left));
+}
+
+.photo-viewer__nav--next {
+  right: calc(#{units(1.5)} + env(safe-area-inset-right));
+}
+
+// Touch devices swipe instead. The arrows stay available to screen readers
+// (VoiceOver takes over swipe gestures) and to external keyboards.
+@media (hover: none) {
+  .photo-viewer__nav:not(:focus-visible) {
+    width: 1px;
+    min-width: 0;
+    height: 1px;
+    min-height: 0;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+}
+
+// Hidden visually after inactivity, but kept in the tab order and
+// accessibility tree. Stays visible while any control has keyboard focus.
+.photo-viewer--idle:not(:has(:focus-visible)) .photo-viewer__nav:not(:hover) {
+  opacity: 0;
+}
+
+// Caption
+.photo-viewer__caption-bar {
+  display: flex;
+  grid-row: 2;
+  align-items: center;
+  gap: units(2);
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 80rem;
+  margin-inline: auto;
+  padding: units(1.5) calc(#{units(2)} + env(safe-area-inset-right))
+    calc(#{units(1.5)} + env(safe-area-inset-bottom))
+    calc(#{units(2)} + env(safe-area-inset-left));
+}
+
+.photo-viewer__caption-toggle {
+  flex-shrink: 0;
+  padding: 0 units(1.5);
+  border: 1px solid rgba(241, 241, 241, 0.5);
+  border-radius: units(0.5);
+  font-size: var(--14px);
+  white-space: nowrap;
+}
+
+.photo-viewer__caption {
+  flex: 1;
+  margin: 0;
+  color: $alabaster;
+  font-family: var(--font-noto-serif);
+  font-size: var(--16px);
+  line-height: 1.5;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .photo-viewer__button,
+  .photo-viewer__img--full {
+    transition: none;
+  }
+}
+
+@media (forced-colors: active) {
+  .photo-viewer__button {
+    border: 1px solid ButtonText;
+  }
+}

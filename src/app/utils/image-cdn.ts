@@ -7,7 +7,7 @@ interface ImageOptions {
   height?: number;
   quality?: number;
   format?: 'auto' | 'webp' | 'avif' | 'jpg' | 'png' | 'gif';
-  crop?: 'fill' | 'fit' | 'scale' | 'crop';
+  crop?: 'fill' | 'fit' | 'scale' | 'crop' | 'limit';
 }
 
 export function getOptimizedImageUrl(
