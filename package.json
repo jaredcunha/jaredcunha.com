@@ -50,13 +50,13 @@
     "@types/rss": "^0.0.32",
     "@vitejs/plugin-react": "^6.1.2",
     "chokidar-cli": "^3.0.0",
-    "concurrently": "^10.0.5",
-    "dotenv": "^18.0.6",
+    "concurrently": "^10.0.6",
+    "dotenv": "^18.0.8",
     "eslint": "^10",
-    "eslint-config-next": "16.3.6",
+    "eslint-config-next": "16.4.2",
     "jsdom": "^29.1.1",
-    "sass": "^1.105.0",
+    "sass": "^1.105.2",
     "typescript": "^6.0.3",
-    "vitest": "^5.0.4"
+    "vitest": "^5.0.5"
   }
 }
