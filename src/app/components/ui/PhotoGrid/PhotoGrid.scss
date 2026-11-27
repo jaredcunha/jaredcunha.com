@@ -3,7 +3,7 @@
 .photo-grid.photo-grid {
   display: grid;
   gap: var(--photo-gap);
-  grid-column: wide-start/wide-end;
+  grid-column: full-start/full-end;
   grid-template-columns: repeat(12, 1fr [photo-col-start]);
 
   img {
