@@ -1,3 +1,5 @@
+@use '../../../styles/sass/sass.scss' as *;
+
 .photo-viewer-trigger {
   display: block;
   width: 100%;
@@ -10,4 +12,13 @@
   font: inherit;
   background: none;
   cursor: pointer;
+}
+
+.photo-viewer-trigger:not([disabled]):focus {
+  outline: none;
+}
+
+.photo-viewer-trigger:not([disabled]):focus-visible {
+  outline: 3px solid $naples-yellow;
+  outline-offset: -3px;
 }
